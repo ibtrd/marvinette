@@ -1,0 +1,59 @@
+.Roulette{
+	background-color: red;
+	border-radius: 50%;
+	width: 80vh;
+	height: 80vh;
+	position: relative;
+	overflow: hidden;
+	/* animation: 1s 20 linear rotate;
+	animation-timing-function: ease-out; */
+}
+
+/* @keyframes rotate{
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+} */
+
+
+.Roulette::after {
+	content: '';
+	position: absolute;
+	width: 64px;
+	height: 64px;
+	border-radius: 50%;
+	background-color: aqua;
+	transform-origin: center;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.RouletteCell{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	/* width: 40vh; */
+	transform-origin: left;
+	/* border-top: 18vh solid transparent;
+	border-bottom: 18vh solid transparent; */
+	/* border-right: 40vh solid yellow;  */
+}
+
+
+.RouletteCell:nth-child(even){
+	border-right: 40vh solid chartreuse; 
+}
+.RouletteCell:nth-child(odd){
+	border-right: 40vh solid blue; 
+}
+
+.RouletteCellText{
+	position: absolute;
+	left: 20vh;
+	font-size: 2vw;
+	transform: translateY(-50%);
+}

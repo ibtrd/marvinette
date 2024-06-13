@@ -3,16 +3,15 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./components/Login";
 import AuthCallback from "./components/AuthCallback";
+import Home from "./pages/Home";
 
 function App() {
   return (
     <Router>
       <Routes>
-        {/* Route for the OAuth callback */}
         <Route path="/auth/callback" element={<AuthCallback />} />
-
-        {/* Default route (home page) */}
         <Route path="/" element={<Login />} />
+        <Route path="/roulette" element={<Home />} />
       </Routes>
     </Router>
   );
