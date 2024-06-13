@@ -7,6 +7,7 @@
 	overflow: hidden;
 	/* animation: 1s 20 linear rotate;
 	animation-timing-function: ease-out; */
+	box-shadow: inset 0px 0px 27px 6px rgba(0,0,0,0.39);
 }
 
 /* @keyframes rotate{
@@ -22,15 +23,26 @@
 .Roulette::after {
 	content: '';
 	position: absolute;
-	width: 64px;
-	height: 64px;
+	width: 25vh;
+	height: 25vh;
 	border-radius: 50%;
-	background-color: aqua;
+	background-color: white;
 	transform-origin: center;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 }
+
+.RoulettePointer {
+	position: absolute;
+	height: 2px;
+	width: 25vw;
+	background-color: black;
+	right: 0;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
 
 .RouletteCell{
 	position: absolute;
@@ -45,15 +57,16 @@
 
 
 .RouletteCell:nth-child(even){
-	border-right: 40vh solid chartreuse; 
+	border-right: 40vh solid #F7D55C; 
 }
 .RouletteCell:nth-child(odd){
-	border-right: 40vh solid blue; 
+	border-right: 40vh solid #7DD2F7; 
 }
 
 .RouletteCellText{
 	position: absolute;
-	left: 20vh;
+	left: 25vh;
 	font-size: 2vw;
 	transform: translateY(-50%);
+	width: 30vh;
 }
