@@ -1,12 +1,9 @@
 import RouletteCell from "./RouletteCell";
 import './Roulette.css'
 import { animated, useSpring, easings } from 'react-spring'
-import getCells from "./getCells";
 
 export default function Roulette() {
 
-	// const googlecells = await getCells();
-	// console.log(googlecells);
 	const	cells = [
 		{name: 'Goal 0', weigth: 40},
 		{name: 'Goal 1', weigth: 10},
