@@ -1,5 +1,5 @@
 const RANGE = "SOURCE!A2:B";
-const url = `https://sheets.googleapis.com/v4/spreadsheets/${process.env.REACT_APP_SPREADSHEET_ID}/values/${RANGE}?key=${process.env.REACT_APP_APIGOOGLE_KEY}`;
+const url = `https://sheets.googleapis.com/v4/spreadsheets/${process.env.SPREADSHEET_ID}/values/${RANGE}?key=${process.env.APIGOOGLE_KEY}`;
 
 async function getCells() {
   try {
@@ -9,7 +9,6 @@ async function getCells() {
       name: cell[0],
       weight: parseInt(cell[1], 10),
     }));
-    console.log("fromfunc", cells);
     return cells;
   } catch (error) {
     console.error("Error fetching data:", error);
