@@ -1,8 +1,6 @@
 
   function randGoal(cells) {
 	const randWeight = Math.floor(Math.random() * cells.reduce((sum, cell) => sum + Math.abs(cell.weight), 0));
-    if (randWeight === null)
-        return (null);
     var goal = 0;
     var	weight = Math.abs(cells[goal].weight);
     while (weight < randWeight)
