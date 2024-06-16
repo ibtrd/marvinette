@@ -3,8 +3,9 @@ const getCells = require("../roulette/getCells");
 const router = express.Router();
 
 
-router.get('/cells', (req, res) => {
-    const rouletteCells = getCells();
+router.get('/cells', async (req, res) => {
+    const rouletteCells = await getCells();
+    res.send(rouletteCells);
 })
 
  module.exports = router;
