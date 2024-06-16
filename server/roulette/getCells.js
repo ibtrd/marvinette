@@ -6,12 +6,13 @@ async function getCells() {
     const response = await fetch(url);
     const data = await response.json();
     const cells = data.values.map((cell) => ({
-      name: cell[0],
-      weight: parseInt(cell[1], 10),
+      weight: parseInt(cell[0], 10),
+      name: cell[1],
       description: cell[2],
       img: cell[3],
     }));
     return cells;
+    
   } catch (error) {
     console.error("Error fetching data:", error);
     return null; // Or handle error as needed

@@ -5,48 +5,48 @@ import { animated, useSpring, easings } from 'react-spring'
 export default function Roulette() {
 
 	const	cells = [
-		{name: 'Goal 0', weigth: 40},
-		{name: 'Goal 1', weigth: 10},
-		{name: 'Goal 2', weigth: -20},
-		{name: 'Goal 3', weigth: -30},
-		{name: 'Goal 4', weigth: 40},
-		{name: 'Goal 5', weigth: 40},
-		{name: 'Goal 6', weigth: 10},
-		{name: 'Goal 7', weigth: -20},
-		{name: 'Goal 8', weigth: -30},
-		{name: 'Goal 9', weigth: -20},
-		{name: 'Goal 10', weigth: -30},
-		{name: 'Goal 11', weigth: 40},
-		{name: 'Goal 12', weigth: 10},
-		{name: 'Goal 13', weigth: -20},
-		{name: 'Goal 14', weigth: -30},
-		{name: 'Goal 15', weigth: -20},
-		{name: 'Goal 16', weigth: 40},
-		{name: 'Goal 17', weigth: 10},
-		{name: 'Goal 18', weigth: -20},
-		{name: 'Goal 19', weigth: -30},
-		{name: 'Goal 20', weigth: 40},
-		{name: 'Goal 21', weigth: 40},
-		{name: 'Goal 22', weigth: 10},
-		{name: 'Goal 23', weigth: -20},
-		{name: 'Goal 24', weigth: -30},
-		{name: 'Goal 25', weigth: -20},
-		{name: 'Goal 26', weigth: -30},
-		{name: 'Goal 27', weigth: 40},
-		{name: 'Goal 28', weigth: 10},
-		{name: 'Goal 29', weigth: 20},
-		{name: 'Goal 30', weigth: 30},
-		{name: 'Goal 31', weigth: -20},
-		{name: 'Goal 32', weigth: -20},
-		{name: 'Goal 33', weigth: -20},
-		{name: 'Goal 34', weigth: -20},
-		{name: 'Goal 35', weigth: -20},
-		{name: 'Goal 36', weigth: -20},
-		{name: 'Goal 37', weigth: -20},
-		{name: 'Goal 38', weigth: -20},
-		{name: 'Goal 39', weigth: -20},
-		{name: 'Goal 40', weigth: -20},
-		{name: 'Goal 41', weigth: -20},
+		{name: 'Goal 0', weight: 40},
+		{name: 'Goal 1', weight: 10},
+		{name: 'Goal 2', weight: -20},
+		{name: 'Goal 3', weight: -30},
+		{name: 'Goal 4', weight: 40},
+		{name: 'Goal 5', weight: 40},
+		{name: 'Goal 6', weight: 10},
+		{name: 'Goal 7', weight: -20},
+		{name: 'Goal 8', weight: -30},
+		{name: 'Goal 9', weight: -20},
+		{name: 'Goal 10', weight: -30},
+		{name: 'Goal 11', weight: 40},
+		{name: 'Goal 12', weight: 10},
+		{name: 'Goal 13', weight: -20},
+		{name: 'Goal 14', weight: -30},
+		{name: 'Goal 15', weight: -20},
+		{name: 'Goal 16', weight: 40},
+		{name: 'Goal 17', weight: 10},
+		{name: 'Goal 18', weight: -20},
+		{name: 'Goal 19', weight: -30},
+		{name: 'Goal 20', weight: 40},
+		{name: 'Goal 21', weight: 40},
+		{name: 'Goal 22', weight: 10},
+		{name: 'Goal 23', weight: -20},
+		{name: 'Goal 24', weight: -30},
+		{name: 'Goal 25', weight: -20},
+		{name: 'Goal 26', weight: -30},
+		{name: 'Goal 27', weight: 40},
+		{name: 'Goal 28', weight: 10},
+		{name: 'Goal 29', weight: 20},
+		{name: 'Goal 30', weight: 30},
+		{name: 'Goal 31', weight: -20},
+		{name: 'Goal 32', weight: -20},
+		{name: 'Goal 33', weight: -20},
+		{name: 'Goal 34', weight: -20},
+		{name: 'Goal 35', weight: -20},
+		{name: 'Goal 36', weight: -20},
+		{name: 'Goal 37', weight: -20},
+		{name: 'Goal 38', weight: -20},
+		{name: 'Goal 39', weight: -20},
+		{name: 'Goal 40', weight: -20},
+		{name: 'Goal 41', weight: -20},
 	]
 
 	const getRandomDuration = (min, max) => {
@@ -103,10 +103,10 @@ export default function Roulette() {
   }
 
   function getGoal(cells) {
-	const randWeight = Math.floor(Math.random() * cells.reduce((sum, cell) => sum + Math.abs(cell.weigth), 0));
-	var	weight = Math.abs(cells[0].weigth);
+	const randWeight = Math.floor(Math.random() * cells.reduce((sum, cell) => sum + Math.abs(cell.weight), 0));
+	var	weight = Math.abs(cells[0].weight);
 	for (var i = 0; weight < randWeight; i++)
-		weight += Math.abs(cells[i + 1].weigth);
+		weight += Math.abs(cells[i + 1].weight);
 	console.log('rand index', i);
 	return (i);
 }
