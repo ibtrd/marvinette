@@ -44,4 +44,10 @@
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  position: relative;
+}
+
+.Spin{
+  position: absolute;
+  bottom: 2vh;
 }

@@ -5,6 +5,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const router = require('./routes/router');
+const { rouletteInterval } = require('./roulette/rouletteCells') 
 
 const app = express();
 
@@ -22,4 +23,6 @@ app.use('/', router);
 const port = 4000;
 const server = app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
+    rouletteInterval();
 });
+
