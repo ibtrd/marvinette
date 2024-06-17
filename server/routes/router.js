@@ -2,7 +2,10 @@ const express = require("express");
 const randGoal = require("../roulette/randGoal");
 const router = express.Router();
 const {rouletteCells} = require('../roulette/rouletteCells');
-const { getAuthUrl } = require("../oauth2/getAuthUrl");
+const { getAuthUrl } = require("../oauth/getAuthUrl");
+const axios = require('axios');
+const { oauthConfig } = require("../oauth/config");
+const { getUser } = require("../oauth/getUser");
 
 router.get('/cells', async (req, res) => {
     const response = {
@@ -25,9 +28,48 @@ router.get("/goal/:lastUpdate", async (req, res) => {
     res.send(goal);
 });
 
-router.get('/login', (req, res) => {
+router.get('/oauth/login', (req, res) => {
     res.redirect(getAuthUrl())
 });
 
+router.get("/oauth/callback", async (req, res) => {
+  const { code } = req.query;
+  if (!code) {
+    return res.status(400).send("Authorization code not provided");
+  }
+
+  const requestBody = new URLSearchParams({
+    grant_type: "authorization_code",
+    code: code,
+    client_id: oauthConfig.clientId,
+    client_secret: oauthConfig.clientSecret,
+    redirect_uri: oauthConfig.redirectUri,
+  });
+
+  try {
+    const response = await axios.post(
+      oauthConfig.tokenEndpoint,
+      requestBody.toString(),
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+
+    const user = await getUser(response.data.access_token);
+    console.log(user);
+    // req.session.accessToken = response.data.access_token;
+    // req.session.refreshToken = response.data.refresh_token;
+
+    res.redirect("/user");
+  } catch (err) {
+    console.error(
+      "Error retrieving access token:",
+      err.response ? err.response.data : err.message
+    );
+    res.status(500).send("Error retrieving access token");
+  }
+});
+
  module.exports = router;
- 
