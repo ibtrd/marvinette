@@ -1,7 +1,6 @@
 import RouletteCell from "./RouletteCell";
 import './Roulette.css'
 import { animated, useSpring, easings } from 'react-spring'
-import { useEffect } from "react";
 
 export default function Roulette({cells, goal, setGoal, lastUpdate}) {
 

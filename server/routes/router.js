@@ -1,11 +1,10 @@
 const express = require("express");
-const getCells = require("../roulette/getCells");
 const randGoal = require("../roulette/randGoal");
 const router = express.Router();
-const {rouletteCells} = require('../roulette/rouletteCells')
+const {rouletteCells} = require('../roulette/rouletteCells');
+const { getAuthUrl } = require("../oauth2/getAuthUrl");
 
 router.get('/cells', async (req, res) => {
-    // const response = {...rouletteCells};
     const response = {
         cells: rouletteCells.cells.map(cell => ({ ...cell })),
         lastUpdate: rouletteCells.lastUpdate}
@@ -26,4 +25,9 @@ router.get("/goal/:lastUpdate", async (req, res) => {
     res.send(goal);
 });
 
+router.get('/login', (req, res) => {
+    res.redirect(getAuthUrl())
+});
+
  module.exports = router;
+ 
