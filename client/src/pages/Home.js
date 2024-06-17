@@ -10,6 +10,27 @@ export default function Home() {
   const [goal, setGoal] = useState([])
 
 	useEffect(() => {
+    try {
+      fetch(`http://localhost:4000/session/status`,
+        {
+          credentials: 'include',
+        }
+      )
+      .then(async (res) => {
+        if(res.status === 200)
+        {
+          const status = (await res.json()).loggedIn;
+          console.log(status);
+          if (false === status)
+            {
+              window.location.replace(`/`);
+              return ;
+            }
+        }
+      })
+    } catch (err) {
+      console.log(err);
+    }
 		fetch('http://localhost:4000/cells')
     .then(async (res) => {
       if (res.status === 200)
@@ -22,7 +43,6 @@ export default function Home() {
         console.error('Error')
     })
 	}, []);
-
 
   return (
     <div className='Home'>
