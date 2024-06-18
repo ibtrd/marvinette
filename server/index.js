@@ -1,6 +1,6 @@
-const dotenv = require('dotenv');
-dotenv.config();
+require('dotenv').config();
 
+const mongoose = require('mongoose');
 const express = require('express');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
@@ -10,8 +10,16 @@ const bodyParser = require('body-parser');
 const router = require('./routes/router');
 const { rouletteInterval } = require('./roulette/rouletteCells') 
 
-const app = express();
+async function connectDB() {
+  await mongoose.connect("mongodb://127.0.0.1:27017/ft_wordle");
+}
 
+connectDB().catch((err) => {
+    console.log(err)
+    return;
+});
+
+const app = express();
 
 const corsOptions = {
     origin: "http://localhost:3000",

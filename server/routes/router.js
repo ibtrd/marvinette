@@ -19,7 +19,7 @@ router.get("/goal/:lastUpdate", async (req, res) => {
   if (parseInt(req.params.lastUpdate) !== rouletteCells.lastUpdate)
   {
     console.log('different timestamp')
-    return res.status(403).send({error: 'Cell grid has change.'})
+    return res.status(403).send({error: 'Cell grid has changed.'})
   }
   const goal = randGoal(rouletteCells.cells);
 //   console.log('SESSION', req.session);

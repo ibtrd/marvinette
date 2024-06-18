@@ -1,6 +1,6 @@
 const { piscineCursusId } = require("./config");
 
-module.exports.getUser = async function getUser(accessToken) {
+module.exports.getIntraUser = async function getIntraUser(accessToken) {
   const response = await fetch(`https://api.intra.42.fr/v2/me`, {
     method: "GET",
     headers: {
@@ -16,14 +16,13 @@ module.exports.getUser = async function getUser(accessToken) {
 }
 
 module.exports.isPiscineux = async function isPiscineux(accessToken, user) {
-  // if (user.login === 'ibertran')
-  //   return ('admin');
+  if (user.login === 'ibertran')
+    return ('admin');
   if (user.active === false)
     return false;
-
   for (var i = 0; i < user.cursus_users.length; i++) {
     const cursus = user.cursus_users[i];
-    if (cursus.cursus_id === 9 && new Date(cursus.end_at) < Date.now()) {
+    if (cursus.cursus_id === 9 && new Date(cursus.end_at) > Date.now()) {
       if (cursus.has_coalition === true) {
         const response = await fetch(
           `https://api.intra.42.fr/v2/users/${user.id}/coalitions`,
@@ -39,8 +38,10 @@ module.exports.isPiscineux = async function isPiscineux(accessToken, user) {
             `Failed to fetch data: ${response.status} ${response.statusText}`
           );
         }
-        console.log('ok');
-        const coalition = await response.json();
+        const coalitions = await response.json();
+        const found = coalitions.find(
+          (coa) => (coa.id == 17 || coa.id == 17 || coa.id == 17));
+        console.log(found.name);
         return found.name;
       } else {
         return null;

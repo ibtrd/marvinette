@@ -1,6 +1,7 @@
 const axios = require('axios');
 const { oauthConfig } = require("../oauth/config");
-const { getUser, getCoalition, isPiscineux } = require("../oauth/getUser");
+const { getIntraUser, getCoalition, isPiscineux } = require("../oauth/getIntraUser");
+const { User } = require('../mongo_models/User');
 
 
 module.exports.callback = async function callback(req, res) {
@@ -27,14 +28,17 @@ module.exports.callback = async function callback(req, res) {
           },
         }
       );
-      const user = await getUser(response.data.access_token);
-      const cursus = await isPiscineux(response.data.access_token, user);
-      console.log('coaltion:', cursus);
+      const intraUser = await getIntraUser(response.data.access_token);
+      const coalition = await isPiscineux(response.data.access_token, intraUser);
+      if (coalition === false) {
+        return res.status(500).send("You do not have an active Piscine cursus");
+      }
       req.session.user = {
-        id: user.id,
-        login: user.login,
-        coalition: cursus,
+        id: intraUser.id,
+        login: intraUser.login,
+        coalition: coalition,
         token: response.data };
+      await addUser(intraUser);
       res.redirect('http://localhost:3000/roulette');
     } catch (err) {
       console.error(
@@ -43,4 +47,24 @@ module.exports.callback = async function callback(req, res) {
       );
       res.status(500).send("Error retrieving access token");
     }
+}
+
+async function addUser(intraUser, coalition) {
+  var user = await User.findOne({id: intraUser.id});
+  if (user) {
+    if (user.coalition === null && coalition !== null) {
+      user.coalition = coalition;
+      await user.save();
+      console.log(`Updated user: ${intraUser.login} (${coalition})`);
+    }
+    return;
+  }
+  user = await User.create({
+    id: intraUser.id,
+    login: intraUser.login,
+    coalition: coalition,
+    lastSpin: 0,
+    spins: 0,
+  })
+  console.log(`New user created: ${intraUser.login} (${coalition})`);
 }
