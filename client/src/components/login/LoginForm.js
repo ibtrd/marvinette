@@ -9,6 +9,7 @@ export default function LoginForm({...props}) {
 	  	{...props}
 		className='loginForm'
 	  >
+		<h1>42 Roulette</h1>
 		<LoginButton />
 	  </div>
 	);

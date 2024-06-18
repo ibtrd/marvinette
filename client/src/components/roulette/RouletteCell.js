@@ -7,9 +7,9 @@ export default function RouletteCell({data, rotate, angle, ...props}) {
 			className='RouletteCell'
 			style={{
 				transform: `translateY(-50%) rotate(${rotate}deg)`,
-				borderTop: `calc(sin(${rad}) * 25vw / cos(${rad})) solid transparent`,
-				borderBottom: `calc(sin(${rad}) * 25vw / cos(${rad})) solid transparent`,
-				borderRight: data.color ? `25vw solid #${data.color}` : ''
+				borderTop: `calc(sin(${rad}) * 22vw / cos(${rad})) solid transparent`,
+				borderBottom: `calc(sin(${rad}) * 22vw / cos(${rad})) solid transparent`,
+				borderRight: data.color ? `22vw solid #${data.color}` : ''
 			}}
 			{...props}
 		>

@@ -1,12 +1,13 @@
 .Roulette{
 	background-color: lightgray;
 	border-radius: 50%;
-	width: 50vw;
-	height: 50vw;
+	width: 42vw;
+	height: 42vw;
 	position: relative;
 	overflow: hidden;
-	box-shadow: inset 0px 0px 27px 6px rgba(0,0,0,0.39);
-	border: 1px solid black;
+	box-shadow: 0px 0px 27px 6px rgba(0,0,0,0.39);
+	border: 10px solid black;
+	z-index: 5;
 }
 
 .Roulette::after {
@@ -24,13 +25,16 @@
 }
 
 .RoulettePointer {
+	z-index: 5;
 	position: absolute;
-	height: 2px;
-	width: 25vw;
-	background-color: black;
-	right: 0;
-	top: 50%;
 	transform: translateY(-50%);
+	right: 28.5vw;
+	top: 50%;
+	width: 0;
+	height: 0;
+	border-top: 25px solid transparent;
+	border-right: 50px solid black;
+	border-bottom: 25px solid transparent;
 }
 
 
@@ -42,26 +46,40 @@
 }
 
 .RouletteCell:nth-child(even){
-	border-right: 25vw solid #F7D55C; 
+	border-right: 22vw solid #F7D55C; 
 }
+
 .RouletteCell:nth-child(odd){
-	border-right: 25vw solid #7DD2F7; 
+	border-right: 22vw solid #7DD2F7; 
 }
 
 .RouletteIcon{
 	position: absolute;
 	transform-origin: center;
 	width: 3vw;
-	left: 18vw;
+	left: 15vw;
 	transform: translateY(-50%);
 }
 
 .RouletteCellBorder{
-	width: 25vw;
+	width: 21vw;
 	transform-origin: left;
 	height: 1px;
 	background-color: black;
 	position: absolute;
 	z-index: 20;
 	left: 0;
+}
+
+
+.RouletteFooter {
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	height: 0;
+	width: 20vw;
+	border-bottom: 20vh solid rgb(73, 73, 73);
+	border-left: 5vw solid transparent;
+	border-right: 5vw solid transparent;
 }

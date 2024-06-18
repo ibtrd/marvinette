@@ -2,6 +2,7 @@ import Roulette from "../components/roulette/Roulette";
 import '../App.css'
 import RoulettePointer from "../components/roulette/RoulettePointer";
 import { useEffect, useState } from "react";
+import RouletteFooter from "../components/roulette/RouletteFooter";
 
 export default function Home() {
 
@@ -38,7 +39,7 @@ export default function Home() {
     {name: 'name', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/42_Logo.svg/2048px-42_Logo.svg.png'},
     {name: 'name', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/42_Logo.svg/2048px-42_Logo.svg.png'},
     {name: 'name', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/42_Logo.svg/2048px-42_Logo.svg.png', color:'888888'},
-    {name: 'name', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/42_Logo.svg/2048px-42_Logo.svg.png', color:'111111'},
+    {name: 'name', image: 'https://profile.intra.42.fr/assets/42_logo-7dfc9110a5319a308863b96bda33cea995046d1731cebb735e41b16255106c12.svg', color:'111111'},
     {name: 'name', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/42_Logo.svg/2048px-42_Logo.svg.png', color:'AAAAAA'},
     {name: 'name', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/42_Logo.svg/2048px-42_Logo.svg.png', color:'FFFFFF'},
   ]
@@ -86,6 +87,7 @@ export default function Home() {
         // setGoal={setGoal} lastUpdate={lastUpdate}
       />
       <RoulettePointer />
+      <RouletteFooter />
     </div>
     
   );
