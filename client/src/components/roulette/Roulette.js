@@ -5,12 +5,12 @@ import { animated, useSpring, easings } from 'react-spring'
 export default function Roulette({cells, goal, setGoal, lastUpdate}) {
 
 	const spinRoulette = () => {
-		fetch(`http://localhost:4000/goal/${lastUpdate}`)
-		.then(async (res) => {
-		  if (res.ok)
-		  {
-			const goal = (await res.json()).goal
-			setGoal(goal)
+		// fetch(`http://localhost:4000/goal/${lastUpdate}`)
+		// .then(async (res) => {
+		//   if (res.ok)
+		//   {
+		// 	const goal = (await res.json()).goal
+			// setGoal(goal)
 			const rand =  getRandom((-360/cells.length)/2.5, (360/cells.length)/2.5)
 			console.log('Goal:', cells[goal].name, goal, 'rand:', rand);
 			api.start({
@@ -26,8 +26,8 @@ export default function Roulette({cells, goal, setGoal, lastUpdate}) {
 					easing: easings.easeOutCubic,
 				},
 			})
-		  }
-		})
+		//   }
+		// })
 	}
 
 	const getRandomDuration = (min, max) => {

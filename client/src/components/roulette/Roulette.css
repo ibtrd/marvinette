@@ -1,46 +1,40 @@
 .Roulette{
-	background-color: red;
+	background-color: lightgray;
 	border-radius: 50%;
-	width: 80vh;
-	height: 80vh;
+	width: 42vw;
+	height: 42vw;
 	position: relative;
 	overflow: hidden;
-	/* animation: 1s 20 linear rotate;
-	animation-timing-function: ease-out; */
-	box-shadow: inset 0px 0px 27px 6px rgba(0,0,0,0.39);
+	box-shadow: 0px 0px 27px 6px rgba(0,0,0,0.39);
+	border: 10px solid black;
+	z-index: 5;
 }
-
-/* @keyframes rotate{
-	from {
-		transform: rotate(0deg);
-	}
-	to {
-		transform: rotate(360deg);
-	}
-} */
-
 
 .Roulette::after {
 	content: '';
 	position: absolute;
-	width: 25vh;
-	height: 25vh;
+	width: 5vw;
+	height: 5vw;
 	border-radius: 50%;
 	background-color: white;
 	transform-origin: center;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
+	border: 1px solid black;
 }
 
 .RoulettePointer {
+	z-index: 5;
 	position: absolute;
-	height: 2px;
-	width: 25vw;
-	background-color: black;
-	right: 0;
-	top: 50%;
 	transform: translateY(-50%);
+	right: 28.5vw;
+	top: 50%;
+	width: 0;
+	height: 0;
+	border-top: 25px solid transparent;
+	border-right: 50px solid black;
+	border-bottom: 25px solid transparent;
 }
 
 
@@ -48,25 +42,44 @@
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	/* width: 40vh; */
 	transform-origin: left;
-	/* border-top: 18vh solid transparent;
-	border-bottom: 18vh solid transparent; */
-	/* border-right: 40vh solid yellow;  */
 }
-
 
 .RouletteCell:nth-child(even){
-	border-right: 40vh solid #F7D55C; 
-}
-.RouletteCell:nth-child(odd){
-	border-right: 40vh solid #7DD2F7; 
+	border-right: 22vw solid #F7D55C; 
 }
 
-.RouletteCellText{
+.RouletteCell:nth-child(odd){
+	border-right: 22vw solid #7DD2F7; 
+}
+
+.RouletteIcon{
 	position: absolute;
-	left: 25vh;
-	font-size: 2vw;
+	transform-origin: center;
+	width: 3vw;
+	left: 15vw;
 	transform: translateY(-50%);
-	width: 30vh;
+}
+
+.RouletteCellBorder{
+	width: 21vw;
+	transform-origin: left;
+	height: 1px;
+	background-color: black;
+	position: absolute;
+	z-index: 20;
+	left: 0;
+}
+
+
+.RouletteFooter {
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	height: 0;
+	width: 20vw;
+	border-bottom: 20vh solid rgb(73, 73, 73);
+	border-left: 5vw solid transparent;
+	border-right: 5vw solid transparent;
 }

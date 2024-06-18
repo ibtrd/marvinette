@@ -2,6 +2,7 @@ import Roulette from "../components/roulette/Roulette";
 import '../App.css'
 import RoulettePointer from "../components/roulette/RoulettePointer";
 import { useEffect, useState } from "react";
+import RouletteFooter from "../components/roulette/RouletteFooter";
 
 export default function Home() {
 
@@ -46,8 +47,11 @@ export default function Home() {
 
   return (
     <div className='Home'>
-      <Roulette cells={cells} goal={goal} setGoal={setGoal} lastUpdate={lastUpdate}/>
+      <Roulette cells={cells} goal={goal}
+        // setGoal={setGoal} lastUpdate={lastUpdate}
+      />
       <RoulettePointer />
+      <RouletteFooter />
     </div>
     
   );
