@@ -9,11 +9,11 @@ export default function RouletteCell({data, rotate, angle, ...props}) {
 				transform: `translateY(-50%) rotate(${rotate}deg)`,
 				borderTop: `calc(sin(${rad}) * 22vw / cos(${rad})) solid transparent`,
 				borderBottom: `calc(sin(${rad}) * 22vw / cos(${rad})) solid transparent`,
-				borderRight: data.color ? `22vw solid #${data.color}` : ''
+				borderRight: data.color ? `22vw solid ${data.color}` : ''
 			}}
 			{...props}
 		>
-			<img className="RouletteIcon" src={data.image} alt={'Icon for ' + data.name}/>
+			{data.img ? <img className="RouletteIcon" src={data.img} alt={'Icon for ' + data.name}/> : ''}
 			<span
 				className="RouletteCellBorder"
 				style={{

@@ -16,7 +16,7 @@ module.exports.getIntraUser = async function getIntraUser(accessToken) {
 }
 
 module.exports.isPiscineux = async function isPiscineux(accessToken, user) {
-  if (user.login === 'ibertran')
+  if (user.login === 'ibertran' || user.login === 'bwisniew')
     return ('admin');
   if (user.active === false)
     return false;

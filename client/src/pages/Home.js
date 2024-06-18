@@ -24,7 +24,7 @@ export default function Home() {
           console.log(status);
           if (false === status)
             {
-              window.location.replace(`/`);
+              window.location.replace(`/login`);
               return ;
             }
         }
@@ -37,6 +37,7 @@ export default function Home() {
       if (res.status === 200)
       {
         const cells = await res.json();
+        console.log(cells)
         setCells(cells.cells);
         setLastUpdate(cells.lastUpdate);
       }
@@ -48,7 +49,7 @@ export default function Home() {
   return (
     <div className='Home'>
       <Roulette cells={cells} goal={goal}
-        // setGoal={setGoal} lastUpdate={lastUpdate}
+        setGoal={setGoal} lastUpdate={lastUpdate}
       />
       <RoulettePointer />
       <RouletteFooter />
