@@ -11,7 +11,7 @@ const router = require('./routes/router');
 const { rouletteInterval } = require('./roulette/rouletteCells') 
 
 async function connectDB() {
-  await mongoose.connect("mongodb://127.0.0.1:27017/ft_wordle");
+  await mongoose.connect("mongodb://127.0.0.1:27017/42roulette");
 }
 
 connectDB().catch((err) => {
