@@ -11,7 +11,7 @@ module.exports.rouletteInterval = async function rouletteInterval() {
 		{
 			rouletteCells.cells = cells;
 			rouletteCells.lastUpdate = Date.now();
-			console.log(`Wheel updated:`, rouletteCells);
+			//console.log(`Wheel updated:`, rouletteCells);
 		}
-	}, 30000)
+	}, 5000)
 }

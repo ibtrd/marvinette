@@ -6,7 +6,10 @@ module.exports.userSchema = new mongoose.Schema({
   coalition: { type: String},
   lastSpin: { type: Number, require: true },
   spins: { type: Number, require: true }
-});
+// }, {
+//     methods: Truc,
+  }
+);
 
 module.exports.User = mongoose.model(
     "User",

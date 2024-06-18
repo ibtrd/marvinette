@@ -16,10 +16,9 @@ module.exports.getIntraUser = async function getIntraUser(accessToken) {
 }
 
 module.exports.isPiscineux = async function isPiscineux(accessToken, user) {
-  if (user.login === 'ibertran' || user.login === 'bwisniew')
-    return ('admin');
-  if (user.active === false)
-    return false;
+  if (user['staff?']) return ('staff');
+  if (user.login === 'ibertran' || user.login === 'bwisniew') return ('admin')
+  if (user.active === false) return false;
   for (var i = 0; i < user.cursus_users.length; i++) {
     const cursus = user.cursus_users[i];
     if (cursus.cursus_id === 9 && new Date(cursus.end_at) > Date.now()) {

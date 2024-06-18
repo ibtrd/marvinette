@@ -1,25 +1,24 @@
 require('dotenv').config();
 
-const mongoose = require('mongoose');
 const express = require('express');
 const session = require('express-session');
+const mongoose = require('mongoose');
+const MongoStore = require('connect-mongo');
 const cookieParser = require('cookie-parser');
-const crypto = require('crypto');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const router = require('./routes/router');
 const { rouletteInterval } = require('./roulette/rouletteCells') 
 
-async function connectDB() {
-  await mongoose.connect("mongodb://127.0.0.1:27017/42roulette");
-}
-
-connectDB().catch((err) => {
-    console.log(err)
-    return;
-});
-
 const app = express();
+
+// Connect to MongoDB
+mongoose.connect('mongodb://127.0.0.1:27017/42roulette', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => {console.log('Connected to MongoDB');})
+.catch((err) => {console.error('MongoDB connection error:', err);});
 
 const corsOptions = {
     origin: "http://localhost:3000",
@@ -32,18 +31,26 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 
 app.use(cookieParser());
+
+// Configure sessions
 app.use(session({
-    secret: crypto.randomBytes(64).toString('base64'),
+    secret: process.env.SESSIONS_SECRET,
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl: "mongodb://127.0.0.1:27017/42roulette",
+        ttl : 7 * 24 * 60 * 60,
+        autoRemove: "native"
+    }),
     cookie: {
         secure: process.env.NODE_ENV === "production",
         httpOnly: true,
         sameSite: 'lax',
-        maxAge: 604800000
-    } // Set secure: true in production for HTTPS
+        maxAge: 7 * 24 * 60 * 60 * 1000 //7 Days
+    }
 }));
 
+// Configure routes
 app.use('/', router);
 
 const port = 3000;

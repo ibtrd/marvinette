@@ -7,9 +7,9 @@ async function getCells() {
     const data = await response.json();
     const cells = data.values.map((cell) => ({
       weight: parseInt(cell[0], 10),
-      name: cell[1],
-      description: cell[2],
-      img: cell[3],
+      description: cell[1],
+      img: cell[2],
+      alt: cell[3],
       color: cell[4],
     }));
     return cells;

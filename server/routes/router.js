@@ -9,24 +9,25 @@ const isLoggedIn = require('../middleware/isLoggedIn')
 const sendIndex = require('../middleware/sendIndex')
 
 router.get('/cells', async (req, res) => {
-  const response = {
-    cells: rouletteCells.cells.map(cell => ({ ...cell })),
-    lastUpdate: rouletteCells.lastUpdate}
-  response.cells.forEach((cell) => {
-    delete cell['weight'];
+  var cells = []
+  rouletteCells.cells.forEach(cell => {
+    cells.push({
+      img: cell.img,
+      alt: cell.alt,
+      color: cell.color,
+    });
   });
-  res.send(response);
+  res.send({cells, lastUpdate: rouletteCells.lastUpdate});
 });
 
 router.get("/goal/:lastUpdate", async (req, res) => {
   if (parseInt(req.params.lastUpdate) !== rouletteCells.lastUpdate)
   {
     console.log('different timestamp')
-    return res.status(403).send({error: 'Cell grid has changed.'})
+    return res.status(409).send({error: 'Cell grid has changed.'})
   }
   const goal = randGoal(rouletteCells.cells);
-//   console.log('SESSION', req.session);
-//   console.log(`${req.session.user.login} spin: ` + goal.goal)
+  console.log(`${req.session.user.login} spin:`,goal.goal, goal.description);
   res.send(goal);
 });
 
@@ -38,21 +39,13 @@ router.get("/oauth/callback", async (req, res) => {
   callback(req, res);
 });
 
-router.get('/oauth/logout', (req, res) => {
+router.get('/logout', (req, res) => {
   req.session.destroy((err) => {
     if (err) {
       return res.status(500).send('Error logging out');
     }
-    res.send('User logged out');
+    res.redirect('/login')
   });
-});
-
-router.get("/session/status", async (req, res) => {
-  if (req.session.user) {
-    res.json({ loggedIn: true});
-  } else {
-    res.json({ loggedIn: false });
-  }
 });
 
 router.get('/debug', (req, res) => {

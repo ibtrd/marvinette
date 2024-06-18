@@ -2,7 +2,7 @@ import RouletteCell from "./RouletteCell";
 import './Roulette.css'
 import { animated, useSpring, easings } from 'react-spring'
 
-export default function Roulette({cells, goal, setGoal, lastUpdate}) {
+export default function Roulette({cells, goal, setGoal, lastUpdate, size, onOpen, onReward}) {
 
 	const spinRoulette = () => {
 		fetch(`/goal/${lastUpdate}`)
@@ -18,14 +18,19 @@ export default function Roulette({cells, goal, setGoal, lastUpdate}) {
 					rotate: randomStart,
 				},
 				to: {
-					// rotate: 360 * 20 + ((360/cells.length) * goal),
 					rotate: 360 * 10 + (360 - (360/cells.length) * goal) + rand,
 				},
 				config: {
 					duration: getRandomDuration(10, 15),
 					easing: easings.easeOutCubic,
 				},
+				onRest: () => {
+					onReward();
+				},
 			})
+		  }
+		  else if (res.status === 409){
+			onOpen()
 		  }
 		})
 	}
@@ -54,6 +59,7 @@ export default function Roulette({cells, goal, setGoal, lastUpdate}) {
 	  >
 		{cells.map((cell, index) => (
 			<RouletteCell
+				size={size}
 				key={index}
 				data={cell}
 				rotate={360/cells.length * index}

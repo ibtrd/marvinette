@@ -1,58 +1,39 @@
-import Roulette from "../components/roulette/Roulette";
+import FullRoulette from "../components/roulette/FullRoulette";
 import '../App.css'
-import RoulettePointer from "../components/roulette/RoulettePointer";
 import { useEffect, useState } from "react";
-import RouletteFooter from "../components/roulette/RouletteFooter";
+import EditAlert from "../components/editAlert/EditAlert"
+import { Button, useDisclosure } from '@chakra-ui/react'
 
 export default function Home() {
 
   const [cells, setCells] = useState([])
   const [lastUpdate, setLastUpdate] = useState([])
   const [goal, setGoal] = useState([])
+  const { isOpen, onOpen, onClose } = useDisclosure()
   
 	useEffect(() => {
-    // try {
-    //   fetch(`http://localhost:4000/session/status`,
-    //     {
-    //       credentials: 'include',
-    //     }
-    //   )
-    //   .then(async (res) => {
-    //     if(res.status === 200)
-    //     {
-    //       const status = (await res.json()).loggedIn;
-    //       console.log(status);
-    //       if (false === status)
-    //         {
-    //           window.location.replace(`/login`);
-    //           return ;
-    //         }
-    //     }
-    //   })
-    // } catch (err) {
-    //   console.log(err);
-    // }
 		fetch('/cells')
     .then(async (res) => {
       if (res.status === 200)
       {
         const cells = await res.json();
-        console.log(cells)
         setCells(cells.cells);
         setLastUpdate(cells.lastUpdate);
       }
-      else
-        console.error('Error')
     })
 	}, []);
 
+
   return (
     <div className='Home'>
-      <Roulette cells={cells} goal={goal}
+      <Button variant='outline' colorScheme='red' position='absolute' top='16px' left='16px' href='/logout' as='a'>Logout</Button>
+      <FullRoulette
+        onOpen={onOpen}
+        size={window.innerHeight < window.innerWidth ? '80vh' : '80vw'}
+        cells={cells} goal={goal}
         setGoal={setGoal} lastUpdate={lastUpdate}
       />
-      <RoulettePointer />
-      <RouletteFooter />
+      <EditAlert isOpen={isOpen} onClose={onClose}/>
     </div>
     
   );

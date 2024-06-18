@@ -1,5 +1,6 @@
 # Mist
 .vscode
+client/build
 
 # Logs
 logs
