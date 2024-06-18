@@ -1,36 +1,26 @@
 .Roulette{
-	background-color: red;
+	background-color: lightgray;
 	border-radius: 50%;
-	width: 80vh;
-	height: 80vh;
+	width: 50vw;
+	height: 50vw;
 	position: relative;
 	overflow: hidden;
-	/* animation: 1s 20 linear rotate;
-	animation-timing-function: ease-out; */
 	box-shadow: inset 0px 0px 27px 6px rgba(0,0,0,0.39);
+	border: 1px solid black;
 }
-
-/* @keyframes rotate{
-	from {
-		transform: rotate(0deg);
-	}
-	to {
-		transform: rotate(360deg);
-	}
-} */
-
 
 .Roulette::after {
 	content: '';
 	position: absolute;
-	width: 25vh;
-	height: 25vh;
+	width: 5vw;
+	height: 5vw;
 	border-radius: 50%;
 	background-color: white;
 	transform-origin: center;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
+	border: 1px solid black;
 }
 
 .RoulettePointer {
@@ -48,25 +38,30 @@
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	/* width: 40vh; */
 	transform-origin: left;
-	/* border-top: 18vh solid transparent;
-	border-bottom: 18vh solid transparent; */
-	/* border-right: 40vh solid yellow;  */
 }
-
 
 .RouletteCell:nth-child(even){
-	border-right: 40vh solid #F7D55C; 
+	border-right: 25vw solid #F7D55C; 
 }
 .RouletteCell:nth-child(odd){
-	border-right: 40vh solid #7DD2F7; 
+	border-right: 25vw solid #7DD2F7; 
 }
 
-.RouletteCellText{
+.RouletteIcon{
 	position: absolute;
-	left: 25vh;
-	font-size: 2vw;
+	transform-origin: center;
+	width: 3vw;
+	left: 18vw;
 	transform: translateY(-50%);
-	width: 30vh;
+}
+
+.RouletteCellBorder{
+	width: 25vw;
+	transform-origin: left;
+	height: 1px;
+	background-color: black;
+	position: absolute;
+	z-index: 20;
+	left: 0;
 }
