@@ -8,7 +8,7 @@ export default function Home() {
   const [cells, setCells] = useState([])
   const [lastUpdate, setLastUpdate] = useState([])
   const [goal, setGoal] = useState([])
-
+  
 	useEffect(() => {
     try {
       fetch(`http://localhost:4000/session/status`,

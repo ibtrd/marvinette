@@ -12,22 +12,28 @@ const { rouletteInterval } = require('./roulette/rouletteCells')
 
 const app = express();
 
-app.use(bodyParser.json()); 
-app.use(bodyParser.urlencoded({extended:false}));
 
 const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: "http://localhost:3000",
     credentials: true,
-    optionSucessStatus: 200
-}
+    optionSucessStatus: 200,
+};
 app.use(cors(corsOptions));
+
+app.use(bodyParser.json()); 
+app.use(bodyParser.urlencoded({extended:false}));
 
 app.use(cookieParser());
 app.use(session({
     secret: crypto.randomBytes(64).toString('base64'),
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false, httpOnly: true, maxAge: 604800000 } // Set secure: true in production for HTTPS
+    cookie: {
+        secure: process.env.NODE_ENV === "production",
+        httpOnly: true,
+        sameSite: 'lax',
+        maxAge: 604800000
+    } // Set secure: true in production for HTTPS
 }));
 
 app.use('/', router);

@@ -22,8 +22,8 @@ router.get("/goal/:lastUpdate", async (req, res) => {
     return res.status(403).send({error: 'Cell grid has change.'})
   }
   const goal = randGoal(rouletteCells.cells);
-  console.log(req.session);
-  // console.log(`${req.session.user.login} spin: ` + goal.goal)
+//   console.log('SESSION', req.session);
+//   console.log(`${req.session.user.login} spin: ` + goal.goal)
   res.send(goal);
 });
 
@@ -45,7 +45,6 @@ router.get('/oauth/logout', (req, res) => {
 });
 
 router.get("/session/status", async (req, res) => {
-  console.log(req.session.user);
   if (req.session.user) {
     res.json({ loggedIn: true});
   } else {
