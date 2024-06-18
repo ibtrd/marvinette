@@ -5,7 +5,7 @@ import { animated, useSpring, easings } from 'react-spring'
 export default function Roulette({cells, goal, setGoal, lastUpdate}) {
 
 	const spinRoulette = () => {
-		fetch(`http://localhost:4000/goal/${lastUpdate}`)
+		fetch(`/goal/${lastUpdate}`)
 		.then(async (res) => {
 		  if (res.ok)
 		  {

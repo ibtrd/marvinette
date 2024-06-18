@@ -11,28 +11,28 @@ export default function Home() {
   const [goal, setGoal] = useState([])
   
 	useEffect(() => {
-    try {
-      fetch(`http://localhost:4000/session/status`,
-        {
-          credentials: 'include',
-        }
-      )
-      .then(async (res) => {
-        if(res.status === 200)
-        {
-          const status = (await res.json()).loggedIn;
-          console.log(status);
-          if (false === status)
-            {
-              window.location.replace(`/login`);
-              return ;
-            }
-        }
-      })
-    } catch (err) {
-      console.log(err);
-    }
-		fetch('http://localhost:4000/cells')
+    // try {
+    //   fetch(`http://localhost:4000/session/status`,
+    //     {
+    //       credentials: 'include',
+    //     }
+    //   )
+    //   .then(async (res) => {
+    //     if(res.status === 200)
+    //     {
+    //       const status = (await res.json()).loggedIn;
+    //       console.log(status);
+    //       if (false === status)
+    //         {
+    //           window.location.replace(`/login`);
+    //           return ;
+    //         }
+    //     }
+    //   })
+    // } catch (err) {
+    //   console.log(err);
+    // }
+		fetch('/cells')
     .then(async (res) => {
       if (res.status === 200)
       {

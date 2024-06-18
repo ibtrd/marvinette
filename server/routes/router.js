@@ -4,6 +4,9 @@ const router = express.Router();
 const {rouletteCells} = require('../roulette/rouletteCells');
 const { getAuthUrl } = require("../oauth/getAuthUrl");
 const { callback } = require("../oauth/callback");
+const path = require('path');
+const isLoggedIn = require('../middleware/isLoggedIn')
+const sendIndex = require('../middleware/sendIndex')
 
 router.get('/cells', async (req, res) => {
   const response = {
@@ -56,7 +59,7 @@ router.get('/debug', (req, res) => {
   if (!req.session.user)
   {
     console.log("no action sessions");
-    res.redirect('http://localhost:3000/oauth/login')
+    res.redirect('/login')
   }
   else
   {
@@ -65,4 +68,13 @@ router.get('/debug', (req, res) => {
   }
 });
 
- module.exports = router;
+router.get('/login', sendIndex)
+
+router.get('/', isLoggedIn, sendIndex)
+
+router.use(express.static(path.resolve("../client/build")));
+
+router.get('/*', isLoggedIn, sendIndex)
+
+
+module.exports = router;

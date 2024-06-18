@@ -2,7 +2,7 @@ import React from "react";
 
 function Login() {
   const handleLogin = () => {
-    window.location.href = "http://localhost:4000/oauth/login";
+    window.location.href = "/oauth/login";
   };
 
   return (

@@ -39,7 +39,7 @@ module.exports.callback = async function callback(req, res) {
         coalition: coalition,
         token: response.data };
       await addUser(intraUser);
-      res.redirect('http://localhost:3000/');
+      res.redirect('/');
     } catch (err) {
       console.error(
         "Error retrieving access token:",
