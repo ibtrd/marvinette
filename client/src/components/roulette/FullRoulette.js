@@ -2,7 +2,6 @@ import './Roulette.css'
 import RoulettePointer from "./RoulettePointer";
 import Roulette from "./Roulette";
 import { useDisclosure } from '@chakra-ui/react'
-import RewardModal from '../rewardModal/RewardModal'
 
 export default function FullRoulette({size, ...props}) {
 
@@ -19,7 +18,6 @@ export default function FullRoulette({size, ...props}) {
 				onReward={onRewardOpen}
 			/>
 			<RoulettePointer />
-			<RewardModal reward={{name: 'Test'}} isOpen={rewardOpen} onClose={onRewardClose} />
 	  	</div>
 	);
   }

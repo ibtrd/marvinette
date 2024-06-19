@@ -66,3 +66,8 @@
 	z-index: 20;
 	left: 0;
 }
+
+.RouletteCellReward{
+	transform-origin: left;
+	position: absolute;
+}

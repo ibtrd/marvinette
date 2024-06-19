@@ -15,11 +15,13 @@ export default function RewardModal({isOpen, onClose, reward, ...props}) {
 	return (
 		<Modal isOpen={isOpen} onClose={onClose} {...props}>
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>{reward.name}</ModalHeader>
+        <ModalContent bg='black' mixBlendMode='difference'>
+          <ModalHeader>
+            {reward.name}
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text>ibatard</Text>
+            <Text>{reward.name}</Text>
           </ModalBody>
 
           <ModalFooter>
