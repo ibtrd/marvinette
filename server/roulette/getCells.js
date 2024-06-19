@@ -1,4 +1,4 @@
-const RANGE = "SOURCE!B2:F";
+const RANGE = "SOURCE!A2:F";
 const url = `https://sheets.googleapis.com/v4/spreadsheets/${process.env.SPREADSHEET_ID}/values/${RANGE}?key=${process.env.APIGOOGLE_KEY}`;
 
 async function getCells() {
@@ -6,11 +6,12 @@ async function getCells() {
     const response = await fetch(url);
     const data = await response.json();
     const cells = data.values.map((cell) => ({
-      weight: parseInt(cell[0], 10),
-      description: cell[1],
+      name: cell[0],
+      weight: parseInt(cell[1], 10),
       img: cell[2],
       alt: cell[3],
       color: cell[4],
+      description: cell[5],
     }));
     return cells;
     
