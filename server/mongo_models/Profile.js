@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema({
+const profileSchema = new mongoose.Schema({
   id: { type: Number, required: true },
   login: { type: String, required: true },
   cursusEnd: { type: Date},
@@ -13,21 +13,21 @@ const userSchema = new mongoose.Schema({
   'admin?' : {type: Boolean, default : false },
 });
 
-userSchema.statics.findByLogin = async function(login) {
-  return this.findOne({ login });
+profileSchema.statics.findByLogin = async function(login) {
+  return await this.findOne({ login });
 };
 
-userSchema.methods.spin = function() {
+profileSchema.methods.spin = async function() {
   this.spins++;
   this.lastSpin = Date.now();
-  return this.save();
+  return await this.save();
 };
 
-userSchema.methods.canSpin = function(cooldown = 0) {
+profileSchema.methods.canSpin = function(cooldown = 0) {
   return this.lastSpin + cooldown < Date.now() || this.spins === 0;
 };
 
-const Profile = mongoose.model("Profile", userSchema);
+const Profile = mongoose.model("Profile", profileSchema);
 
 console.log(Profile);
 
