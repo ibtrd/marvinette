@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { oauthConfig, admins } = require("../oauth/config");
+const { oauthConfig, admins, userSettings } = require("../oauth/config");
 const { getIntraUser, getCoalition, isPiscineux } = require("../oauth/getIntraUser");
 const User = require('../mongo_models/User');
 
@@ -78,18 +78,31 @@ async function getGroup(intraUser, token) {
     if (admin === intraUser.login)
       return ('admin');
   })
-
-  const response = await fetch(`https://api.intra.42.fr/v2/users/${intraUser.id}/coalitions`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  if (!response.ok) {
-    throw new Err('Authentification failed')
+  // Coalitions
+  try {
+    const response = await fetch(`https://api.intra.42.fr/v2/users/${intraUser.id}/coalitions`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token.access_token}`,
+      },
+    });
+    const coalitions = await response.json();
+      const group = coalitions.find(
+        (coa) => (userSettings.coalitionsIds.find(id => id === coa.id)));
+          console.log(group.name);
+          return group;
+  } catch {
+    const err = new Error("Error fetching 42API");
+    err.code = 502;
+    throw err;
   }
-  const coalitions = await response.json();
-    const userCoalition = coalitions.find(
-      (coa) => (userSettings.coalitionsIds.find(id => id === coa.id)));
-        console.log(userCoalition.name);
+}
+
+function getCursusEnd(intraUser) {
+  const cursus = intraUser.cursus_user.find((cursus) => cursus.id === userSettings.cursus.id)
+  if (cursus != undefined)
+    return cursus.end_at;
+  const err = new Error("You do not have an active Piscine cursus");
+  err.code = 403;
+  throw err;
 }
