@@ -3,12 +3,13 @@ const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema({
   id: { type: Number, required: true },
   login: { type: String, required: true },
-  cursusEnd: { type: Date, required: true },
-  poolMonth: { type: String, required: true },
-  poolYear: { type: Number, required: true },
-  group: { type: String},
+  cursusEnd: { type: Date},
+  poolMonth: { type: String},
+  poolYear: { type: Number},
+  coalition: { type: String},
   lastSpin: { type: Number, default: 0 },
   spins: { type: Number, default: 0 },
+  'admin?' : {type: Boolean, default : false },
 });
 
 userSchema.statics.findByLogin = async function(login) {
@@ -22,7 +23,7 @@ userSchema.methods.spin = function() {
 };
 
 userSchema.methods.canSpin = function(cooldown = 0) {
-  return this.lastSpin + cooldown > Date.now();
+  return this.lastSpin + cooldown < Date.now() || this.spins === 0;
 };
 
 const User = mongoose.model("User", userSchema);

@@ -21,10 +21,19 @@ const userSettings = {
   ]
 }
 
-const admins = [
-  'ibertran',
-  'bwisniew',
-  'kunfandi',
-]
+const administrators = [
+  {
+    login: "ibertran",
+    id: 154472,
+  },
+  {
+    login: "bwisniew",
+    id: 1,
+  },
+  {
+    login: "kunfandi",
+    id: 1,
+  },
+];
 
-module.exports = { oauthConfig, userSettings, admins };
+module.exports = { oauthConfig, userSettings, administrators };

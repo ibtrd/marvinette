@@ -1,6 +1,6 @@
 const axios = require('axios');
-const { oauthConfig, admins, userSettings } = require("../oauth/config");
-const { getIntraUser, getCoalition, isPiscineux } = require("../oauth/getIntraUser");
+const { oauthConfig, administrators, userSettings } = require("../oauth/config");
+const { getIntraUser } = require("../oauth/getIntraUser");
 const User = require('../mongo_models/User');
 
 
@@ -18,6 +18,8 @@ module.exports.callback = async function callback(req, res) {
       redirect_uri: oauthConfig.redirectUri,
     });
     
+    let intraUser;
+    let account = {}
     try {
       const response = await axios.post(
         oauthConfig.tokenEndpoint,
@@ -28,23 +30,34 @@ module.exports.callback = async function callback(req, res) {
           },
         }
       );
-      const intraUser = await getIntraUser(response.data.access_token);
-      const coalition = await isPiscineux(response.data.access_token, intraUser);
-      if (coalition === false) {
-        return res.status(500).send("You do not have an active Piscine cursus");
-      }
+      const accessToken = response.data.access_token;
+      intraUser = await getIntraUser(accessToken);
+      isFromCampus(intraUser);
+      account['admin?'] = getAdminStatus(intraUser);
+      account.id = intraUser.id;
+      account.login = intraUser.login;
+      account.cursusEnd = getCursusEnd(intraUser, account["admin?"]);
+      account.coalition = await getCoalition(intraUser, accessToken, account["admin?"]);
+      account.poolYear = intraUser.pool_year;
+      account.poolMonth = intraUser.pool_month;
+      console.log("LOGGIN-IN:", account);
+
+      const filter = {id: account.id, login: account.login};
+      const options = { new: true, upsert: true };
+      await User.findOneAndUpdate(filter, account, options);
       req.session.user = {
         id: intraUser.id,
         login: intraUser.login,
-        coalition: coalition,
-        token: response.data };
-      await addUser(intraUser);
+      };
       res.redirect('/');
     } catch (err) {
       console.error(
         "Error retrieving access token:",
-        err.response ? err.response.data : err.message
+        err.response ? err.response.data : err.message,
+        `[login: ${intraUser.login} id: ${intraUser.id}]`
       );
+      if (err.code)
+        return res.status(err.code).send(err.message);
       res.status(500).send("Error retrieving access token");
     }
 }
@@ -59,49 +72,71 @@ async function addUser(intraUser, coalition) {
     }
     return;
   }
-  user = await User.create({
-    id: intraUser.id,
-    login: intraUser.login,
-    group: coalition,
-    poolYear: 'mettre lanee',
-    poolMonth: 'mettre le mois',
-    lastSpin: 0,
-    spins: 0,
-  })
+  user = await User.create(account);
   console.log(`New user created: ${intraUser.login} (${coalition})`);
 }
 
 
-async function getGroup(intraUser, token) {
-  // Administators
-  admins.forEach( (admin) => {
-    if (admin === intraUser.login)
-      return ('admin');
-  })
-  // Coalitions
+function getAdminStatus(intraUser) {
+  for (const admin of administrators) {
+    if (admin.login === intraUser.login && admin.id === intraUser.id)
+      return true;
+  }
+  return false;
+}
+
+function isActive(intraUser) {
+  if (intraUser['active?'] === true) {
+    return;
+  }
+  const err = new Error("You do not have an Active cursus");
+  err.code = 403;
+  throw err;
+}
+
+function isFromCampus(intraUser) {
+  
+  for (const campus of intraUser.campus) {
+    if (campus.id === userSettings.campus) {
+      return;
+    }
+  }
+  const err = new Error("You are not part of 42Lyon");
+  err.code = 403;
+  throw err; 
+}
+
+async function getCoalition(intraUser, accessToken, admin) {
   try {
-    const response = await fetch(`https://api.intra.42.fr/v2/users/${intraUser.id}/coalitions`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token.access_token}`,
-      },
-    });
+    const response = await fetch(
+      `https://api.intra.42.fr/v2/users/${intraUser.id}/coalitions`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
     const coalitions = await response.json();
-      const group = coalitions.find(
-        (coa) => (userSettings.coalitionsIds.find(id => id === coa.id)));
-          console.log(group.name);
-          return group;
-  } catch {
+    const coalition = coalitions.find((coa) =>
+      userSettings.coalitionsIds.find((id) => id === coa.id)
+    );
+    return coalition.name;
+  } catch (yeeted) {
+    console.error(yeeted);
     const err = new Error("Error fetching 42API");
     err.code = 502;
     throw err;
   }
 }
 
-function getCursusEnd(intraUser) {
-  const cursus = intraUser.cursus_user.find((cursus) => cursus.id === userSettings.cursus.id)
-  if (cursus != undefined)
+function getCursusEnd(intraUser, admin) {
+  const cursus = intraUser.cursus_users.find((cursus) => cursus.cursus_id === userSettings.cursus.id)
+  if (cursus != undefined) {
     return cursus.end_at;
+  }
+  else if (admin)
+    return NaN;
   const err = new Error("You do not have an active Piscine cursus");
   err.code = 403;
   throw err;

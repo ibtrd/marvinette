@@ -6,7 +6,8 @@ const { getAuthUrl } = require("../oauth/getAuthUrl");
 const { callback } = require("../oauth/callback");
 const path = require('path');
 const isLoggedIn = require('../middleware/isLoggedIn')
-const sendIndex = require('../middleware/sendIndex')
+const sendIndex = require('../middleware/sendIndex');
+const User = require("../mongo_models/User");
 
 router.get('/cells', async (req, res) => {
   var cells = []
@@ -27,8 +28,14 @@ router.get("/goal/:lastUpdate", async (req, res) => {
     return res.status(409).send({error: 'Cell grid has changed.'})
   }
   const goal = randGoal(rouletteCells.cells);
-  console.log(`${req.session.user.login} spin:`,goal.goal, goal.description);
-  res.send(goal);
+  const account = await User.findByLogin(req.session.user.login);
+  if (account.canSpin(20 * 1000)) {
+    account.spin();
+    console.log(`${req.session.user.login}[${account.spins}] spin:`,goal.goal, goal.description);
+    res.send(goal);
+  }
+  else
+    res.send("nope");
 });
 
 router.get('/oauth/login', (req, res) => {
