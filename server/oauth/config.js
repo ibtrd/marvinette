@@ -7,4 +7,24 @@ const oauthConfig = {
   scopes: ["public"],
 };
 
-module.exports = { oauthConfig };
+const userSettings = {
+  campus: 9,
+  cursus: {
+    id: 9,
+    ended: true,
+  },
+  coalitionBlock: 5,
+  coalitionsIds: [
+    15,
+    16,
+    17,
+  ]
+}
+
+const admins = [
+  'ibertran',
+  'bwisniew',
+  'kunfandi',
+]
+
+module.exports = { oauthConfig, userSettings, admins };

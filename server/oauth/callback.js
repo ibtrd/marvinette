@@ -1,7 +1,7 @@
 const axios = require('axios');
-const { oauthConfig } = require("../oauth/config");
+const { oauthConfig, admins } = require("../oauth/config");
 const { getIntraUser, getCoalition, isPiscineux } = require("../oauth/getIntraUser");
-const { User } = require('../mongo_models/User');
+const User = require('../mongo_models/User');
 
 
 module.exports.callback = async function callback(req, res) {
@@ -50,7 +50,7 @@ module.exports.callback = async function callback(req, res) {
 }
 
 async function addUser(intraUser, coalition) {
-  var user = await User.findOne({id: intraUser.id});
+  var user = await User.findOne({ id: intraUser.id });
   if (user) {
     if (user.coalition === null && coalition !== null) {
       user.coalition = coalition;
@@ -62,9 +62,34 @@ async function addUser(intraUser, coalition) {
   user = await User.create({
     id: intraUser.id,
     login: intraUser.login,
-    coalition: coalition,
+    group: coalition,
+    poolYear: 'mettre lanee',
+    poolMonth: 'mettre le mois',
     lastSpin: 0,
     spins: 0,
   })
   console.log(`New user created: ${intraUser.login} (${coalition})`);
+}
+
+
+async function getGroup(intraUser, token) {
+  // Administators
+  admins.forEach( (admin) => {
+    if (admin === intraUser.login)
+      return ('admin');
+  })
+
+  const response = await fetch(`https://api.intra.42.fr/v2/users/${intraUser.id}/coalitions`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  if (!response.ok) {
+    throw new Err('Authentification failed')
+  }
+  const coalitions = await response.json();
+    const userCoalition = coalitions.find(
+      (coa) => (userSettings.coalitionsIds.find(id => id === coa.id)));
+        console.log(userCoalition.name);
 }
