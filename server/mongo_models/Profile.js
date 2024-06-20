@@ -26,8 +26,8 @@ userSchema.methods.canSpin = function(cooldown = 0) {
   return this.lastSpin + cooldown < Date.now() || this.spins === 0;
 };
 
-const User = mongoose.model("User", userSchema);
+const Profile = mongoose.model("Profile", userSchema);
 
-console.log(User);
+console.log(Profile);
 
-module.exports = User;
+module.exports = Profile;

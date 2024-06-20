@@ -1,7 +1,7 @@
 const axios = require('axios');
 const { oauthConfig, administrators, userSettings } = require("../oauth/config");
 const { getIntraUser } = require("../oauth/getIntraUser");
-const User = require('../mongo_models/User');
+const Profile = require('../mongo_models/Profile');
 
 
 module.exports.callback = async function callback(req, res) {
@@ -43,7 +43,7 @@ module.exports.callback = async function callback(req, res) {
 
       const filter = {id: account.id, login: account.login};
       const options = { new: true, upsert: true };
-      console.log("LOGGED-IN:", await User.findOneAndUpdate(filter, account, options));
+      console.log("LOGGED-IN:", await Profile.findOneAndUpdate(filter, account, options));
       req.session.user = {
         id: intraUser.id,
         login: intraUser.login,
@@ -62,7 +62,7 @@ module.exports.callback = async function callback(req, res) {
 }
 
 async function addUser(intraUser, coalition) {
-  var user = await User.findOne({ id: intraUser.id });
+  var user = await Profile.findOne({ id: intraUser.id });
   if (user) {
     if (user.coalition === null && coalition !== null) {
       user.coalition = coalition;
@@ -71,7 +71,7 @@ async function addUser(intraUser, coalition) {
     }
     return;
   }
-  user = await User.create(account);
+  user = await Profile.create(account);
   console.log(`New user created: ${intraUser.login} (${coalition})`);
 }
 
