@@ -40,11 +40,10 @@ module.exports.callback = async function callback(req, res) {
       account.coalition = await getCoalition(intraUser, accessToken, account["admin?"]);
       account.poolYear = intraUser.pool_year;
       account.poolMonth = intraUser.pool_month;
-      console.log("LOGGIN-IN:", account);
 
       const filter = {id: account.id, login: account.login};
       const options = { new: true, upsert: true };
-      await User.findOneAndUpdate(filter, account, options);
+      console.log("LOGGED-IN:", await User.findOneAndUpdate(filter, account, options));
       req.session.user = {
         id: intraUser.id,
         login: intraUser.login,

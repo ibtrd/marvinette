@@ -22,13 +22,13 @@ const userSettings = {
 }
 
 const administrators = [
-  {
-    login: "ibertran",
+  { 
+    login: "ibertran", //154472
     id: 154472,
   },
   {
-    login: "bwisniew",
-    id: 1,
+    login: "bwisniew", //154768
+    id: 154768,
   },
   {
     login: "kunfandi",
