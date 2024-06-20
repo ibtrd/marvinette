@@ -40,6 +40,7 @@ module.exports.callback = async function callback(req, res) {
       account.coalition = await getCoalition(intraUser, accessToken, account["admin?"]);
       account.poolYear = intraUser.pool_year;
       account.poolMonth = intraUser.pool_month;
+      account.img = intraUser.image.link;
 
       const filter = {id: account.id, login: account.login};
       const options = { new: true, upsert: true };

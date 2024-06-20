@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
   poolMonth: { type: String},
   poolYear: { type: Number},
   coalition: { type: String},
+  img: {type: String, default: 'https://i.ibb.co/kDfBh0y/empty.png'},
   lastSpin: { type: Number, default: 0 },
   spins: { type: Number, default: 0 },
   'admin?' : {type: Boolean, default : false },
