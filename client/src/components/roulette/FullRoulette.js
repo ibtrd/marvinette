@@ -6,6 +6,8 @@ import { WheelContext } from '../../contexts/WheelContext';
 import { Spinner } from '@chakra-ui/react';
 import ParticlesFirework from "../particules/ParticlesFirework";
 import ParticlesConfetti from "../particules/ParticlesConfetti";
+import ParticlesParty from '../particules/ParticlesParty';
+import ParticlesPeperotig from '../particules/ParticlesPeperotig';
 
 export default function FullRoulette({size, ...props}) {
 
@@ -24,6 +26,8 @@ export default function FullRoulette({size, ...props}) {
 				<RoulettePointer />
 				{reward && reward.particles === 'firework' ? <ParticlesFirework/> : ''}
 				{reward && reward.particles === 'confetti' ? <ParticlesConfetti/> : ''}
+				{reward && reward.particles === 'party' ? <ParticlesParty/> : ''}
+				{reward && reward.particles === 'peperotig' ? <ParticlesPeperotig/> : ''}
 			</div>
 		);
 	else

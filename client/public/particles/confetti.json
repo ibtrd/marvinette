@@ -45,8 +45,8 @@
         },
         "size": {
             "value": {
-                "min": 2,
-                "max": 4
+                "min": 4,
+                "max": 6
             }
         },
         "links": {
@@ -127,7 +127,7 @@
         "life": {
             "count": 15,
             "duration": 0.1,
-            "delay": 0.4
+            "delay": 0.3
         },
         "rate": {
             "delay": 0.1,
