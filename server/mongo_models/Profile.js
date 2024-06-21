@@ -5,15 +5,16 @@ const { rouletteCells } = require("../roulette/rouletteCells");
 const profileSchema = new mongoose.Schema({
   id: { type: Number, required: true },
   login: { type: String, required: true },
+  img: {type: String, default: 'https://profile.intra.42.fr/images/default.png'},
   cursusEnd: { type: Date},
   poolMonth: { type: String},
   poolYear: { type: Number},
   coalition: { type: String},
-  img: {type: String, default: 'https://profile.intra.42.fr/images/default.png'},
-  lastSpin: { type: Number, default: 0 },
   spins: { type: Number, default: 0 },
+  lastSpin: { type: Number, default: 0 },
+  lastReward: { type: String, default: null},
+  'next?' : { type: Number},
   'admin?' : {type: Boolean, default: false },
-  next: {type: Number, default: -1 }
 });
 
 profileSchema.statics.findByLogin = async function(login) {
@@ -23,19 +24,27 @@ profileSchema.statics.findByLogin = async function(login) {
 profileSchema.methods.spin = async function(cells) {
 
   let goal;
-  if (this.next !== -1) {
-    goal = this.next;
-    if (goal > cells.length) {
+  if (this['next?'] != undefined) {
+    goal = this['next?'];
+    if (goal < 0 || goal > cells.length) {
+      delete this['force?'];
       goal = randGoal(rouletteCells.cells);
     }
-    this.next = -1;
   } else {
     goal = randGoal(rouletteCells.cells);
   }
+  const reward = {
+    img: cells[goal].img,
+    alt: cells[goal].alt,
+    description: cells[goal].description,
+    particles: cells[goal].particles,
+    color: cells[goal].color,
+  }
+  this.lastReward = JSON.stringify(reward);
   this.spins++;
   this.lastSpin = Date.now();
   await this.save();
-  return { goal, description: cells[goal].description, particles: cells[goal].particles};
+  return { goal, ...reward};
 };
 
 profileSchema.methods.canSpin = function(cooldown = 0) {
@@ -43,7 +52,10 @@ profileSchema.methods.canSpin = function(cooldown = 0) {
 };
 
 profileSchema.methods.force = async function(index) {
-  this.next = index;
+  if (index === -1)
+    delete this['force?'];
+  else
+    this['force?'] = index;
   await this.save();
 }
 

@@ -6,7 +6,7 @@ export const WheelContext = createContext();
 export const WheelProvider = ({ children }) => {
 
 	const [cells, setCells] = useState([]);
-	const [lastUpdate, setLastUpdate] = useState();
+	const [hash, sethash] = useState();
 	const [goal, setGoal] = useState();
 	const [reward, setReward] = useState(null);
 
@@ -19,7 +19,7 @@ export const WheelProvider = ({ children }) => {
 			{
 				const data = await response.json();
 				setCells(data.cells);
-				setLastUpdate(data.lastUpdate);
+				sethash(data.hash);
 			}
 			else
 				showError("Couldn't fetch cells. Please try again later.");
@@ -29,7 +29,7 @@ export const WheelProvider = ({ children }) => {
 
 	const getGoal = async () => {
 		setReward(null);
-		const response = await fetch(`/wheel/goal/${lastUpdate}`);
+		const response = await fetch(`/wheel/goal/${hash}`);
 		if (response.ok)
 		{
 			const data = await response.json();
