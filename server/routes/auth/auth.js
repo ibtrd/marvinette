@@ -1,7 +1,7 @@
 const express = require("express");
 const authRouter = express.Router();
-const { getAuthUrl } = require("../auth/getAuthUrl");
-const { callback } = require("../auth/callback");
+const { getAuthUrl } = require("../../auth/getAuthUrl");
+const { callback } = require("../../auth/callback");
 
 authRouter.get('/login', (req, res) => {
 	res.redirect(getAuthUrl())

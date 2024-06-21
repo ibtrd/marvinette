@@ -1,6 +1,6 @@
 const express = require("express");
-const { rouletteCells } = require("../roulette/rouletteCells");
-const Profile = require("../mongo_models/Profile");
+const { rouletteCells } = require("../../roulette/rouletteCells");
+const Profile = require("../../mongo_models/Profile");
 const wheelRouter = express.Router();
 
 wheelRouter.get('/cells', async (req, res) => {

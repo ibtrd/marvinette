@@ -1,6 +1,6 @@
 const express = require("express");
 const adminRouter = express.Router();
-const Profile = require("../mongo_models/Profile");
+const Profile = require("../../mongo_models/Profile");
 
 adminRouter.get('/:login/:index', forceGoal)
 
