@@ -1,6 +1,6 @@
 const axios = require('axios');
-const { oauthConfig, administrators, userSettings } = require("../oauth/config");
-const { getIntraUser } = require("../oauth/getIntraUser");
+const { oauthConfig, administrators, userSettings } = require("../auth/config");
+const { getIntraUser } = require("../auth/getIntraUser");
 const Profile = require('../mongo_models/Profile');
 
 
