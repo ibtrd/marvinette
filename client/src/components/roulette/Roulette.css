@@ -1,0 +1,74 @@
+.FullRoulette{
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	border: 0.7vw solid #092026;
+	box-shadow: 0px 0px 27px 6px rgba(0,0,0,0.39);
+	overflow: hidden;
+}
+
+.Roulette{
+	width: 100%;
+	height: 100%;
+	position: relative;
+	border-radius: 50%;
+	overflow: hidden;
+}
+
+.Roulette::after {
+	content: '';
+	position: absolute;
+	width: 10%;
+	height: 10%;
+	border-radius: 50%;
+	background-color: #092026;
+	transform-origin: center;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border: 1px solid #092026;
+}
+
+.RoulettePointer {
+	z-index: 20;
+	position: absolute;
+	transform: translateY(-50%) translateX(2px);
+	right: -0.2vw;
+	top: 50%;
+	width: 0;
+	height: 0;
+	border-top: 1.2vw solid transparent;
+	border-right: 2.5vw solid #092026;
+	border-bottom: 1.2vw solid transparent;
+}
+
+
+.RouletteCell{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform-origin: left;
+}
+
+.RouletteIcon{
+	position: absolute;
+	transform-origin: center;
+	transform: translateY(-50%) translateX(-50%);
+	max-width: 10vw;
+}
+
+.RouletteCellBorder{
+	transform-origin: left;
+	height: 1px;
+	background-color: black;
+	position: absolute;
+	z-index: 20;
+	left: 0;
+}
+
+.RouletteCellReward{
+	transform-origin: left;
+	position: absolute;
+}
