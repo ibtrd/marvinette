@@ -8,6 +8,7 @@ const path = require('path');
 const isLoggedIn = require('../middleware/isLoggedIn')
 const sendIndex = require('../middleware/sendIndex');
 const Profile = require("../mongo_models/Profile");
+const isAdmin = require("../middleware/isAdmin");
 
 router.get('/cells', async (req, res) => {
   var cells = []
@@ -27,10 +28,12 @@ router.get("/goal/:lastUpdate", async (req, res) => {
     console.log('different timestamp')
     return res.status(409).send({error: 'Cell grid has changed.'})
   }
-  const goal = randGoal(rouletteCells.cells);
+  try {
+    
+  } catch {}
   const account = await Profile.findByLogin(req.session.user.login);
   if (account.canSpin(20 * 1000)) {
-    account.spin();
+    const goal = await account.spin(rouletteCells.cells);
     console.log(`${req.session.user.login}[${account.spins}] spin:`,goal.goal, goal.description);
     res.send(goal);
   }
@@ -68,6 +71,8 @@ router.get('/debug', (req, res) => {
   }
 });
 
+router.get('/force/:login/:index', isAdmin, forceGoal)
+
 router.get('/login', sendIndex)
 
 router.get('/', isLoggedIn, sendIndex)
@@ -78,3 +83,14 @@ router.get('/*', isLoggedIn, sendIndex)
 
 
 module.exports = router;
+
+async  function forceGoal(req, res) {
+  const profile = await Profile.findByLogin(req.params.login)
+  if (profile === null)
+    return res.status(400).send("User not found");
+  const index = parseInt(req.params.index);
+  if (index < 0 || index > 41)
+    return res.status(400).send("Value out of range");
+  profile.force(index);
+  console.log(`ADMIN ${req.session.user.login} FORCED ${profile.login}: ${index}`);
+}

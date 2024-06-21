@@ -21,7 +21,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/42roulette', {
 .catch((err) => {console.error('MongoDB connection error:', err);});
 
 const corsOptions = {
-    origin: "http://localhost:3000",
+    origin: process.env.HOST,
     credentials: true,
     optionSucessStatus: 200,
 };

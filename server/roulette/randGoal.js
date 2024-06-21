@@ -10,5 +10,6 @@
       weight += cells[goal + 1].weight;
       goal++;
     }
+    return goal;
     return { goal, description: cells[goal].description };
   };
