@@ -14,7 +14,7 @@ export const WheelProvider = ({ children }) => {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const response = await fetch('/cells');
+			const response = await fetch('/wheel/cells');
 			if (response.ok)
 			{
 				const data = await response.json();
@@ -29,7 +29,7 @@ export const WheelProvider = ({ children }) => {
 
 	const getGoal = async () => {
 		setReward(null);
-		const response = await fetch(`/goal/${lastUpdate}`);
+		const response = await fetch(`/wheel/goal/${lastUpdate}`);
 		if (response.ok)
 		{
 			const data = await response.json();
