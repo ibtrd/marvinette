@@ -1,8 +1,8 @@
 import { easings, useSpring } from "react-spring";
 import { useError } from "./useError";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { WheelContext } from "../contexts/WheelContext";
-
+import { Howl } from 'howler';
 
 export const useSpin = () => {
 
@@ -24,6 +24,11 @@ export const useSpin = () => {
 		from: { rotate: randomStart },
 	}));
 
+	const tick = new Howl({
+		src: ['/sounds/tick.mp3']
+	});
+	  
+	var lastCell = 0;
 	const wheelSpin = () => {
 		console.log(goal)
 		setReward(null);
@@ -32,7 +37,7 @@ export const useSpin = () => {
 				rotate: randomStart,
 			},
 			to: {
-				rotate: 360 * 10 + (360 - (360/cells.length) * goal.goal) + getRandom((-360/cells.length)/2.5, (360/cells.length)/2.5),
+				rotate: 360 * 7 + (360 - (360/cells.length) * goal.goal) + getRandom((-360/cells.length)/2.5, (360/cells.length)/2.5),
 			},
 			config: {
 				duration: getRandomDuration(10, 15),
@@ -42,6 +47,13 @@ export const useSpin = () => {
 				setReward(goal)
 				showSuccess("Congratulations!")
 			},
+			onChange: (result) => {
+				const cell = Math.floor((result.value.rotate + ((360 / cells.length) / 2)) / (360 / cells.length));
+				if (cell !== lastCell) {
+					tick.play();
+					lastCell = cell;
+				}
+			}
 		})
 	}
 

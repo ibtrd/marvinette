@@ -8,7 +8,8 @@ export const WheelProvider = ({ children }) => {
 	const [cells, setCells] = useState([]);
 	const [lastUpdate, setLastUpdate] = useState();
 	const [goal, setGoal] = useState();
-	
+	const [reward, setReward] = useState(null);
+
 	const { showError, showWarning } = useError();
 
 	useEffect(() => {
@@ -27,6 +28,7 @@ export const WheelProvider = ({ children }) => {
 	}, []);
 
 	const getGoal = async () => {
+		setReward(null);
 		const response = await fetch(`/goal/${lastUpdate}`);
 		if (response.ok)
 		{
@@ -42,8 +44,6 @@ export const WheelProvider = ({ children }) => {
 			showError("Couldn't fetch goal. Please try again later.");
 		return null;
 	}
-
-	const [reward, setReward] = useState(null);
 
 	return (
 		<WheelContext.Provider value={{ cells, getGoal, goal, reward, setReward }}>

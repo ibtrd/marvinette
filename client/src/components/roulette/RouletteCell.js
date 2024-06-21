@@ -19,9 +19,9 @@ export default function RouletteCell({data, rotate, angle, size, index, ...props
 			className='RouletteCell'
 			style={{
 				transform: `translateY(-50%) rotate(${rotate}deg)`,
-				borderTop: `calc(sin(${rad}) * (${size} / 1.8) / cos(${rad})) solid transparent`,
-				borderBottom: `calc(sin(${rad}) * (${size} / 1.8) / cos(${rad})) solid transparent`,
-				borderRight: data.color ? `calc(${size} / 1.8) solid ${data.color}` : '',
+				borderTop: `calc(sin(${rad}) * (${size} / 2) / cos(${rad})) solid transparent`,
+				borderBottom: `calc(sin(${rad}) * (${size} / 2) / cos(${rad})) solid transparent`,
+				borderRight: data.color ? `calc(${size} / 2) solid ${data.color}` : '',
 			}}
 			{...props}
 		>
@@ -35,7 +35,7 @@ export default function RouletteCell({data, rotate, angle, size, index, ...props
 				className="RouletteCellBorder"
 				style={{
 					transform: `translateY(-50%) rotate(${angle/2}deg)`,
-					width: `calc(${size} / 1.8)`
+					width: `calc(${size} / 2)`
 				}}
 			/>
 			{reward && reward.goal === index ?
@@ -43,9 +43,9 @@ export default function RouletteCell({data, rotate, angle, size, index, ...props
 					className="RouletteCellReward"
 					style={{
 						transform: `translateY(-50%)`,
-						borderTop: `calc(sin(${rad}) * (${size} / 1.8) / cos(${rad})) solid transparent`,
-						borderBottom: `calc(sin(${rad}) * (${size} / 1.8) / cos(${rad})) solid transparent`,
-						borderRight: `calc(${size} / 1.8) solid white`,
+						borderTop: `calc(sin(${rad}) * (${size} / 2) / cos(${rad})) solid transparent`,
+						borderBottom: `calc(sin(${rad}) * (${size} / 2) / cos(${rad})) solid transparent`,
+						borderRight: `calc(${size} / 2) solid white`,
 						...annimation
 					}}
 				/> : ''}

@@ -4,9 +4,11 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import { ChakraProvider } from '@chakra-ui/react'
+import { WheelProvider } from "./contexts/WheelContext";
 
 function App() {
   return (
+    <WheelProvider>
     <ChakraProvider>
       <Router>
         <Routes>
@@ -15,6 +17,7 @@ function App() {
         </Routes>
       </Router>
     </ChakraProvider>
+    </WheelProvider>
   );
 }
 

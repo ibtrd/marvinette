@@ -4,10 +4,12 @@ import Roulette from "./Roulette";
 import { useContext } from 'react';
 import { WheelContext } from '../../contexts/WheelContext';
 import { Spinner } from '@chakra-ui/react';
+import ParticlesFirework from "../particules/ParticlesFirework";
+import ParticlesConfetti from "../particules/ParticlesConfetti";
 
 export default function FullRoulette({size, ...props}) {
 
-	const {cells} = useContext(WheelContext);
+	const {cells, reward} = useContext(WheelContext);
 
 	if (cells.length > 0)
 		return (
@@ -20,6 +22,8 @@ export default function FullRoulette({size, ...props}) {
 					{...props}
 				/>
 				<RoulettePointer />
+				{reward && reward.particles === 'firework' ? <ParticlesFirework/> : ''}
+				{reward && reward.particles === 'confetti' ? <ParticlesConfetti/> : ''}
 			</div>
 		);
 	else

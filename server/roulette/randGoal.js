@@ -10,5 +10,5 @@
       weight += Math.abs(cells[goal + 1].weight);
       goal++;
     }
-    return { goal, description: cells[goal].description };
+    return { goal, description: cells[goal].description, particles: cells[goal].particles };
   };
