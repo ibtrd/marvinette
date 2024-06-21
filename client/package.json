@@ -4,6 +4,9 @@
   "private": true,
   "dependencies": {
     "@chakra-ui/react": "^2.8.2",
+    "@fortawesome/fontawesome-svg-core": "^6.5.2",
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
     "@testing-library/user-event": "^13.5.0",
     "@tsparticles/all": "^3.4.0",
     "@tsparticles/react": "^3.0.0",

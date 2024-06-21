@@ -1,7 +1,7 @@
 import RouletteCell from "./RouletteCell";
 import './Roulette.css'
-import { animated, useSpring, easings } from 'react-spring'
-import { useContext, useEffect, useState } from "react";
+import { animated } from 'react-spring'
+import { useContext, useEffect } from "react";
 import { WheelContext } from "../../contexts/WheelContext";
 import { useSpin } from "../../hooks/useSpin";
 
