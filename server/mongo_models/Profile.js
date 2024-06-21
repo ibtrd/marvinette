@@ -35,7 +35,7 @@ profileSchema.methods.spin = async function(cells) {
   this.spins++;
   this.lastSpin = Date.now();
   await this.save();
-  return { goal, description: cells[goal].description };
+  return { goal, description: cells[goal].description, particles: cells[goal].particles};
 };
 
 profileSchema.methods.canSpin = function(cooldown = 0) {

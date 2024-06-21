@@ -11,5 +11,4 @@
       goal++;
     }
     return goal;
-    return { goal, description: cells[goal].description };
   };
