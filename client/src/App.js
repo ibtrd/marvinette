@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import { ChakraProvider } from '@chakra-ui/react'
 import { WheelProvider } from "./contexts/WheelContext";
+import './fontAwesome';
 
 function App() {
   return (

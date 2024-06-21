@@ -45,7 +45,6 @@ export const useSpin = () => {
 			},
 			onRest: () => {
 				setReward(goal)
-				showSuccess("Congratulations!")
 			},
 			onChange: (result) => {
 				const cell = Math.floor((result.value.rotate + ((360 / cells.length) / 2)) / (360 / cells.length));
