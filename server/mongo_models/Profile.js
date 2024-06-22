@@ -34,6 +34,7 @@ profileSchema.methods.spin = async function(cells) {
   } else {
     goal = randGoal(rouletteCells.cells);
   }
+  this.lastSpin = Date.now();
   const spinReward = {
     img: cells[goal].img,
     alt: cells[goal].alt,
@@ -44,7 +45,6 @@ profileSchema.methods.spin = async function(cells) {
   }
   this.lastReward = JSON.stringify(spinReward);
   this.spins++;
-  this.lastSpin = Date.now();
   await this.save();
   Rewards.addOne(this, cells[goal]);
   return { goal, ...spinReward};

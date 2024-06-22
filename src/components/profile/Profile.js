@@ -12,6 +12,9 @@ export default function Profile({...props}) {
 			<Card
 				{...props}
 				zIndex='3000'
+				backgroundImage={process.env.REACT_APP_DEV ? "url('https://static.vecteezy.com/system/resources/previews/014/433/288/non_2x/yellow-and-black-caution-tape-barricade-tape-seamless-striped-pattern-or-texture-vector.jpg')" : 'none'}
+				backgroundSize='cover'
+				backgroundPosition='center'
 			>
 				<CardBody display='flex' alignItems='center' justifyContent='space-between' padding='8px'>
 					<Flex alignItems='center' marginRight='16px'>

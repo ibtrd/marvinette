@@ -8,6 +8,8 @@ module.exports.callback = async function callback(req, res) {
     const { code } = req.query;
     if (!code) {
       return res.status(400).send("Authorization code not provided");
+    } else if (req.session.user) {
+      return res.redirect('/');
     }
     
     const requestBody = new URLSearchParams({

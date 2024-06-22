@@ -11,7 +11,17 @@
     "@tsparticles/all": "^3.4.0",
     "@tsparticles/react": "^3.0.0",
     "axios": "^1.7.2",
+    "body-parser": "^1.20.2",
+    "connect-mongo": "^5.1.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
     "howler": "^2.2.4",
+    "js-md5": "^0.8.3",
+    "mongoose": "^8.4.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-howler": "^5.2.0",
@@ -21,7 +31,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node ./server/index.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

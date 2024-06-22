@@ -22,7 +22,7 @@ router.get('/me', isLoggedIn, sendProfile);
 router.get('/rewards/:secret', isKunfandi, sendRewards)
 
 router.get('/', isLoggedIn, sendIndex)
-router.use(express.static(path.resolve("../client/build")));
+router.use(express.static(path.resolve("./build")));
 router.get('/*', isLoggedIn, sendIndex)
 
 module.exports = router;
