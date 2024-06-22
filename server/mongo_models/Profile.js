@@ -27,9 +27,9 @@ profileSchema.methods.spin = async function(cells) {
   if (this['next?'] != undefined) {
     goal = this['next?'];
     if (goal < 0 || goal > cells.length) {
-      delete this['force?'];
       goal = randGoal(rouletteCells.cells);
     }
+    this['next?'] = undefined;
   } else {
     goal = randGoal(rouletteCells.cells);
   }
@@ -53,9 +53,9 @@ profileSchema.methods.canSpin = function(cooldown = 0) {
 
 profileSchema.methods.force = async function(index) {
   if (index === -1)
-    delete this['force?'];
+    this['next?'] = undefined;
   else
-    this['force?'] = index;
+    this['next?'] = index;
   await this.save();
 }
 
