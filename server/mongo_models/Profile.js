@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const randGoal = require("../roulette/randGoal");
 const { rouletteCells } = require("../roulette/rouletteCells");
+const rewards = require("./Rewards");
 
 const profileSchema = new mongoose.Schema({
   id: { type: Number, required: true },
@@ -44,6 +45,7 @@ profileSchema.methods.spin = async function(cells) {
   this.spins++;
   this.lastSpin = Date.now();
   await this.save();
+  rewards.addOne(this, cells[goal]);
   return { goal, ...reward};
 };
 

@@ -10,13 +10,13 @@ authRouter.get('/login', (req, res) => {
 authRouter.get("/callback", callback);
   
 authRouter.get('/logout', (req, res) => {
-	console.log('truc');
-req.session.destroy((err) => {
-	if (err) {
-	return res.status(500).send('Error logging out');
-	}
-	res.redirect('/login')
-});
+	req.session.destroy((err) => {
+		if (err) {
+			res.status(500).send('Logout failure');
+		} else {
+			res.redirect('/login')
+		}
+	});
 });
 
 module.exports = authRouter;
