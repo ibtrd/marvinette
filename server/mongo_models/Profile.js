@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const randGoal = require("../roulette/randGoal");
 const { rouletteCells } = require("../roulette/rouletteCells");
-const rewards = require("./Rewards");
+const Rewards = require("./Rewards");
 
 const profileSchema = new mongoose.Schema({
   id: { type: Number, required: true },
@@ -34,19 +34,19 @@ profileSchema.methods.spin = async function(cells) {
   } else {
     goal = randGoal(rouletteCells.cells);
   }
-  const reward = {
+  const spinReward = {
     img: cells[goal].img,
     alt: cells[goal].alt,
     description: cells[goal].description,
     particles: cells[goal].particles,
     color: cells[goal].color,
   }
-  this.lastReward = JSON.stringify(reward);
+  this.lastReward = JSON.stringify(spinReward);
   this.spins++;
   this.lastSpin = Date.now();
   await this.save();
-  rewards.addOne(this, cells[goal]);
-  return { goal, ...reward};
+  Rewards.addOne(this, cells[goal]);
+  return { goal, ...spinReward};
 };
 
 profileSchema.methods.canSpin = function(cooldown = 0) {
