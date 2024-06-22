@@ -9,6 +9,15 @@
 	overflow: hidden;
 }
 
+@media only screen and (max-width: 768px) {
+	.Roulette {
+		position: absolute;
+		top: 50%;
+		left: 0;
+		transform: translate(-50%, -50%);
+	}
+}
+
 .RouletteCouldown {
 	position: absolute;
 	width: 100%;

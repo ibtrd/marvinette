@@ -21,6 +21,7 @@ export default function Profile({...props}) {
 						<Avatar name={me.login} src={me.img} size='sm'/>
 						<Text marginX='8px' fontWeight='bold'>{me.login}</Text>
 					</Flex>
+					<Flex>
 						<IconButton
 							colorScheme="red"
 							as='a'
@@ -38,6 +39,7 @@ export default function Profile({...props}) {
 								icon={<FontAwesomeIcon icon="user-tie"/>}
 							/>
 						}
+					</Flex>
 				</CardBody>
 			</Card>
 		);

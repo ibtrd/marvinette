@@ -17,8 +17,7 @@
 	background-color: white;
 	border-radius: 8px;
 	min-height: 20vh;
-	max-width: 40vw;
-	min-width: 20vw;
+	width: 90vw;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -26,6 +25,18 @@
 	position: relative;
 	text-align: center;
 	padding: 32px;
+}
+
+@media only screen and (min-width: 768px) {
+	.RewardModalContainer {
+		width: 40vw;
+	}
+}
+
+@media only screen and (min-width: 992px) {
+	.RewardModalContainer {
+		width: 30vw;
+	}
 }
 
 .RewardModalContainer img{
