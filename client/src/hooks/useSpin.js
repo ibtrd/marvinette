@@ -1,5 +1,4 @@
 import { easings, useSpring } from "react-spring";
-import { useError } from "./useError";
 import { useContext } from "react";
 import { WheelContext } from "../contexts/WheelContext";
 import { Howl } from 'howler';
@@ -29,8 +28,6 @@ export const useSpin = () => {
 	  
 	var lastCell = 0;
 	const wheelSpin = () => {
-		console.log(goal)
-		setReward(null);
 		annimationApi.start({
 			from: {
 				rotate: randomStart,

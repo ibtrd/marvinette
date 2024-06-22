@@ -8,7 +8,6 @@ module.exports = async function sendProfile(req, res) {
 			img: me.img,
 			coalition: me.coalition,
 			lastReward: JSON.parse(me.lastReward),
-			nextSpin: me.lastSpin + 1 * 40 * 1000, //TODO DB COOLDOWN
 			admin: me['admin?'],
 		});
 	} else {

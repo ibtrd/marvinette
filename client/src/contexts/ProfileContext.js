@@ -5,9 +5,7 @@ export const ProfileContext = createContext();
 
 export const ProfileProvider = ({ children }) => {
 
-	const [me, setMe] = useState({
-		nextSpin: 0,
-	});
+	const [me, setMe] = useState();
 	const { showError } = useError();
 
 	useEffect(() => {
@@ -16,7 +14,6 @@ export const ProfileProvider = ({ children }) => {
 			if (response.ok)
 			{
 				const data = await response.json();
-				console.log('profile', data);
 				setMe(data);
 			}
 			else
@@ -25,17 +22,8 @@ export const ProfileProvider = ({ children }) => {
 		fetchData();
 	}, []);
 
-	const setLastReward = (reward) => {
-		setMe({...me, lastReward: reward});
-	};
-
-	const setNextSpin = (time) => {
-		console.log('time', time);
-		setMe({...me, nextSpin: time});
-	};
-
 	return (
-		<ProfileContext.Provider value={{me, setLastReward, setNextSpin}}>
+		<ProfileContext.Provider value={{ me }}>
 			{children}
 		</ProfileContext.Provider>
 	);

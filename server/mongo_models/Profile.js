@@ -40,7 +40,7 @@ profileSchema.methods.spin = async function(cells) {
     description: cells[goal].description,
     particles: cells[goal].particles,
     color: cells[goal].color,
-    nextSpin: this.lastSpin + 1 * 40 * 1000,
+    nextSpin: this.lastSpin + 1 * 25 * 1000,
   }
   this.lastReward = JSON.stringify(reward);
   this.spins++;

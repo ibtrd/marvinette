@@ -21,7 +21,7 @@ async function sendGoal(req, res) {
 	const account = await Profile.findByLogin(req.session.user.login);
 	if (!account) {
 		res.status(500).send();
-	} else if (!account.canSpin(40 * 1000)) {
+	} else if (!account.canSpin(25 * 1000)) {
 		res.status(406).send('In cooldown');
 	} else if (req.params.hash !== rouletteCells.hash) {
 		res.status(409).send('Out of sync');

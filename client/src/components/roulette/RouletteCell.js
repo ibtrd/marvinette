@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { useSpring, animated, easings } from "react-spring";
+import { animated } from "react-spring";
 import { usePrize } from "../../hooks/usePrize";
 import { WheelContext } from "../../contexts/WheelContext";
 
@@ -11,7 +11,7 @@ export default function RouletteCell({data, rotate, angle, size, index, ...props
 	const rad = angle / 2 * (Math.PI / 180);
 
 	useEffect(() => {
-		togglePrize()
+		togglePrize(reward)
 	}, [reward]);
 
 	return (

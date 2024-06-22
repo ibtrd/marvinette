@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadAll } from "@tsparticles/all";
 
-const ParticlesFirework = () => {
+const ParticlesComponent = ({url}) => {
   const [init, setInit] = useState(false);
   useEffect(() => {
     initParticlesEngine(async (engine) => {
@@ -16,7 +16,7 @@ const ParticlesFirework = () => {
     return (
       <Particles
         id="tsparticles"
-        url="/particles/firework.json"
+        url={url}
       />
     );
   }
@@ -24,4 +24,4 @@ const ParticlesFirework = () => {
   return <></>;
 };
 
-export default ParticlesFirework;
+export default ParticlesComponent;
