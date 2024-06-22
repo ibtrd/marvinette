@@ -1,7 +1,7 @@
 # Mist
 .vscode
-client/build
 .DS_Store
+build/*
 
 # Logs
 logs

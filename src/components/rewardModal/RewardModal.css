@@ -1,0 +1,37 @@
+.RewardModal{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	z-index: 2000;
+}
+
+.RewardModalContainer {
+	flex-direction: column;
+	margin-bottom: 32px;
+	background-color: white;
+	border-radius: 8px;
+	min-height: 20vh;
+	max-width: 40vw;
+	min-width: 20vw;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+	position: relative;
+	text-align: center;
+	padding: 32px;
+}
+
+.RewardModalContainer img{
+	height: 7vh;
+	position: absolute;
+	top: 0;
+	left: 50%;
+	transform: translateY(-50%) translateX(-50%);
+}

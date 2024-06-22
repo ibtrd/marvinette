@@ -1,4 +1,4 @@
-const RANGE = "SOURCE!A2:G";
+const RANGE = "SOURCE!A2:N";
 const url = `https://sheets.googleapis.com/v4/spreadsheets/${process.env.SPREADSHEET_ID}/values/${RANGE}?key=${process.env.APIGOOGLE_KEY}`;
 
 async function getCells() {
@@ -13,6 +13,15 @@ async function getCells() {
       color: cell[4],
       description: cell[5],
       particles: cell[6],
+      reward: {
+        coalitionPoints: cell[7],
+        coalitionTo: cell[8],
+        evaluationPoint: cell[9],
+        intraTag: cell[10],
+        altarianDollar: cell[11],
+        peperotig: cell[12],
+        achievement: cell[13]
+      }
     }));
     return cells;
     
