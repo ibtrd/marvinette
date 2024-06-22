@@ -5,9 +5,8 @@ import './RewardModal.css'
 import { useSpring, animated, easings } from 'react-spring';
 import { useEffect, useState } from 'react';
 
-export default function RewardModal({onClose, reward}) {
+export default function RewardModal({onClose, reward, nextSpin}) {
 
-  const nextSpin = Date.now() + 120000;
 	const [time, setTime] = useState(nextSpin - Date.now());
 
 	useEffect(() => {
@@ -20,11 +19,11 @@ export default function RewardModal({onClose, reward}) {
 			else{
 				setTime(nextSpin - Date.now());
 			}
-		}, 500);
+		}, 1000);
 		return () => {
 			clearInterval(timer);
 		}
-	}, []);
+	}, [reward]);
 
 	const [spring, api] = useSpring(() => ({
     from: {

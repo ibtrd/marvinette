@@ -1,5 +1,6 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useError } from '../hooks/useError';
+import { ProfileContext } from "../contexts/ProfileContext";
 
 export const WheelContext = createContext();
 
@@ -11,6 +12,7 @@ export const WheelProvider = ({ children }) => {
 	const [reward, setReward] = useState(null);
 
 	const { showError, showWarning } = useError();
+	const {setLastReward, setNextSpin} = useContext(ProfileContext);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -34,6 +36,8 @@ export const WheelProvider = ({ children }) => {
 		{
 			const data = await response.json();
 			setGoal(data);
+			setLastReward(data);
+			setNextSpin(data.nextSpin)
 			return data;
 		}
 		else if (response.status === 409)

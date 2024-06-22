@@ -6,9 +6,11 @@ import Home from "./pages/Home";
 import { ChakraProvider } from '@chakra-ui/react'
 import { WheelProvider } from "./contexts/WheelContext";
 import './fontAwesome';
+import { ProfileProvider } from "./contexts/ProfileContext";
 
 function App() {
   return (
+    <ProfileProvider>
     <WheelProvider>
     <ChakraProvider>
       <Router>
@@ -19,6 +21,7 @@ function App() {
       </Router>
     </ChakraProvider>
     </WheelProvider>
+    </ProfileProvider>
   );
 }
 

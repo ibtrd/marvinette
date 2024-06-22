@@ -33,16 +33,17 @@ profileSchema.methods.spin = async function(cells) {
   } else {
     goal = randGoal(rouletteCells.cells);
   }
+  this.lastSpin = Date.now();
   const reward = {
     img: cells[goal].img,
     alt: cells[goal].alt,
     description: cells[goal].description,
     particles: cells[goal].particles,
     color: cells[goal].color,
+    nextSpin: this.lastSpin + 1 * 40 * 1000,
   }
   this.lastReward = JSON.stringify(reward);
   this.spins++;
-  this.lastSpin = Date.now();
   await this.save();
   return { goal, ...reward};
 };

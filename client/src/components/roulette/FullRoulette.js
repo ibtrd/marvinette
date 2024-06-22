@@ -10,14 +10,25 @@ import ParticlesParty from '../particules/ParticlesParty';
 import ParticlesPeperotig from '../particules/ParticlesPeperotig';
 import RewardModal from '../rewardModal/RewardModal';
 import RouletteCouldown from './RouletteCouldown';
+import { ProfileContext } from '../../contexts/ProfileContext';
 
 export default function FullRoulette({size, ...props}) {
 
-	const {cells, reward} = useContext(WheelContext);
+	const {cells, reward, setReward} = useContext(WheelContext);
+	const {me} = useContext(ProfileContext);
 
 	const [open, setOpen] = useState(false);
+
 	useEffect(() => {
-		if (reward)
+		if (me && me.lastReward && me.nextSpin > Date.now())
+		{
+			console.log('me home', me, Date.now());
+			setOpen(true);
+		}
+	}, [me]);
+
+	useEffect(() => {
+		if (reward && !open)
 		{
 			setTimeout(() => {
 				setOpen(true);
@@ -37,14 +48,15 @@ export default function FullRoulette({size, ...props}) {
 					{...props}
 				/>
 				<RoulettePointer />
-				{open && reward.particles === 'firework' ? <ParticlesFirework/> : ''}
-				{open && reward.particles === 'confetti' ? <ParticlesConfetti/> : ''}
-				{open && reward.particles === 'party' ? <ParticlesParty/> : ''}
-				{open && reward.particles === 'peperotig' ? <ParticlesPeperotig/> : ''}
+				{open && me.lastReward.particles === 'firework' ? <ParticlesFirework/> : ''}
+				{open && me.lastReward.particles === 'confetti' ? <ParticlesConfetti/> : ''}
+				{open && me.lastReward.particles === 'party' ? <ParticlesParty/> : ''}
+				{open && me.lastReward.particles === 'peperotig' ? <ParticlesPeperotig/> : ''}
 				{open &&
 					<RewardModal
 						onClose={() => setOpen(false)}
-						reward={reward}
+						nextSpin={me.nextSpin}
+						reward={me.lastReward}
 					/>
 				}
 			</div>

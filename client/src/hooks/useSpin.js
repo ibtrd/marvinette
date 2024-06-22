@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { WheelContext } from "../contexts/WheelContext";
 import { Howl } from 'howler';
 
+
 export const useSpin = () => {
 
 	const { setReward, goal, cells } = useContext(WheelContext);
@@ -17,8 +18,6 @@ export const useSpin = () => {
 	}
 	
 	const randomStart = getRandom(0, 360);
-
-	const	{ showSuccess } = useError();
 
 	const [annimation, annimationApi] = useSpring(() => ({
 		from: { rotate: randomStart },
@@ -44,7 +43,7 @@ export const useSpin = () => {
 				easing: easings.easeOutCubic,
 			},
 			onRest: () => {
-				setReward(goal)
+				setReward(goal);
 			},
 			onChange: (result) => {
 				const cell = Math.floor((result.value.rotate + ((360 / cells.length) / 2)) / (360 / cells.length));
