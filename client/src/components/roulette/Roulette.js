@@ -1,39 +1,49 @@
-import RouletteCell from "./RouletteCell";
 import './Roulette.css'
-import { animated } from 'react-spring'
-import { useContext, useEffect } from "react";
-import { WheelContext } from "../../contexts/WheelContext";
-import { useSpin } from "../../hooks/useSpin";
+import RoulettePointer from "./RoulettePointer";
+import RouletteWheel from "./RouletteWheel";
+import { useContext, useEffect, useState } from 'react';
+import { WheelContext } from '../../contexts/WheelContext';
+import { Spinner } from '@chakra-ui/react';
+import RewardModal from '../rewardModal/RewardModal';
+import ParticlesComponent from '../particules/ParticlesComponent';
 
-export default function Roulette({size}) {
+export default function Roulette({size, ...props}) {
 
-	const { cells, getGoal, goal } = useContext(WheelContext);
-	const { wheelSpin, annimation } = useSpin();
+	const {cells, reward} = useContext(WheelContext);
+
+	const [open, setOpen] = useState(false);
 
 	useEffect(() => {
-		if (goal)
-			wheelSpin()
-	}, [goal]);
+		if (reward)
+			setOpen(true);
+	}, [reward])
 
 
-	return (
-	  <animated.div
-	  	className='Roulette'
-		style={{...annimation}}
-		onClick={() => getGoal()}
-	  >
-		{cells.map((cell, index) => (
-			<RouletteCell
-				size={size}
-				key={index}
-				data={cell}
-				rotate={360/cells.length * index}
-				angle={360/cells.length}
-				// reward={reward ? reward : undefined}
-				index={index}
-			/>
-		))}
-	  </animated.div>
+	if (cells.length > 0)
+		return (
+			<div className='Roulette' style={{
+				height: size,
+				width: size
+			}}>
+				<RouletteWheel
+					size={size}
+					{...props}
+				/>
+				<RoulettePointer />
+				{open && reward && reward.particles ?
+            		<ParticlesComponent url={reward.particles} /> : ''
+       			}
+				{open && reward &&
+					<RewardModal
+						onClose={() => setOpen(false)}
+						reward={reward}
+					/>
+				}
+			</div>
+		);
+	else
+		return (
+			<Spinner size='xl' />
 	);
   }
 

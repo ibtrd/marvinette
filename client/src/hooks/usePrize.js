@@ -1,7 +1,4 @@
 import { useSpring } from "react-spring";
-import { useContext } from "react";
-import { WheelContext } from "../contexts/WheelContext";
-
 
 export const usePrize = () => {
 	
@@ -9,9 +6,7 @@ export const usePrize = () => {
 		from: { opacity: 0 },
 	}));
 
-	const { reward } = useContext(WheelContext);
-
-	const togglePrize = () => {
+	const togglePrize = (reward) => {
 		if (reward)
 			annimationApi.start({
 				from: {

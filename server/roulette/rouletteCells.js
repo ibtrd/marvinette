@@ -6,7 +6,7 @@ module.exports.rouletteCells = rouletteCells;
 
 module.exports.rouletteInterval = async function rouletteInterval() {
 	rouletteCells.cells = await getCells();
-	rouletteCells.hash =  md5(JSON.stringify(rouletteCells.cells));
+	rouletteCells.hash = md5(JSON.stringify(rouletteCells.cells));
 	setInterval(async () => {
 		const cells =  await getCells();
 		const hash = md5(JSON.stringify(cells));
@@ -14,6 +14,7 @@ module.exports.rouletteInterval = async function rouletteInterval() {
 		{
 			rouletteCells.cells = cells;
 			rouletteCells.hash = hash;
+			console.log('WHEEL UPDATE');
 		}
 	}, 10000)
 }
