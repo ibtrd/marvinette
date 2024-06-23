@@ -14,7 +14,7 @@ export default function LoginButton({...props}) {
 			const timer = setTimeout(() => {
 				showError('An error occurred. Please try again later.');
 				setIsLoading(false);
-			}, 10000);
+			}, 20000);
 			return () => clearTimeout(timer);
 		}
 	}, [isLoading]);
@@ -36,7 +36,11 @@ export default function LoginButton({...props}) {
 			marginX='8px'
 		/>
 		<Text>Intra</Text>
+		<Image
+
+			position='absolute' height='90%' top='-5' zIndex={-1}
+			src='https://static.vecteezy.com/system/resources/previews/036/646/256/non_2x/duck-emoji-no-free-vector.png'
+		/>
 	  </Button>
 	);
   }
-

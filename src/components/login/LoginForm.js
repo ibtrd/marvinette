@@ -1,5 +1,4 @@
 import { Flex, Heading, Text } from '@chakra-ui/react';
-import './Login.css'
 import LoginButton from './LoginButton';
 
 export default function LoginForm({...props}) {

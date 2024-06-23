@@ -16,7 +16,9 @@ export default function Home() {
       <ProfileProvider>
       <WheelProvider>
         <div className='Home'>
-          <Profile position='absolute' top='16px' left='16px' right={['16px', 'auto', 'auto']} />
+          <Profile position='absolute' top='16px' left='16px' right={['16px', 'auto', 'auto']}
+            isAdmin={false}
+          />
           <Roulette
             size={size}
           />
