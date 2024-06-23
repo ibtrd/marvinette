@@ -25,7 +25,7 @@ async function sendGoal(req, res) {
 	if (!profile || !cooldown || !poolStatus) {
 		return res.status(500).send();
 	}
-	const userPoolStatus = profile.cursusEnd < Date.now() ? "ended" : "ongoing";
+	const userPoolStatus = profile.cursusEnd < Date.now() ? "inactive" : "active";
 	if (userPoolStatus !== poolStatus.value) {
 		res.status(406).send("Your piscine has ended");
 	} else if (profile.canSpin(cooldown.value)) {
@@ -35,11 +35,11 @@ async function sendGoal(req, res) {
 	} else {
     let goal;
     const globalGoal = await Settings.findOne({ key: "force" });
-	console.log(globalGoal)
-    if (globalGoal) {
-		const globalIndex = globalGoal.value;
-		Settings.deleteOne({ _id: globalGoal._id });
-		goal = await profile.spin(rouletteCells.cells, globalIndex);
+    if (globalGoal && globalGoal.value !== "-1") {
+      const globalIndex = parseInt(globalGoal.value);
+	  globalGoal.value = "-1";
+	  globalGoal.save();
+      goal = await profile.spin(rouletteCells.cells, globalIndex);
     } else {
       goal = await profile.spin(rouletteCells.cells);
     }

@@ -10,7 +10,6 @@ export default function AdminSettingsUser({...props}) {
 	const [cell, setCell] = useState(-1);
 
 	const force = () => {
-		console.log(cell)
 		if (cell !== '-1')
 			forceUser(login, {id: cell, name: cells[cell].name});
 		else

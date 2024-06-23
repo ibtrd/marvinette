@@ -16,7 +16,17 @@ export const useNextForce = () => {
 	}, []);
 
 	const forceNext = async (cell) => {
-		showSuccess('Next forced : ' + cell.id);
+		const response = await fetch('/admin/global', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ index: cell.id })
+		});
+		if (response.ok) 
+			showSuccess('Next forced : ' + cell.id);
+		else 
+			showError('Error forcing next : ' + cell.id);
 	}
 
 	return [ cells, forceNext ];

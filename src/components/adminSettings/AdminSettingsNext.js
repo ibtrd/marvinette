@@ -9,7 +9,10 @@ export default function AdminSettingsNext({...props}) {
 	const [cell, setCell] = useState(-1);
 
 	const force = () => {
-		forceNext({id: cell, name: cells[cell].name})
+		if (cell !== '-1')
+			forceNext({id: cell, name: cells[cell].name})
+		else
+			forceNext({id: -1, name: 'Cancel Reward'})
 	}
 
 	return (

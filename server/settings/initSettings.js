@@ -1,4 +1,5 @@
 const Settings = require("../mongo_models/Settings");
+const defaultSettings = require("./defaultSettings.json");
 
 module.exports = async function initSettings() {
   console.log("SETTINGS:");
@@ -6,7 +7,7 @@ module.exports = async function initSettings() {
   if (!cooldown) {
       await Settings.create({
           key: "cooldown",
-          value: (60 * 1000).toString(),
+          value: defaultSettings.cooldown,
       })
   }
   
@@ -14,15 +15,15 @@ module.exports = async function initSettings() {
   if (!poolYear) {
     await Settings.create({
       key: "poolYear",
-      value: "2023",
+      value: defaultSettings.poolYear,
     });
   }
   
   const poolMonth = await Settings.findOne({key: 'poolMonth'})
   if (!poolMonth) {
       await Settings.create({
-          key: "poolMonth",
-          value: 'july',
+        key: "poolMonth",
+        value: defaultSettings.poolMonth,
       });  
   }
 
@@ -30,7 +31,15 @@ module.exports = async function initSettings() {
     if (!poolStatus) {
       await Settings.create({
         key: "poolStatus",
-        value: "ended",
+        value: defaultSettings.poolStatus,
+      });
+    }
+
+  const force = await Settings.findOne({ key: "force" });
+    if (!force) {
+      await Settings.create({
+        key: "force",
+        value: defaultSettings.force,
       });
     }
 
