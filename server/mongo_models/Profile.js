@@ -19,13 +19,35 @@ const profileSchema = new mongoose.Schema({
   spins: { type: Number, default: 0 },
   lastSpin: { type: Number, default: 0 },
   lastReward: { type: String, default: null },
-  "champion?": { type: Boolean, default: false },
   "next?": { type: Number },
   "admin?": { type: Boolean, default: false },
 });
 
 profileSchema.statics.findByLogin = async function(login) {
   return await this.findOne({ login });
+};
+
+profileSchema.statics.getTotalSpins = async function (year, month) {
+  const query = await this.find({ poolYear: year, poolMonth: month, admin: false });
+  let total = 0;
+  query.forEach((element) => {
+    total += element.spins;
+  });
+  return total;
+};
+
+profileSchema.statics.getCoalitionSpins = async function (coalition, year, month) {
+  const query = await this.find({
+    coalition: coalition,
+    poolYear: year,
+    poolMonth: month,
+    admin: false,
+  });
+  let total = 0;
+  query.forEach((element) => {
+    total += element.spins;
+  });
+  return total;
 };
 
 profileSchema.methods.spin = async function(cells, index) {
