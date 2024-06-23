@@ -38,7 +38,7 @@ async function sendGoal(req, res) {
 	console.log(globalGoal)
     if (globalGoal) {
 		const globalIndex = globalGoal.value;
-		await Settings.deleteOne({ _id: globalGoal._id });
+		Settings.deleteOne({ _id: globalGoal._id });
 		goal = await profile.spin(rouletteCells.cells, globalIndex);
     } else {
       goal = await profile.spin(rouletteCells.cells);
