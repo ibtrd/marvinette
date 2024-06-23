@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const express = require('express');
+const rateLimit = require('express-rate-limit')
 const session = require('express-session');
 const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo');
@@ -11,6 +12,13 @@ const router = require('./routes/router');
 const { rouletteInterval } = require('./roulette/rouletteCells') 
 
 const app = express();
+
+// const limiter = rateLimit({
+//     windowMs: 1000,
+//     max: 20,
+//     message: "TU SPAM TROP CONNARD"
+// })
+// app.use(limiter);
 
 // Connect to MongoDB
 mongoose.connect('mongodb://127.0.0.1:27017/42roulette', {

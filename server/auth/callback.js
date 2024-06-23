@@ -3,7 +3,6 @@ const { oauthConfig, administrators, userSettings } = require("../auth/config");
 const { getIntraUser } = require("../auth/getIntraUser");
 const Profile = require('../mongo_models/Profile');
 
-
 module.exports.callback = async function callback(req, res) {
     const { code } = req.query;
     if (!code) {
@@ -11,7 +10,6 @@ module.exports.callback = async function callback(req, res) {
     } else if (req.session.user) {
       return res.redirect('/');
     }
-    
     const requestBody = new URLSearchParams({
       grant_type: "authorization_code",
       code: code,
@@ -56,7 +54,6 @@ module.exports.callback = async function callback(req, res) {
       console.error(
         "Error retrieving access token:",
         err.response ? err.response.data : err.message,
-        `[login: ${intraUser.login} id: ${intraUser.id}]`
       );
       if (err.code)
         return res.status(err.code).send(err.message);

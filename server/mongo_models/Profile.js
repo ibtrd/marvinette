@@ -25,7 +25,7 @@ profileSchema.statics.findByLogin = async function(login) {
 profileSchema.methods.spin = async function(cells) {
 
   let goal;
-  if (this['next?'] != undefined) {
+  if (this['next?'] !== undefined) {
     goal = this['next?'];
     if (goal < 0 || goal > cells.length) {
       goal = randGoal(rouletteCells.cells);

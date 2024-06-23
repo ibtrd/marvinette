@@ -9,12 +9,11 @@ if (cooldown == undefined) {
         value: (60 * 1000).toString(),
     })
 }
-console.log('cooldown:'(60 * 1000).toString());
 
 const poolYear = Settings.find({ key: "poolYear" });
 if (poolYear == undefined) {
   Settings.create({
-    key: "cooldown",
+    key: "poolYear",
     value: "2023",
   });
 }
@@ -22,7 +21,7 @@ if (poolYear == undefined) {
 const poolMonth = Settings.find({key: 'poolMonth'})
 if (poolMonth == undefined) {
     Settings.create({
-        key: "cooldown",
+        key: "poolMonth",
         value: 'July',
     });  
 }
