@@ -19,10 +19,9 @@ const profileSchema = new mongoose.Schema({
   spins: { type: Number, default: 0 },
   lastSpin: { type: Number, default: 0 },
   lastReward: { type: String, default: null },
+  "champion?": { type: Boolean, default: false },
   "next?": { type: Number },
   "admin?": { type: Boolean, default: false },
-  "champion?": { type: Boolean, default: false },
-  championUptime: { type: Number, default: 0 }
 });
 
 profileSchema.statics.findByLogin = async function(login) {
@@ -59,8 +58,8 @@ profileSchema.methods.spin = async function(cells, index) {
   return { goal, ...spinReward};
 };
 
-profileSchema.methods.canSpin = function(cooldown = 20) {
-  return this.lastSpin + cooldown.value < Date.now();
+profileSchema.methods.canSpin = function(cooldown) {
+  return this.lastSpin + parseInt(cooldown) < Date.now();
 };
 
 profileSchema.methods.force = async function(index) {
