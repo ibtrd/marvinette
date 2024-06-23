@@ -22,7 +22,7 @@ module.exports = async function initSettings() {
   if (!poolMonth) {
       await Settings.create({
           key: "poolMonth",
-          value: 'July',
+          value: 'july',
       });  
   }
 
@@ -30,7 +30,7 @@ module.exports = async function initSettings() {
     if (!poolStatus) {
       await Settings.create({
         key: "poolStatus",
-        value: "Ended",
+        value: "ended",
       });
     }
 

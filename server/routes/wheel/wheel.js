@@ -21,17 +21,32 @@ wheelRouter.get("/goal/:hash", sendGoal);
 async function sendGoal(req, res) {
 	const profile = await Profile.findByLogin(req.session.user.login);
 	const cooldown = await Settings.findByKey('cooldown');
-	if (!profile || !cooldown) {
-		res.status(500).send();
-	} else if (profile.canSpin(cooldown.value)) {
-		res.status(406).send('In cooldown');
-	} else if (req.params.hash !== rouletteCells.hash) {
-		res.status(409).send('Out of sync');
-	} else {
-		const goal = await profile.spin(rouletteCells.cells);
-		console.log(`${req.session.user.login}[${profile.spins}] spin:`,goal.goal, goal.description);
-		res.send(goal);
+	const poolStatus = await Settings.findByKey("poolStatus");
+	if (!profile || !cooldown || !poolStatus) {
+		return res.status(500).send();
 	}
+	const userPoolStatus = profile.cursusEnd < Date.now() ? "ended" : "ongoing";
+	if (userPoolStatus !== poolStatus.value) {
+		res.status(406).send("Your piscine has ended");
+	} else if (profile.canSpin(cooldown.value)) {
+		res.status(406).send("You are in cooldown");
+	} else if (req.params.hash !== rouletteCells.hash) {
+		res.status(409).send("Out of sync with the server, reload required");
+	} else {
+    let goal;
+    const globalGoal = await Settings.findOneAndDelete({ key: "force" });
+    if (globalGoal) {
+      goal = await profile.spin(rouletteCells.cells, globalGoal.value);
+    } else {
+      goal = await profile.spin(rouletteCells.cells);
+    }
+    console.log(
+      `${req.session.user.login}[${profile.spins}] spin:`,
+      goal.goal,
+      goal.description
+    );
+    res.send(goal);
+  }
 }
 
 module.exports = wheelRouter;

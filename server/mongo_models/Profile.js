@@ -29,15 +29,17 @@ profileSchema.statics.findByLogin = async function(login) {
   return await this.findOne({ login });
 };
 
-profileSchema.methods.spin = async function(cells) {
-
+profileSchema.methods.spin = async function(cells, index) {
+  
   let goal;
-  if (this['next?'] !== undefined) {
-    goal = this['next?'];
-    if (goal < 0 || goal > cells.length) {
-      goal = randGoal(rouletteCells.cells);
-    }
-    this['next?'] = undefined;
+  if (index >= 0 && index <= cells.length) {
+    goal = index;
+  } else if (this["next?"] >= 0 && this["next?"] <= cells.length) {
+    goal = this["next?"];
+    this["next?"] = undefined;
+  } else if (this["next?"]) {
+    goal = randGoal(rouletteCells.cells);
+    this["next?"] = undefined;
   } else {
     goal = randGoal(rouletteCells.cells);
   }
