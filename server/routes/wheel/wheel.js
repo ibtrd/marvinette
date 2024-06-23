@@ -34,9 +34,12 @@ async function sendGoal(req, res) {
 		res.status(409).send("Out of sync with the server, reload required");
 	} else {
     let goal;
-    const globalGoal = await Settings.findOneAndDelete({ key: "force" });
+    const globalGoal = await Settings.findOne({ key: "force" });
+	console.log(globalGoal)
     if (globalGoal) {
-      goal = await profile.spin(rouletteCells.cells, globalGoal.value);
+		const globalIndex = globalGoal.value;
+		await Settings.deleteOne({ _id: globalGoal._id });
+		goal = await profile.spin(rouletteCells.cells, globalIndex);
     } else {
       goal = await profile.spin(rouletteCells.cells);
     }
