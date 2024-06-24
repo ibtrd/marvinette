@@ -1,7 +1,6 @@
 require('dotenv').config();
 
 const express = require('express');
-const rateLimit = require('express-rate-limit')
 const session = require('express-session');
 const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo');
