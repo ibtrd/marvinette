@@ -28,7 +28,7 @@ profileSchema.statics.findByLogin = async function(login) {
 };
 
 profileSchema.statics.getTotalSpins = async function (year, month) {
-  const query = await this.find({ poolYear: year, poolMonth: month, admin: false });
+  const query = await this.find({ poolYear: year, poolMonth: month, "admin?": false });
   let total = 0;
   query.forEach((element) => {
     total += element.spins;
@@ -41,7 +41,7 @@ profileSchema.statics.getCoalitionSpins = async function (coalition, year, month
     coalition: coalition,
     poolYear: year,
     poolMonth: month,
-    admin: false,
+    "admin?": false,
   });
   let total = 0;
   query.forEach((element) => {
@@ -64,6 +64,7 @@ profileSchema.methods.spin = async function(cells, index) {
   } else {
     goal = randGoal(rouletteCells.cells);
   }
+  const cooldown = await Settings.findByKey('cooldown');
   this.lastSpin = Date.now();
   const spinReward = {
     img: cells[goal].img,
@@ -71,7 +72,7 @@ profileSchema.methods.spin = async function(cells, index) {
     description: cells[goal].description,
     particles: cells[goal].particles,
     color: cells[goal].color,
-    nextSpin: this.lastSpin + 1 * 25 * 1000,
+    nextSpin: this.lastSpin + (parseInt(cooldown.value) * 1000),
   }
   this.lastReward = JSON.stringify(spinReward);
   this.spins++;
@@ -81,7 +82,7 @@ profileSchema.methods.spin = async function(cells, index) {
 };
 
 profileSchema.methods.canSpin = function(cooldown) {
-  return this.lastSpin + parseInt(cooldown) < Date.now();
+  return this.lastSpin + (parseInt(cooldown) * 1000) < Date.now();
 };
 
 profileSchema.methods.force = async function(index) {
