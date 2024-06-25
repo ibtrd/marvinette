@@ -32,6 +32,7 @@ module.exports.callback = async function callback(req, res) {
       );
       const accessToken = response.data.access_token;
       intraUser = await getIntraUser(accessToken);
+      console.log(intraUser);
       isFromCampus(intraUser);
       account['admin?'] = getAdminStatus(intraUser);
       account.id = intraUser.id;
@@ -120,7 +121,11 @@ async function getCoalition(intraUser, accessToken, admin) {
     const coalition = coalitions.find((coa) =>
       userSettings.coalitionsIds.find((id) => id === coa.id)
     );
-    return coalition.name;
+    if (coalition) {
+      return coalition.name;
+    } else {
+      return null;
+    }
   } catch (yeeted) {
     console.error(yeeted);
     const err = new Error("Error fetching 42API");
