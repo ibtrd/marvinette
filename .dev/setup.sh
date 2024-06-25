@@ -12,8 +12,6 @@ else
 	fi
 fi
 
-cd ../client
+cd ..
 npm i
 npm run build
-cd ../server
-npm i
