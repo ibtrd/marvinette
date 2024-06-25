@@ -53,6 +53,10 @@
 	left: 50%;
 	transform: translate(-50%, -50%);
 	border: 1px solid #092026;
+	background-image: url('../../../public/android-chrome-512x512.png');
+	background-position: center;
+	background-size: 50%;
+	background-repeat: no-repeat;
 }
 
 .RoulettePointer {
