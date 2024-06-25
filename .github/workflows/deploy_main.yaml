@@ -26,9 +26,9 @@ jobs:
           cd /srv/marvinette/repository
           git fetch origin main
           git merge origin/main
-          /usr/bin/npm /usr/local/nvm/versions/node/v22.3.0/bin/npm i
+          /usr/local/nvm/versions/node/v22.3.0/bin/npm i
           rm -rf build/
-          /usr/bin/npm /usr/local/nvm/versions/node/v22.3.0/bin/npm run build
+          /usr/local/nvm/versions/node/v22.3.0/bin/npm run build
           rm -rf $MARVINETTE_DIR/*
           cp -r server/ build/ node_modules/ /srv/marvinette/deploy
           sudo /usr/bin/systemctl restart marvinette
