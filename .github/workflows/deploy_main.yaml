@@ -23,12 +23,12 @@ jobs:
         script_stop: true
         envs : MARVINETTE_DIR MARVINETTE_BUILD_DIR
         script: |
-          cd $MARVINETTE_BUILD_DIR
+          cd /srv/marvinette/repository
           git fetch origin main
           git merge origin/main
           npm i
           rm -rf build/
           npm run build
           rm -rf $MARVINETTE_DIR/*
-          cp -r server/ build/ node_modules/ $MARVINETTE_DIR
-          # sudo /bin/systemctl restart marvinette
+          cp -r server/ build/ node_modules/ /srv/marvinette/deploy
+          sudo /bin/systemctl restart marvinette
