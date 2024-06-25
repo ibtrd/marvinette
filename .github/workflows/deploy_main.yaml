@@ -13,16 +13,22 @@ jobs:
     - name: shh git pull and service restart
       uses: appleboy/ssh-action@v1.0.3
       env:
-        FT_WORDLE_DIR: ${{ vars.MARVINETTE_DIR }}
+        MARVINETTE_DIR: ${{ vars.MARVINETTE_DIR }}
+        MARVINETTE_BUILD_DIR : ${{ vars.MARVINETTE_BUILD_DIR }}
+
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         script_stop: true
-        envs : MARVINETTE_DIR
+        envs : MARVINETTE_DIR MARVINETTE_BUILD_DIR
         script: |
-          cd $MARVINETTE_DIR
-          echo pwd
-          # git fetch origin main
-          # git merge origin/main
-          # sudo /bin/systemctl restart marvinette
+          cd /srv/marvinette/repository
+          git fetch origin main
+          git merge origin/main
+          /usr/local/nvm/versions/node/v22.3.0/bin/npm i
+          rm -rf build/
+          /usr/local/nvm/versions/node/v22.3.0/bin/npm run build
+          rm -rf /srv/marvinette/deploy/*
+          cp -r server/ build/ node_modules/ /srv/marvinette/deploy
+          sudo /usr/bin/systemctl restart marvinette

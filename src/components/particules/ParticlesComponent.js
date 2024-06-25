@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadAll } from "@tsparticles/all";
+import { WheelContext } from "../../contexts/WheelContext";
 
-const ParticlesComponent = ({url}) => {
+const ParticlesComponent = () => {
   const [init, setInit] = useState(false);
   useEffect(() => {
     initParticlesEngine(async (engine) => {
@@ -12,11 +13,14 @@ const ParticlesComponent = ({url}) => {
     });
   }, []);
 
-  if (init) {
+
+  const {reward} = useContext(WheelContext);
+
+  if (init && reward && reward.particles) {
     return (
       <Particles
         id="tsparticles"
-        url={url}
+        url={reward.particles}
       />
     );
   }

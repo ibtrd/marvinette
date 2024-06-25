@@ -1,13 +1,18 @@
-const Profile = require("../mongo_models/Profile")
+const Profile = require("../mongo_models/Profile");
+const Settings = require("../mongo_models/Settings");
 
 module.exports = async function sendProfile(req, res) {
+	const cooldown = await Settings.findByKey('cooldown');
 	const me = await Profile.findByLogin(req.session.user.login);
-	if (me) {
+	if (me && cooldown) {
 		res.send({
 			login: me.login,
 			img: me.img,
 			coalition: me.coalition,
-			lastReward: JSON.parse(me.lastReward),
+			lastReward: {
+				...JSON.parse(me.lastReward),
+				nextSpin: me.lastSpin + (parseInt(cooldown.value) * 1000)
+			},
 			admin: me['admin?'],
 		});
 	} else {

@@ -30,7 +30,7 @@ rewardsSchema.statics.addOne = async function (profile, cell) {
         ? profile.coalition
         : cell.reward.coalitionTo,
     coalitionFrom:
-      this.coalitionTo === profile.coalition
+      cell.reward.coalitionTo === "user" || cell.reward.coalitionTo === profile.coalition
         ? profile.login
         : "",
     evaluationPoint: cell.reward.evaluationPoint,
@@ -57,12 +57,9 @@ rewardsSchema.statics.extract = async function() {
       reward.peperotig,
       reward.achievement,
     ]);
-    console.log(reward);
     reward.extracted = true;
     reward.save();
   })
-  // console.log('EXTRACTED REWARDS', extraction);
-  // fs.writeFile(Date.now().toString(), extraction);
   return extraction;
 };
 

@@ -3,7 +3,6 @@ const { oauthConfig, administrators, userSettings } = require("../auth/config");
 const { getIntraUser } = require("../auth/getIntraUser");
 const Profile = require('../mongo_models/Profile');
 
-
 module.exports.callback = async function callback(req, res) {
     const { code } = req.query;
     if (!code) {
@@ -11,7 +10,6 @@ module.exports.callback = async function callback(req, res) {
     } else if (req.session.user) {
       return res.redirect('/');
     }
-    
     const requestBody = new URLSearchParams({
       grant_type: "authorization_code",
       code: code,
@@ -34,6 +32,7 @@ module.exports.callback = async function callback(req, res) {
       );
       const accessToken = response.data.access_token;
       intraUser = await getIntraUser(accessToken);
+      console.log(intraUser);
       isFromCampus(intraUser);
       account['admin?'] = getAdminStatus(intraUser);
       account.id = intraUser.id;
@@ -56,7 +55,6 @@ module.exports.callback = async function callback(req, res) {
       console.error(
         "Error retrieving access token:",
         err.response ? err.response.data : err.message,
-        `[login: ${intraUser.login} id: ${intraUser.id}]`
       );
       if (err.code)
         return res.status(err.code).send(err.message);
@@ -123,7 +121,11 @@ async function getCoalition(intraUser, accessToken, admin) {
     const coalition = coalitions.find((coa) =>
       userSettings.coalitionsIds.find((id) => id === coa.id)
     );
-    return coalition.name;
+    if (coalition) {
+      return coalition.name;
+    } else {
+      return null;
+    }
   } catch (yeeted) {
     console.error(yeeted);
     const err = new Error("Error fetching 42API");
