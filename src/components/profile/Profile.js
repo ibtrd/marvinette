@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext } from "react";
 import { ProfileContext } from "../../contexts/ProfileContext";
 
-export default function Profile({...props}) {
+export default function Profile({isAdmin, ...props}) {
 
 	const {me} = useContext(ProfileContext);
 
@@ -21,6 +21,7 @@ export default function Profile({...props}) {
 						<Avatar name={me.login} src={me.img} size='sm'/>
 						<Text marginX='8px' fontWeight='bold'>{me.login}</Text>
 					</Flex>
+					<Flex>
 						<IconButton
 							colorScheme="red"
 							as='a'
@@ -28,7 +29,7 @@ export default function Profile({...props}) {
 							size='sm'
 							icon={<FontAwesomeIcon icon="arrow-right-from-bracket"/>}
 						/>
-						{me.admin &&
+						{me.admin && !isAdmin &&
 							<IconButton
 								marginLeft='4px'
 								colorScheme="blue"
@@ -38,6 +39,17 @@ export default function Profile({...props}) {
 								icon={<FontAwesomeIcon icon="user-tie"/>}
 							/>
 						}
+						{me.admin && isAdmin &&
+							<IconButton
+								marginLeft='4px'
+								colorScheme="blue"
+								as='a'
+								href='/'
+								size='sm'
+								icon={<FontAwesomeIcon icon="house"/>}
+							/>
+						}
+					</Flex>
 				</CardBody>
 			</Card>
 		);

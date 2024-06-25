@@ -9,11 +9,24 @@ settingsSchema.statics.findByKey = async function(key) {
   return await this.findOne({ key });
 };
 
-// settingsSchema.methods.spin = function() {
-//   this.spins++;
-//   this.lastSpin = Date.now();
-//   return this.save();
-// };
+settingsSchema.statics.getPoolYear = async function () {
+  const query = await this.findOne({ key: "poolYear" });
+  return parseInt(query.value);
+};
+
+settingsSchema.statics.getPoolMonth = async function () {
+  const query = await this.findOne({ key: 'poolMonth' });
+  return query.value;
+};
+
+settingsSchema.statics.getChampion = async function () {
+  const query = await this.findOne({ key: "poolMonth" });
+  return query.value;
+};
+
+settingsSchema.statics.getChampion = async function (key) {
+  return await this.findOne({ key });
+};
 
 const Settings = mongoose.model("Settings", settingsSchema);
 

@@ -2,38 +2,69 @@ const mongoose = require("mongoose");
 const randGoal = require("../roulette/randGoal");
 const { rouletteCells } = require("../roulette/rouletteCells");
 const Rewards = require("./Rewards");
+const { findOne } = require("./Settings");
+const Settings = require("./Settings");
 
 const profileSchema = new mongoose.Schema({
   id: { type: Number, required: true },
   login: { type: String, required: true },
-  img: {type: String, default: 'https://profile.intra.42.fr/images/default.png'},
-  cursusEnd: { type: Date},
-  poolMonth: { type: String},
-  poolYear: { type: Number},
-  coalition: { type: String},
+  img: {
+    type: String,
+    default: "https://profile.intra.42.fr/images/default.png",
+  },
+  cursusEnd: { type: Date },
+  poolMonth: { type: String },
+  poolYear: { type: Number },
+  coalition: { type: String },
   spins: { type: Number, default: 0 },
   lastSpin: { type: Number, default: 0 },
-  lastReward: { type: String, default: null},
-  'next?' : { type: Number},
-  'admin?' : {type: Boolean, default: false },
+  lastReward: { type: String, default: null },
+  "next?": { type: Number },
+  "admin?": { type: Boolean, default: false },
 });
 
 profileSchema.statics.findByLogin = async function(login) {
   return await this.findOne({ login });
 };
 
-profileSchema.methods.spin = async function(cells) {
+profileSchema.statics.getTotalSpins = async function (year, month) {
+  const query = await this.find({ poolYear: year, poolMonth: month, "admin?": false });
+  let total = 0;
+  query.forEach((element) => {
+    total += element.spins;
+  });
+  return total;
+};
 
+profileSchema.statics.getCoalitionSpins = async function (coalition, year, month) {
+  const query = await this.find({
+    coalition: coalition,
+    poolYear: year,
+    poolMonth: month,
+    "admin?": false,
+  });
+  let total = 0;
+  query.forEach((element) => {
+    total += element.spins;
+  });
+  return total;
+};
+
+profileSchema.methods.spin = async function(cells, index) {
+  
   let goal;
-  if (this['next?'] != undefined) {
-    goal = this['next?'];
-    if (goal < 0 || goal > cells.length) {
-      goal = randGoal(rouletteCells.cells);
-    }
-    this['next?'] = undefined;
+  if (index >= 0 && index <= cells.length) {
+    goal = index;
+  } else if (this["next?"] >= 0 && this["next?"] <= cells.length) {
+    goal = this["next?"];
+    this["next?"] = undefined;
+  } else if (this["next?"]) {
+    goal = randGoal(rouletteCells.cells);
+    this["next?"] = undefined;
   } else {
     goal = randGoal(rouletteCells.cells);
   }
+  const cooldown = await Settings.findByKey('cooldown');
   this.lastSpin = Date.now();
   const spinReward = {
     img: cells[goal].img,
@@ -41,7 +72,7 @@ profileSchema.methods.spin = async function(cells) {
     description: cells[goal].description,
     particles: cells[goal].particles,
     color: cells[goal].color,
-    nextSpin: this.lastSpin + 1 * 25 * 1000,
+    nextSpin: this.lastSpin + (parseInt(cooldown.value) * 1000),
   }
   this.lastReward = JSON.stringify(spinReward);
   this.spins++;
@@ -50,8 +81,8 @@ profileSchema.methods.spin = async function(cells) {
   return { goal, ...spinReward};
 };
 
-profileSchema.methods.canSpin = function(cooldown = 0) {
-  return this.lastSpin + cooldown < Date.now() || this.spins === 0;
+profileSchema.methods.canSpin = function(cooldown) {
+  return this.lastSpin + (parseInt(cooldown) * 1000) < Date.now();
 };
 
 profileSchema.methods.force = async function(index) {
@@ -62,9 +93,6 @@ profileSchema.methods.force = async function(index) {
   await this.save();
 }
 
-
 const Profile = mongoose.model("Profile", profileSchema);
-
-console.log(Profile);
 
 module.exports = Profile;

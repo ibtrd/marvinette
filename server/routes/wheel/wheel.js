@@ -1,6 +1,7 @@
 const express = require("express");
 const { rouletteCells } = require("../../roulette/rouletteCells");
 const Profile = require("../../mongo_models/Profile");
+const Settings = require("../../mongo_models/Settings");
 const wheelRouter = express.Router();
 
 wheelRouter.get('/cells', async (req, res) => {
@@ -18,18 +19,37 @@ wheelRouter.get('/cells', async (req, res) => {
 wheelRouter.get("/goal/:hash", sendGoal); 
 
 async function sendGoal(req, res) {
-	const account = await Profile.findByLogin(req.session.user.login);
-	if (!account) {
-		res.status(500).send();
-	} else if (!account.canSpin(25 * 1000)) {
-		res.status(406).send('In cooldown');
-	} else if (req.params.hash !== rouletteCells.hash) {
-		res.status(409).send('Out of sync');
-	} else {
-		const goal = await account.spin(rouletteCells.cells);
-		console.log(`${req.session.user.login}[${account.spins}] spin:`,goal.goal, goal.description);
-		res.send(goal);
+	const profile = await Profile.findByLogin(req.session.user.login);
+	const cooldown = await Settings.findByKey('cooldown');
+	const poolStatus = await Settings.findByKey("poolStatus");
+	if (!profile || !cooldown || !poolStatus) {
+		return res.status(500).send();
 	}
+	const userPoolStatus = profile.cursusEnd < Date.now() ? "inactive" : "active";
+	if (userPoolStatus !== poolStatus.value) {
+		res.status(406).send("Your piscine has ended");
+	} else if (profile.canSpin(cooldown.value) === false) {
+		res.status(406).send("You are in cooldown");
+	} else if (req.params.hash !== rouletteCells.hash) {
+		res.status(409).send("Out of sync with the server, reload required");
+	} else {
+    let goal;
+    const globalGoal = await Settings.findOne({ key: "force" });
+    if (globalGoal && globalGoal.value !== "-1") {
+      const globalIndex = parseInt(globalGoal.value);
+	  globalGoal.value = "-1";
+	  globalGoal.save();
+      goal = await profile.spin(rouletteCells.cells, globalIndex);
+    } else {
+      goal = await profile.spin(rouletteCells.cells);
+    }
+    console.log(
+      `${req.session.user.login}[${profile.spins}] spin:`,
+      goal.goal,
+      goal.description
+    );
+    res.send(goal);
+  }
 }
 
 module.exports = wheelRouter;

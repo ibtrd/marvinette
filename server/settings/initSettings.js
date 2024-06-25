@@ -1,28 +1,51 @@
 const Settings = require("../mongo_models/Settings");
+const defaultSettings = require("./defaultSettings.json");
 
-console.log('SETTINGS:')
+module.exports = async function initSettings() {
+  console.log("SETTINGS:");
+  const cooldown = await Settings.findOne({key: 'cooldown'})
+  if (!cooldown) {
+      await Settings.create({
+          key: "cooldown",
+          value: defaultSettings.cooldown,
+      })
+  }
+  
+  const poolYear = await Settings.findOne({ key: "poolYear" });
+  if (!poolYear) {
+    await Settings.create({
+      key: "poolYear",
+      value: defaultSettings.poolYear,
+    });
+  }
+  
+  const poolMonth = await Settings.findOne({key: 'poolMonth'})
+  if (!poolMonth) {
+      await Settings.create({
+        key: "poolMonth",
+        value: defaultSettings.poolMonth,
+      });  
+  }
 
-const cooldown = Settings.find({key: 'cooldown'})
-if (cooldown == undefined) {
-    Settings.create({
-        key: "cooldown",
-        value: (60 * 1000).toString(),
-    })
-}
-console.log('cooldown:'(60 * 1000).toString());
+  const poolStatus = await Settings.findOne({ key: "poolStatus" });
+    if (!poolStatus) {
+      await Settings.create({
+        key: "poolStatus",
+        value: defaultSettings.poolStatus,
+      });
+    }
 
-const poolYear = Settings.find({ key: "poolYear" });
-if (poolYear == undefined) {
-  Settings.create({
-    key: "cooldown",
-    value: "2023",
+  const force = await Settings.findOne({ key: "force" });
+    if (!force) {
+      await Settings.create({
+        key: "force",
+        value: defaultSettings.force,
+      });
+    }
+
+  const settings = await Settings.find({});
+  settings.forEach(element => {
+    console.log(element.key, '=', element.value);
   });
-}
-
-const poolMonth = Settings.find({key: 'poolMonth'})
-if (poolMonth == undefined) {
-    Settings.create({
-        key: "cooldown",
-        value: 'July',
-    });  
+  console.log();
 }
