@@ -3,5 +3,6 @@
     "poolYear": "2023",
     "poolMonth": "july",
     "poolStatus": "inactive",
-    "force": "-1"
+    "force": "-1",
+    "gameStatus": "active"
 }

@@ -43,6 +43,14 @@ module.exports = async function initSettings() {
       });
     }
 
+  const gameStatus = await Settings.findOne({ key: "gameStatus" });
+  if (!gameStatus) {
+    await Settings.create({
+      key: "gameStatus",
+      value: defaultSettings.gameStatus,
+    });
+  }
+
   const settings = await Settings.find({});
   settings.forEach(element => {
     console.log(element.key, '=', element.value);
