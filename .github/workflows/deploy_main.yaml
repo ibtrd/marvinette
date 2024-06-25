@@ -1,0 +1,28 @@
+name: deploy_main
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: pull
+    runs-on: ubuntu-22.04
+    steps:
+    - name: shh git pull and service restart
+      uses: appleboy/ssh-action@v1.0.3
+      env:
+        FT_WORDLE_DIR: ${{ vars.MARVINETTE_DIR }}
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        script_stop: true
+        envs : MARVINETTE_DIR
+        script: |
+          cd $MARVINETTE_DIR
+          echo pwd
+          # git fetch origin main
+          # git merge origin/main
+          # sudo /bin/systemctl restart marvinette
