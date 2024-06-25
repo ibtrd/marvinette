@@ -27,11 +27,13 @@ async function sendGoal(req, res) {
 	}
 	const userPoolStatus = profile.cursusEnd < Date.now() ? "inactive" : "active";
 	if (userPoolStatus !== poolStatus.value) {
-		res.status(406).send("Your piscine has ended");
+		res.status(406).send({ error: "Your piscine has ended" });
 	} else if (profile.canSpin(cooldown.value) === false) {
-		res.status(406).send("You are in cooldown");
+		res.status(406).send({ error: "You are in cooldown" });
+	} else if (profile.coalition === null) {
+		res.status(406).send({ error: "You no not have a coalition" });
 	} else if (req.params.hash !== rouletteCells.hash) {
-		res.status(409).send("Out of sync with the server, reload required");
+		res.status(409).send({ error: "Out of sync with the server, reload required" });
 	} else {
     let goal;
     const globalGoal = await Settings.findOne({ key: "force" });
