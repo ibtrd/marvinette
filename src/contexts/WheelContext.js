@@ -31,8 +31,9 @@ export const WheelProvider = ({ children }) => {
 				setCells(data.cells);
 				sethash(data.hash);
 			}
-			else
-				showError("Couldn't fetch cells. Please try again later.");
+			else {
+				showError("Error, please try again later.");
+			}
 		};
 		fetchData();
 	}, []);
@@ -42,17 +43,16 @@ export const WheelProvider = ({ children }) => {
 			return;
 		setReward(null);
 		const response = await fetch(`/wheel/goal/${hash}`);
+		const data = await response.json();
 		if (response.ok)
 		{
-			const data = await response.json();
 			setGoal(data);
 			console.log('goal', data);
 			return data;
 		}
-		else if (response.status === 409)
-			showWarning("Wheel may have changed... Please refresh the page.");
-		else
-			showError("Couldn't fetch goal. Please try again later.");
+		else {
+			showError(data.error);
+		}
 		return null;
 	}
 

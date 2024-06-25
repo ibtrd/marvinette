@@ -11,7 +11,7 @@ export default function LoginForm({...props}) {
 		{...props}
 	  >
 		<Heading>
-			42 Roulette
+			Marvinette
 		</Heading>
 		<Text
 			marginY='64px'
