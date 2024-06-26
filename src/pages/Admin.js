@@ -12,7 +12,6 @@ export default function Admin() {
 
   return (
       <ProfileProvider>
-		<WheelProvider>
         <Flex flexDir='column' alignItems='center'>
           <Profile position='absolute' top='16px' left='16px' right={['16px', 'auto', 'auto']} isAdmin/>
 		  <Heading marginTop='128px'>Admin</Heading>
@@ -23,7 +22,6 @@ export default function Admin() {
 		  </Flex>
 
         </Flex>
-		</WheelProvider>
       </ProfileProvider>
   );
 }

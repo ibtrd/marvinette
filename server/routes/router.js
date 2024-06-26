@@ -19,6 +19,8 @@ router.use('/wheel', isLoggedIn, wheelRouter);
 router.use('/admin', isAdmin, adminRouter);
 
 router.get('/login', sendIndex);
+router.get('/nofun', sendIndex);
+router.get('/admin', isAdmin, sendIndex)
 router.get('/me', isLoggedIn, sendProfile);
 router.get('/rewards/:secret', isKunfandi, sendRewards)
 router.get('/stats', isLoggedIn, sendStats);
