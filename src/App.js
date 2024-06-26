@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import { ChakraProvider } from '@chakra-ui/react'
 import './fontAwesome';
 import Admin from "./pages/Admin";
+import Inactive from "./pages/Inactive";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/nofun" element={<Inactive />} />
           <Route path="/" element={<Home />} />
         </Routes>
       </Router>
