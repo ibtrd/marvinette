@@ -16,7 +16,7 @@ const sendStats = require("./sendStats");
 const isGameActive = require("../middleware/isGameActive");
 
 router.use('/auth', authRouter);
-router.use('/wheel', isLoggedIn, wheelRouter);
+router.use('/wheel', isLoggedIn, isGameActive, wheelRouter);
 router.use('/admin', isAdmin, adminRouter);
 
 router.get('/login', sendIndex);
