@@ -1,5 +1,4 @@
 const Profile = require("../mongo_models/Profile");
-const isLoggedIn = require("./isLoggedIn");
 
 module.exports = async function isAdmin(req, res, next) {
 	if (!req.session.user) {

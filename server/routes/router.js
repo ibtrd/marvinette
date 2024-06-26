@@ -13,6 +13,7 @@ const adminRouter = require("./admin/admin");
 const sendProfile = require("./sendProfile");
 const sendRewards = require("./sendRewards");
 const sendStats = require("./sendStats");
+const isGameActive = require("../middleware/isGameActive");
 
 router.use('/auth', authRouter);
 router.use('/wheel', isLoggedIn, wheelRouter);
@@ -25,7 +26,7 @@ router.get('/me', isLoggedIn, sendProfile);
 router.get('/rewards/:secret', isKunfandi, sendRewards)
 router.get('/stats', isLoggedIn, sendStats);
 
-router.get('/', isLoggedIn, sendIndex)
+router.get('/', isLoggedIn, isGameActive, sendIndex)
 router.use(express.static(path.resolve("./build")));
 router.get('/*', isLoggedIn, sendIndex)
 
