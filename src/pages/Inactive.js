@@ -1,4 +1,4 @@
-import { Center, Heading, Text } from "@chakra-ui/react";
+import { Center, Heading, Image, Text } from "@chakra-ui/react";
 
 export default function Inactive() {
 
@@ -6,14 +6,15 @@ export default function Inactive() {
     <Center
       width='100vw'
       height='100vh'
-      alignItems='center'
-      justifyContent='center'
-	  flexDir='column'
+	    flexDir='column'
     >
-		<Heading>No fun allowed.</Heading>
-		<Text width='50%'>Sorry, but the Marvinette is currently inactive. Please check back later.</Text>
+      <Image src='/nofun.png' height='5vh'/>
+      <Heading>No fun allowed.</Heading>
+      <Text maxWidth='90vw' textAlign='center'>
+          Sorry, but the Marvinette is currently inactive. Please check back later.
+        </Text>
 
-	</Center>
+    </Center>
     
   );
 }
