@@ -13,7 +13,8 @@ export default function Roulette({size, ...props}) {
 	const [spring] = useSpring(
 		() => ({
 		  from: {
-				scale: 0
+				scale: 0,
+				transform: window.innerWidth < 768 ? 'translate(-50%, -50%)' : 'translate(0, 0)',
 			},
 		  to: { scale: 1 },
 		}),
