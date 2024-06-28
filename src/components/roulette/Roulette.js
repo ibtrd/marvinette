@@ -3,7 +3,7 @@ import RoulettePointer from "./RoulettePointer";
 import RouletteWheel from "./RouletteWheel";
 import { useContext} from 'react';
 import { WheelContext } from '../../contexts/WheelContext';
-import { Spinner } from '@chakra-ui/react';
+import { Spinner, transform } from '@chakra-ui/react';
 import { animated, useSpring } from 'react-spring';
 
 export default function Roulette({size, ...props}) {
@@ -12,7 +12,10 @@ export default function Roulette({size, ...props}) {
 
 	const [spring] = useSpring(
 		() => ({
-		  from: { scale: 0 },
+		  from: {
+				scale: 0,
+				transform: 'translate(-50%, -50%)'
+			},
 		  to: { scale: 1 },
 		}),
 		[]
