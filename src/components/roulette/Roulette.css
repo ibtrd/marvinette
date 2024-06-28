@@ -60,7 +60,6 @@
 }
 
 .RoulettePointer {
-	z-index: 10;
 	position: absolute;
 	transform: translateY(-50%) translateX(2px);
 	right: -0.2vw;

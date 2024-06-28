@@ -4,23 +4,33 @@ import RouletteWheel from "./RouletteWheel";
 import { useContext} from 'react';
 import { WheelContext } from '../../contexts/WheelContext';
 import { Spinner } from '@chakra-ui/react';
+import { animated, useSpring } from 'react-spring';
 
 export default function Roulette({size, ...props}) {
 
 	const {cells} = useContext(WheelContext);
 
+	const [spring] = useSpring(
+		() => ({
+		  from: { scale: 0 },
+		  to: { scale: 1 },
+		}),
+		[]
+	  );
+
 	if (cells.length > 0)
 		return (
-			<div className='Roulette' style={{
+			<animated.div className='Roulette' style={{
 				height: size,
-				width: size
+				width: size,
+				...spring
 			}}>
 				<RouletteWheel
 					size={size}
 					{...props}
 				/>
 				<RoulettePointer />
-			</div>
+			</animated.div>
 		);
 	else
 		return (
