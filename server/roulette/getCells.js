@@ -1,4 +1,4 @@
-const RANGE = "SOURCE!A2:N";
+const RANGE = "V2!A2:N";
 const url = `https://sheets.googleapis.com/v4/spreadsheets/${process.env.SPREADSHEET_ID}/values/${RANGE}?key=${process.env.APIGOOGLE_KEY}`;
 
 async function getCells() {
