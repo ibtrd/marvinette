@@ -1,5 +1,5 @@
 import { easings, useSpring } from "react-spring";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { WheelContext } from "../contexts/WheelContext";
 import { Howl } from 'howler';
 
@@ -16,7 +16,7 @@ export const useSpin = () => {
 		return (Math.random() * (max - min) + min);
 	}
 	
-	const randomStart = getRandom(0, 360);
+	const [randomStart, setRandomStart] = useState(getRandom(0, 360));
 
 	const [annimation, annimationApi] = useSpring(() => ({
 		from: { rotate: randomStart },
@@ -40,6 +40,7 @@ export const useSpin = () => {
 				easing: easings.easeOutCubic,
 			},
 			onRest: () => {
+				setRandomStart(annimation.rotate.get() % 360);
 				setReward(goal);
 			},
 			onChange: (result) => {
