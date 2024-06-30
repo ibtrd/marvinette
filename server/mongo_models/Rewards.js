@@ -59,7 +59,7 @@ rewardsSchema.statics.extract = async function(action) {
       reward.altarianDollar,
       reward.peperotig,
       reward.achievement,
-      reward.forced,
+      reward.forced ? "true" : "",
     ]);
   if (action == 'intra') {
     reward.extracted = true;
