@@ -24,7 +24,7 @@ const userSettings = {
 const administrators = [
   { 
     login: "ibertran", //154472
-    id: 15447,
+    id: 154472,
   },
   {
     login: "bwisniew", //154768
@@ -32,7 +32,7 @@ const administrators = [
   },
   {
     login: "kunfandi",
-    id: 1,
+    id: 108244
   },
 ];
 

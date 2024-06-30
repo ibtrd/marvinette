@@ -53,10 +53,13 @@ profileSchema.statics.getCoalitionSpins = async function (coalition, year, month
 profileSchema.methods.spin = async function(cells, index) {
   
   let goal;
+  let forced = false;
   if (index >= 0 && index <= cells.length) {
     goal = index;
+    forced = true;
   } else if (this["next?"] >= 0 && this["next?"] <= cells.length) {
     goal = this["next?"];
+    forced = true;
     this["next?"] = undefined;
   } else if (this["next?"]) {
     goal = randGoal(rouletteCells.cells);
@@ -77,7 +80,7 @@ profileSchema.methods.spin = async function(cells, index) {
   this.lastReward = JSON.stringify(spinReward);
   this.spins++;
   await this.save();
-  Rewards.addOne(this, cells[goal]);
+  Rewards.addOne(this, cells[goal], forced);
   return { goal, ...spinReward};
 };
 

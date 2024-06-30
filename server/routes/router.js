@@ -5,7 +5,6 @@ const sendIndex = require('./sendIndex');
 
 const isLoggedIn = require('../middleware/isLoggedIn');
 const isAdmin = require("../middleware/isAdmin");
-const isKunfandi = require("../middleware/isKunfandi");
 
 const authRouter = require("./auth/auth");
 const wheelRouter = require("./wheel/wheel");
@@ -23,7 +22,7 @@ router.get('/login', sendIndex);
 router.get('/nofun', sendIndex);
 router.get('/admin', isAdmin, sendIndex)
 router.get('/me', isLoggedIn, sendProfile);
-router.get('/rewards/:secret', isKunfandi, sendRewards)
+router.get('/rewards/:secret', sendRewards)
 router.get('/stats', isLoggedIn, sendStats);
 
 router.get('/', isLoggedIn, isGameActive, sendIndex)
