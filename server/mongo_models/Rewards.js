@@ -16,10 +16,12 @@ const rewardsSchema = new mongoose.Schema({
   peperotig: { type: String, default: "" },
   achievement: { type: String, default: "" },
 
+  forced: { type: Boolean },
   extracted: { type: Boolean, default: false },
+  logged: { type: Boolean, default: false },
 });
 
-rewardsSchema.statics.addOne = async function (profile, cell) {
+rewardsSchema.statics.addOne = async function (profile, cell, forced) {
   let reward = {
     timestamp: Date.now(),
     login: profile.login,
@@ -37,11 +39,12 @@ rewardsSchema.statics.addOne = async function (profile, cell) {
     intraTag: cell.reward.intraTag,
     peperotig: cell.reward.peperotig,
     achievement: cell.reward.achievement,
+    forced: forced,
   };
   await this.create(reward);
 };
 
-rewardsSchema.statics.extract = async function() {
+rewardsSchema.statics.extract = async function(action) {
   const rewards = await this.find({extracted: false});
   let extraction = [];
   rewards.forEach((reward) => {
@@ -56,8 +59,13 @@ rewardsSchema.statics.extract = async function() {
       reward.altarianDollar,
       reward.peperotig,
       reward.achievement,
+      reward.forced,
     ]);
+  if (action == 'intra') {
     reward.extracted = true;
+  } else if (action = 'log') {
+    reward.logged = true;
+  }
     reward.save();
   })
   return extraction;

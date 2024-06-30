@@ -32,7 +32,7 @@ const administrators = [
   },
   {
     login: "kunfandi",
-    id: 1,
+    id: 108244
   },
 ];
 
