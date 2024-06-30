@@ -45,7 +45,12 @@ rewardsSchema.statics.addOne = async function (profile, cell, forced) {
 };
 
 rewardsSchema.statics.extract = async function(action) {
-  const rewards = await this.find({extracted: false});
+  let rewards;
+  if (action == 'intra') {
+    rewards = await this.find({extracted: false});
+  } else if (action == 'log') {
+    rewards = await this.find({logged: false});
+  }
   let extraction = [];
   rewards.forEach((reward) => {
     extraction.push([
