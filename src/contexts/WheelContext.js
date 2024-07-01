@@ -18,7 +18,7 @@ export const WheelProvider = ({ children }) => {
 	useEffect(() => {
 		if (me && me.lastReward && me.lastReward.nextSpin > Date.now())
 		{
-			handleReward(me.lastReward);
+			handleReward({nextSpin: me.lastReward.nextSpin});
 		}
 	}, [me]);
 
