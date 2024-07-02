@@ -3,8 +3,8 @@ const adminRouter = express.Router();
 const Profile = require("../../mongo_models/Profile");
 const { rouletteCells } = require("../../roulette/rouletteCells");
 const Settings = require("../../mongo_models/Settings");
-const isAdmin = require("../../middleware/isAdmin");
-const sendIndex = require("../sendIndex");
+// const isAdmin = require("../../middleware/isAdmin");
+// const sendIndex = require("../sendIndex");
 
 adminRouter.post('/global', forceGlobalGoal);
 adminRouter.post('/force', forceGoal)

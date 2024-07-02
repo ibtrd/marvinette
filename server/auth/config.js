@@ -36,4 +36,19 @@ const administrators = [
   },
 ];
 
-module.exports = { oauthConfig, userSettings, administrators };
+const coalitions = [
+  {
+    name: "The Worms",
+    img: "/cellsIcons/worms.png",
+  },
+  {
+    name: "The Blobfishes",
+    img: "/cellsIcons/blobfishes.png",
+  },
+  {
+    name: "The Skunks",
+    img: "/cellsIcons/skunks.png",
+  },
+];
+
+module.exports = { oauthConfig, userSettings, administrators, coalitions };

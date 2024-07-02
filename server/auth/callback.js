@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { oauthConfig, administrators, userSettings } = require("../auth/config");
+const { oauthConfig, administrators, userSettings, coalitions } = require("../auth/config");
 const { getIntraUser } = require("../auth/getIntraUser");
 const Profile = require('../mongo_models/Profile');
 
@@ -32,12 +32,14 @@ module.exports.callback = async function callback(req, res) {
       );
       const accessToken = response.data.access_token;
       intraUser = await getIntraUser(accessToken);
+      isActive(intraUser);
       isFromCampus(intraUser);
       account['admin?'] = getAdminStatus(intraUser);
       account.id = intraUser.id;
       account.login = intraUser.login;
       account.cursusEnd = getCursusEnd(intraUser, account["admin?"]);
       account.coalition = await getCoalition(intraUser, accessToken, account["admin?"]);
+      account.coalitionLogo = setCoalitionLogo(account.coalition);
       account.poolYear = intraUser.pool_year;
       account.poolMonth = intraUser.pool_month;
       account.img = intraUser.image.link;
@@ -62,20 +64,6 @@ module.exports.callback = async function callback(req, res) {
     }
 }
 
-// async function addUser(intraUser, coalition) {
-//   var user = await Profile.findOne({ id: intraUser.id });
-//   if (user) {
-//     if (user.coalition === null && coalition !== null) {
-//       user.coalition = coalition;
-//       await user.save();
-//       console.log(`Updated user: ${intraUser.login} (${coalition})`);
-//     }
-//     return;
-//   }
-//   user = await Profile.create(account);
-//   console.log(`New user created: ${intraUser.login} (${coalition})`);
-// }
-
 
 function getAdminStatus(intraUser) {
   for (const admin of administrators) {
@@ -85,14 +73,14 @@ function getAdminStatus(intraUser) {
   return false;
 }
 
-// function isActive(intraUser) {
-//   if (intraUser['active?'] === true) {
-//     return;
-//   }
-//   const err = new Error("You do not have an Active cursus");
-//   err.code = 403;
-//   throw err;
-// }
+function isActive(intraUser) {
+  if (intraUser['active?'] === true) {
+    return;
+  }
+  const err = new Error("You do not have an Active cursus");
+  err.code = 403;
+  throw err;
+}
 
 function isFromCampus(intraUser) {
   
@@ -132,6 +120,15 @@ async function getCoalition(intraUser, accessToken, admin) {
     err.code = 502;
     throw err;
   }
+}
+
+function setCoalitionLogo(userCoalition)
+{
+  for (let i = 0; i < coalitions.length; i++) {
+    if (coalitions[i].name === userCoalition)
+      return coalitions[i].img;
+  }
+  return null;
 }
 
 function getCursusEnd(intraUser, admin) {
