@@ -32,7 +32,6 @@ module.exports.callback = async function callback(req, res) {
       );
       const accessToken = response.data.access_token;
       intraUser = await getIntraUser(accessToken);
-      console.log(intraUser);
       isFromCampus(intraUser);
       account['admin?'] = getAdminStatus(intraUser);
       account.id = intraUser.id;
@@ -45,7 +44,8 @@ module.exports.callback = async function callback(req, res) {
 
       const filter = {id: account.id, login: account.login};
       const options = { new: true, upsert: true };
-      console.log("LOGGED-IN:", await Profile.findOneAndUpdate(filter, account, options));
+      const user = await Profile.findOneAndUpdate(filter, account, options);
+      console.log(`User ${user.login} logged in. (${user.coalition})`);
       req.session.user = {
         id: intraUser.id,
         login: intraUser.login,
@@ -62,19 +62,19 @@ module.exports.callback = async function callback(req, res) {
     }
 }
 
-async function addUser(intraUser, coalition) {
-  var user = await Profile.findOne({ id: intraUser.id });
-  if (user) {
-    if (user.coalition === null && coalition !== null) {
-      user.coalition = coalition;
-      await user.save();
-      console.log(`Updated user: ${intraUser.login} (${coalition})`);
-    }
-    return;
-  }
-  user = await Profile.create(account);
-  console.log(`New user created: ${intraUser.login} (${coalition})`);
-}
+// async function addUser(intraUser, coalition) {
+//   var user = await Profile.findOne({ id: intraUser.id });
+//   if (user) {
+//     if (user.coalition === null && coalition !== null) {
+//       user.coalition = coalition;
+//       await user.save();
+//       console.log(`Updated user: ${intraUser.login} (${coalition})`);
+//     }
+//     return;
+//   }
+//   user = await Profile.create(account);
+//   console.log(`New user created: ${intraUser.login} (${coalition})`);
+// }
 
 
 function getAdminStatus(intraUser) {
@@ -85,14 +85,14 @@ function getAdminStatus(intraUser) {
   return false;
 }
 
-function isActive(intraUser) {
-  if (intraUser['active?'] === true) {
-    return;
-  }
-  const err = new Error("You do not have an Active cursus");
-  err.code = 403;
-  throw err;
-}
+// function isActive(intraUser) {
+//   if (intraUser['active?'] === true) {
+//     return;
+//   }
+//   const err = new Error("You do not have an Active cursus");
+//   err.code = 403;
+//   throw err;
+// }
 
 function isFromCampus(intraUser) {
   
@@ -136,7 +136,7 @@ async function getCoalition(intraUser, accessToken, admin) {
 
 function getCursusEnd(intraUser, admin) {
   const cursus = intraUser.cursus_users.find((cursus) => cursus.cursus_id === userSettings.cursus.id)
-  if (cursus != undefined) {
+  if (cursus !== undefined) {
     return cursus.end_at;
   }
   else if (admin)

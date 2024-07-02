@@ -1,11 +1,9 @@
 const mongoose = require("mongoose");
-const fs = require('fs');
 
 const rewardsSchema = new mongoose.Schema({
+  profile: { type: mongoose.Schema.Types.ObjectId, ref: "Profile" },
   timestamp: { type: Date, required: true },
-  login: { type: String, required: true },
-  coalition: { type: String, required: true },
-  
+
   coalitionPoints: { type: String, default: "" },
   coalitionTo: { type: String, default: "" },
   coalitionFrom: { type: String, default: "" },
@@ -21,11 +19,22 @@ const rewardsSchema = new mongoose.Schema({
   logged: { type: Boolean, default: false },
 });
 
+rewardsSchema.statics.getCurrentChampion = async function (year, month) {
+  const champions = await this.find({ intraTag: '1' })
+  .populate('profile')
+  .sort({ timestamp: -1 });
+  for (let i = 0; i < champions.length; i++) {
+    const document = champions[i];
+    if (document.profile.poolYear === year && document.profile.poolMonth === month && document.profile['admin?'] === false)
+      return document.profile;
+  }
+  return null
+}
+
 rewardsSchema.statics.addOne = async function (profile, cell, forced) {
   let reward = {
+    profile: profile,
     timestamp: Date.now(),
-    login: profile.login,
-    coalition: profile.coalition,
     coalitionPoints: cell.reward.coalitionPoints,
     coalitionTo:
       cell.reward.coalitionTo === "user"
@@ -46,16 +55,16 @@ rewardsSchema.statics.addOne = async function (profile, cell, forced) {
 
 rewardsSchema.statics.extract = async function(action) {
   let rewards;
-  if (action == 'intra') {
-    rewards = await this.find({extracted: false});
-  } else if (action == 'log') {
-    rewards = await this.find({logged: false});
+  if (action === 'intra') {
+    rewards = await this.find({extracted: false}).populate('profile');
+  } else if (action === 'log') {
+    rewards = await this.find({logged: false}).populate('profile');
   }
   let extraction = [];
   rewards.forEach((reward) => {
     extraction.push([
       reward.timestamp,
-      reward.login,
+      reward.profile.login,
       reward.coalitionPoints,
       reward.coalitionTo,
       reward.coalitionFrom,
@@ -66,9 +75,9 @@ rewardsSchema.statics.extract = async function(action) {
       reward.achievement,
       reward.forced ? "true" : "",
     ]);
-  if (action == 'intra') {
+  if (action === 'intra') {
     reward.extracted = true;
-  } else if (action = 'log') {
+  } else if (action === 'log') {
     reward.logged = true;
   }
     reward.save();

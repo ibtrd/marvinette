@@ -48,7 +48,7 @@ async function sendGoal(req, res) {
     console.log(
       `${req.session.user.login}[${profile.spins}] spin:`,
       goal.goal,
-      goal.description
+      rouletteCells.cells[goal.goal].name
     );
     res.send(goal);
   }
