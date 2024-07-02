@@ -18,7 +18,7 @@ export default function Login() {
         bottom='16px'
         textAlign='center'
       >
-        Devloped by <Link href='https://profile.intra.42.fr/users/ibertran' >ibertran</Link> && <Link href='https://profile.intra.42.fr/users/bwisniew'>bwisniew</Link>.
+        Developed by <Link href='https://profile.intra.42.fr/users/ibertran' >ibertran</Link> && <Link href='https://profile.intra.42.fr/users/bwisniew'>bwisniew</Link>.
       </Text>
     </Flex>
     
