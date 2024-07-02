@@ -46,6 +46,7 @@ rewardsSchema.statics.addOne = async function (profile, cell, forced) {
         : "",
     evaluationPoint: cell.reward.evaluationPoint,
     intraTag: cell.reward.intraTag,
+    altarianDollar: cell.reward.altarianDollar,
     peperotig: cell.reward.peperotig,
     achievement: cell.reward.achievement,
     forced: forced,
