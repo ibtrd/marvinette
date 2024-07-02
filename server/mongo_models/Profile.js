@@ -16,6 +16,7 @@ const profileSchema = new mongoose.Schema({
   poolMonth: { type: String },
   poolYear: { type: Number },
   coalition: { type: String },
+  coalitionLogo: {type: String, default: "https://profile.intra.42.fr/images/default.png"},
   spins: { type: Number, default: 0 },
   lastSpin: { type: Number, default: 0 },
   lastReward: { type: String, default: null },
@@ -49,6 +50,24 @@ profileSchema.statics.getCoalitionSpins = async function (coalition, year, month
   });
   return total;
 };
+
+profileSchema.statics.getTopTen = async function(year, month) {
+  const query = await this.find({
+    poolYear: year,
+    poolMonth: month,
+    "admin?": false,
+  }).sort({ spins: -1, lastSpin: -1 }).limit(10);
+  const topTen = query.map((element) => {
+    return {
+      spins: element.spins,
+      login: element.login,
+      img: element.img,
+      coaliton: element.coalition,
+      coalitionLogo: element.coalitionLogo,
+    };
+  })
+  return topTen;
+}
 
 profileSchema.methods.spin = async function(cells, index) {
   

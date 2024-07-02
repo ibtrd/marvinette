@@ -13,6 +13,7 @@ module.exports = async function sendStats(req, res) {
         const blobfishes = await Profile.getCoalitionSpins('The Blobfishes', poolYear, poolMonth);
         const skunks = await Profile.getCoalitionSpins('The Skunks', poolYear, poolMonth);
         const champion = await Rewards.getCurrentChampion(poolYear, poolMonth);
+        const topTen = await Profile.getTopTen(poolYear, poolMonth);
         res.send({ 
             total: total, 
             theWorms: worms, 
@@ -22,6 +23,7 @@ module.exports = async function sendStats(req, res) {
                 login: champion.login,
                 img: champion.img
             } : null,
+            topTen,
         });
     }
 }
