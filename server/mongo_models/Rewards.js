@@ -3,11 +3,15 @@ const mongoose = require("mongoose");
 const rewardsSchema = new mongoose.Schema({
   profile: { type: mongoose.Schema.Types.ObjectId, ref: "Profile" },
   timestamp: { type: Date, required: true },
+  img: {
+    type: String,
+    default: "https://profile.intra.42.fr/images/default.png",
+  },
+  alt: { type: String },
 
   coalitionPoints: { type: String, default: "" },
   coalitionTo: { type: String, default: "" },
   coalitionFrom: { type: String, default: "" },
-
   evaluationPoint: { type: String, default: "" },
   intraTag: { type: String, default: "" },
   altarianDollar: { type: String, default: "" },
@@ -31,10 +35,25 @@ rewardsSchema.statics.getCurrentChampion = async function (year, month) {
   return null
 }
 
-rewardsSchema.statics.addOne = async function (profile, cell, forced) {
+rewardsSchema.statics.getLastTen = async function (year, month) {
+  const query = await this.find({ timestamp: { $lt: Date.now() - 20000 }})
+  .populate('profile')
+  .sort({ timestamp: -1 })
+  .limit(10);
+  const lastTen = query.map( entry => {
+    return ({ login: entry.profile.login, img: entry.img, alt: entry.alt });
+  });
+  return lastTen;
+}
+
+rewardsSchema.statics.addOne = async function (profile, cell, forced, img, alt) {
+  if (profile['admin?'] === true)
+    return ;
   let reward = {
     profile: profile,
     timestamp: Date.now(),
+    img,
+    alt,
     coalitionPoints: cell.reward.coalitionPoints,
     coalitionTo:
       cell.reward.coalitionTo === "user"

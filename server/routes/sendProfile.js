@@ -9,10 +9,7 @@ module.exports = async function sendProfile(req, res) {
 			login: me.login,
 			img: me.img,
 			coalition: me.coalition,
-			lastReward: {
-				...JSON.parse(me.lastReward),
-				nextSpin: me.lastSpin + (parseInt(cooldown.value) * 1000)
-			},
+			nextSpin: me.lastSpin + (parseInt(cooldown.value) * 1000),
 			admin: me['admin?'],
 		});
 	} else {
