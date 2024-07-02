@@ -18,10 +18,10 @@ module.exports = async function sendStats(req, res) {
             theWorms: worms, 
             theBlobfishes: blobfishes, 
             theSkunks: skunks,
-            champion: {
-                login: champion ? champion.login : null,
-                img: champion ? champion.img : null
-            },
+            champion: champion ? {
+                login: champion.login,
+                img: champion.img
+            } : null,
         });
     }
 }
