@@ -47,7 +47,6 @@ export const WheelProvider = ({ children }) => {
 		if (response.ok)
 		{
 			setGoal(data);
-			console.log('goal', data);
 			return data;
 		}
 		else {
