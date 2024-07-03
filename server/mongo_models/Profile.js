@@ -3,6 +3,7 @@ const randGoal = require("../roulette/randGoal");
 const { rouletteCells } = require("../roulette/rouletteCells");
 const Rewards = require("./Rewards");
 const Settings = require("./Settings");
+const { piscineCoalitions } = require("../auth/config");
 
 const profileSchema = new mongoose.Schema({
   id: { type: Number, required: true },
@@ -37,18 +38,21 @@ profileSchema.statics.getTotalSpins = async function (year, month) {
   return total;
 };
 
-profileSchema.statics.getCoalitionSpins = async function (coalition, year, month) {
-  const query = await this.find({
-    coalition: coalition,
-    poolYear: year,
-    poolMonth: month,
-    "admin?": false,
-  });
-  let total = 0;
-  query.forEach((element) => {
-    total += element.spins;
-  });
-  return total;
+profileSchema.statics.getCoalitionSpins = async function (year, month) {
+  const leaderboard = piscineCoalitions.map(async (coa) => {
+    const query = await this.find({
+      coalition: coa.name,
+      poolYear: year,
+      poolMonth: month,
+      "admin?": false,
+    })
+    let spins = 0;
+    query.forEach((entry) => {
+      spins += entry.spins;
+    });
+    return ({ spins: spins, name: coa.name, img: coa.img, color: coa.color })
+  })
+  return (await Promise.all(leaderboard)).sort((a, b) => a.spins - b.spins);
 };
 
 profileSchema.statics.getTopTen = async function(year, month) {

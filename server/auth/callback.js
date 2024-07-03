@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { oauthConfig, administrators, userSettings, coalitions } = require("../auth/config");
+const { oauthConfig, administrators, userSettings, piscineCoalitions } = require("../auth/config");
 const { getIntraUser } = require("../auth/getIntraUser");
 const Profile = require('../mongo_models/Profile');
 
@@ -18,8 +18,6 @@ module.exports.callback = async function callback(req, res) {
       redirect_uri: oauthConfig.redirectUri,
     });
     
-    let intraUser;
-    let account = {}
     try {
       const response = await axios.post(
         oauthConfig.tokenEndpoint,
@@ -30,15 +28,20 @@ module.exports.callback = async function callback(req, res) {
           },
         }
       );
+      if (response.status !== 200) {
+        console.error("CALL API 1",response.status, response.body);
+        return (res.status(502).send("Error retrieving access token"))
+      }
       const accessToken = response.data.access_token;
-      intraUser = await getIntraUser(accessToken);
+      const intraUser = await getIntraUser(accessToken);
       isActive(intraUser);
       isFromCampus(intraUser);
+      let account = {};
       account['admin?'] = getAdminStatus(intraUser);
       account.id = intraUser.id;
       account.login = intraUser.login;
       account.cursusEnd = getCursusEnd(intraUser, account["admin?"]);
-      const coalition = await getCoalitionUser(intraUser, accessToken, account["admin?"]);
+      const coalition = await getCoalitionUser(intraUser, accessToken);
       account.coalition = coalition.name;
       account.coalitionId = coalition.id;
       account.coalitionImg = coalition.img;
@@ -46,7 +49,6 @@ module.exports.callback = async function callback(req, res) {
       account.poolYear = intraUser.pool_year;
       account.poolMonth = intraUser.pool_month;
       account.img = intraUser.image.link;
-
       const filter = {id: account.id, login: account.login};
       const options = { new: true, upsert: true };
       const user = await Profile.findOneAndUpdate(filter, account, options);
@@ -66,7 +68,6 @@ module.exports.callback = async function callback(req, res) {
       res.status(500).send("Error retrieving access token");
     }
 }
-
 
 function getAdminStatus(intraUser) {
   for (const admin of administrators) {
@@ -97,7 +98,7 @@ function isFromCampus(intraUser) {
   throw err; 
 }
 
-async function getCoalitionUser(intraUser, accessToken, admin) {
+async function getCoalitionUser(intraUser, accessToken) {
   const response = await fetch(
     `https://api.intra.42.fr/v2/users/${intraUser.id}/coalitions_users`,
     {
@@ -111,27 +112,28 @@ async function getCoalitionUser(intraUser, accessToken, admin) {
   const coalitionUser = coalitions.find((entry) =>
     userSettings.coalitionsIds.find((id) => id === entry.coalition_id)
   );
-  console.log(coalitionUser);
   if (coalitionUser) {
     return getCoalitionData(coalitionUser);
   } else {
-    return null;
+    const err = new Error("You are not part of a Piscine coalition");
+    err.code = 403;
+    throw err;
   }
 }
 
 function getCoalitionData(coalitionUser)
 {
-  for (let i = 0; i < coalitions.length; i++) {
-    if (coalitions[i].id === coalitionUser.coalition_id) {
+  for (let i = 0; i < piscineCoalitions.length; i++) {
+    if (piscineCoalitions[i].id === coalitionUser.coalition_id) {
       return {
-        id: coalitions[i].id,
-        name: coalitions[i].name,
-        logo: coalitions[i].img,
+        id: piscineCoalitions[i].id,
+        name: piscineCoalitions[i].name,
+        logo: piscineCoalitions[i].img,
         coalitionUserId: coalitionUser.id
       }
     }
   }
-    const err = new Error("You do not have a Piscine coalition");
+    const err = new Error("You are not part of a Piscine coalition");
     err.code = 403;
     throw err; 
 }
