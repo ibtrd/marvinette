@@ -15,18 +15,19 @@ export default function Stats() {
     <Flex
       bg='gray.200'
       width='100vw'
-      height='100vh'
+      height={['300vh', '300vh', '300vh', '100vh']}
       justifyContent='space-around'
       alignItems='center'
+      flexDir={['column', 'column', 'column', 'row']}
     >
       <LeaderBoard
-        width='27%'
-        height='95%'
+        height={['95vh', '95vh', '95vh', '95%']}
+        width={['90%', '75%', '55%', '27%']}
         stats={stats}
       />
       <Stack
-        width='45%'
-        height='95%'
+        width={['90%', '75%', '55%', '45%']}
+        height={['95vh', '95vh', '95vh', '95%']}
         justifyContent='space-between'
       >
          { stats.champion && <ChampionStats champion={stats.champion} height='24%'/>}
@@ -36,8 +37,8 @@ export default function Stats() {
       </Stack>
       <LastRewards
         stats={stats}
-        width='20%'
-        height='95%'
+        width={['90%', '75%', '55%', '20%']}
+        height={['95vh', '95vh', '95vh', '95%']}
       />
     </Flex>
   );

@@ -20,6 +20,7 @@ export default function LastRewards({stats, ...props}) {
 				<Heading
 					color='gray.600'
 					marginY='32px'
+					textAlign='center'
 				>
 					Last Rewards
 				</Heading>

@@ -24,6 +24,7 @@ export default function LeaderBoard({stats, ...props}) {
 				<Heading
 					color='gray.600'
 					marginY='32px'
+					textAlign='center'
 				>
 					Leaderboard
 				</Heading>
