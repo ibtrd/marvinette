@@ -38,8 +38,11 @@ module.exports.callback = async function callback(req, res) {
       account.id = intraUser.id;
       account.login = intraUser.login;
       account.cursusEnd = getCursusEnd(intraUser, account["admin?"]);
-      account.coalition = await getCoalition(intraUser, accessToken, account["admin?"]);
-      account.coalitionLogo = setCoalitionLogo(account.coalition);
+      const coalition = await getCoalitionUser(intraUser, accessToken, account["admin?"]);
+      account.coalition = coalition.name;
+      account.coalitionId = coalition.id;
+      account.coalitionImg = coalition.img;
+      account.coalitionUserId = coalition.coalitionUserId;
       account.poolYear = intraUser.pool_year;
       account.poolMonth = intraUser.pool_month;
       account.img = intraUser.image.link;
@@ -94,41 +97,43 @@ function isFromCampus(intraUser) {
   throw err; 
 }
 
-async function getCoalition(intraUser, accessToken, admin) {
-  try {
-    const response = await fetch(
-      `https://api.intra.42.fr/v2/users/${intraUser.id}/coalitions`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
-    const coalitions = await response.json();
-    const coalition = coalitions.find((coa) =>
-      userSettings.coalitionsIds.find((id) => id === coa.id)
-    );
-    if (coalition) {
-      return coalition.name;
-    } else {
-      return null;
+async function getCoalitionUser(intraUser, accessToken, admin) {
+  const response = await fetch(
+    `https://api.intra.42.fr/v2/users/${intraUser.id}/coalitions_users`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
     }
-  } catch (yeeted) {
-    console.error(yeeted);
-    const err = new Error("Error fetching 42API");
-    err.code = 502;
-    throw err;
+  );
+  const coalitions = await response.json();
+  const coalitionUser = coalitions.find((entry) =>
+    userSettings.coalitionsIds.find((id) => id === entry.coalition_id)
+  );
+  console.log(coalitionUser);
+  if (coalitionUser) {
+    return getCoalitionData(coalitionUser);
+  } else {
+    return null;
   }
 }
 
-function setCoalitionLogo(userCoalition)
+function getCoalitionData(coalitionUser)
 {
   for (let i = 0; i < coalitions.length; i++) {
-    if (coalitions[i].name === userCoalition)
-      return coalitions[i].img;
+    if (coalitions[i].id === coalitionUser.coalition_id) {
+      return {
+        id: coalitions[i].id,
+        name: coalitions[i].name,
+        logo: coalitions[i].img,
+        coalitionUserId: coalitionUser.id
+      }
+    }
   }
-  return null;
+    const err = new Error("You do not have a Piscine coalition");
+    err.code = 403;
+    throw err; 
 }
 
 function getCursusEnd(intraUser, admin) {

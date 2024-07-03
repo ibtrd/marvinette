@@ -56,13 +56,9 @@ rewardsSchema.statics.addOne = async function (profile, cell, forced, img, alt) 
     alt,
     coalitionPoints: cell.reward.coalitionPoints,
     coalitionTo:
-      cell.reward.coalitionTo === "user"
-        ? profile.coalition
-        : cell.reward.coalitionTo,
+      cell.reward.coalitionTo === "user" ? profile.coalition : cell.reward.coalitionTo,
     coalitionFrom:
-      cell.reward.coalitionTo === "user"
-        ? profile.login
-        : "",
+      cell.reward.coalitionTo === "user" ? profile.coalitionUserId : "",
     evaluationPoint: cell.reward.evaluationPoint,
     intraTag: cell.reward.intraTag,
     altarianDollar: cell.reward.altarianDollar,

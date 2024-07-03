@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const randGoal = require("../roulette/randGoal");
 const { rouletteCells } = require("../roulette/rouletteCells");
 const Rewards = require("./Rewards");
-const { findOne } = require("./Settings");
 const Settings = require("./Settings");
 
 const profileSchema = new mongoose.Schema({
@@ -16,10 +15,11 @@ const profileSchema = new mongoose.Schema({
   poolMonth: { type: String },
   poolYear: { type: Number },
   coalition: { type: String },
-  coalitionLogo: {type: String, default: "https://profile.intra.42.fr/images/default.png"},
+  coalitionId: { type: Number },
+  coalitionUserId: { type: Number },
+  coalitionImg: { type: String, default: "https://profile.intra.42.fr/images/default.png" },
   spins: { type: Number, default: 0 },
   lastSpin: { type: Number, default: 0 },
-  lastReward: { type: String, default: null },
   "next?": { type: Number },
   "admin?": { type: Boolean, default: false },
 });
@@ -63,7 +63,7 @@ profileSchema.statics.getTopTen = async function(year, month) {
       login: element.login,
       img: element.img,
       coaliton: element.coalition,
-      coalitionLogo: element.coalitionLogo,
+      coalitionImg: element.coalitionImg,
     };
   })
   return topTen;

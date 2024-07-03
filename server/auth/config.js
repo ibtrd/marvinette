@@ -38,16 +38,19 @@ const administrators = [
 
 const coalitions = [
   {
-    name: "The Worms",
-    img: "/cellsIcons/worms.png",
-  },
-  {
+    id: 15,
     name: "The Blobfishes",
     img: "/cellsIcons/blobfishes.png",
   },
   {
+    id: 16,
     name: "The Skunks",
     img: "/cellsIcons/skunks.png",
+  },
+  {
+    id: 17,
+    name: "The Worms",
+    img: "/cellsIcons/worms.png",
   },
 ];
 
