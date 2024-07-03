@@ -36,19 +36,28 @@ const administrators = [
   },
 ];
 
-const coalitions = [
+const piscineCoalitions = [
   {
-    name: "The Worms",
-    img: "/cellsIcons/worms.png",
-  },
-  {
+    id: 15,
     name: "The Blobfishes",
     img: "/cellsIcons/blobfishes.png",
+    color: "#82cce0",
+    background: "https://cdn.intra.42.fr/coalition/cover/15/sloths_background.jpg"
   },
   {
+    id: 16,
     name: "The Skunks",
     img: "/cellsIcons/skunks.png",
+    color: "#6c8946",
+    background: "https://cdn.intra.42.fr/coalition/cover/16/skunk_background.jpg"
+  },
+  {
+    id: 17,
+    name: "The Worms",
+    img: "/cellsIcons/worms.png",
+    color: "#eab77f",
+    background: "https://cdn.intra.42.fr/coalition/cover/17/worms_background.jpg",
   },
 ];
 
-module.exports = { oauthConfig, userSettings, administrators, coalitions };
+module.exports = { oauthConfig, userSettings, administrators, piscineCoalitions };

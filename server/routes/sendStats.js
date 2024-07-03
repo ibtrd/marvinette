@@ -9,23 +9,19 @@ module.exports = async function sendStats(req, res) {
         res.status(500).send();
     } else {
         const total = await Profile.getTotalSpins(poolYear, poolMonth);
-        const worms = await Profile.getCoalitionSpins('The Worms', poolYear, poolMonth);
-        const blobfishes = await Profile.getCoalitionSpins('The Blobfishes', poolYear, poolMonth);
-        const skunks = await Profile.getCoalitionSpins('The Skunks', poolYear, poolMonth);
+        const coalitions = await Profile.getCoalitionSpins(poolYear, poolMonth);
         const champion = await Rewards.getCurrentChampion(poolYear, poolMonth);
         const topTen = await Profile.getTopTen(poolYear, poolMonth);
-        const lastTen = await Rewards.getLastTen(poolYear, poolMonth);
+        const lastRewards = await Rewards.getLastRewards(poolYear, poolMonth);
         res.send({ 
-            total: total, 
-            theWorms: worms, 
-            theBlobfishes: blobfishes, 
-            theSkunks: skunks,
+            total, 
+            coalitions,
             champion: champion ? {
                 login: champion.login,
                 img: champion.img
             } : null,
             topTen,
-            lastTen,
+            lastRewards,
         });
     }
 }

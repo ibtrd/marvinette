@@ -35,15 +35,15 @@ rewardsSchema.statics.getCurrentChampion = async function (year, month) {
   return null
 }
 
-rewardsSchema.statics.getLastTen = async function (year, month) {
+rewardsSchema.statics.getLastRewards = async function (year, month) {
   const query = await this.find({ timestamp: { $lt: Date.now() - 20000 }})
   .populate('profile')
   .sort({ timestamp: -1 })
-  .limit(10);
-  const lastTen = query.map( entry => {
-    return ({ login: entry.profile.login, img: entry.img, alt: entry.alt });
+  .limit(20);
+  const lastRewards = query.map( entry => {
+    return ({ login: entry.profile.login, img: entry.profile.img, reward: entry.img, alt: entry.alt });
   });
-  return lastTen;
+  return lastRewards;
 }
 
 rewardsSchema.statics.addOne = async function (profile, cell, forced, img, alt) {
@@ -56,13 +56,9 @@ rewardsSchema.statics.addOne = async function (profile, cell, forced, img, alt) 
     alt,
     coalitionPoints: cell.reward.coalitionPoints,
     coalitionTo:
-      cell.reward.coalitionTo === "user"
-        ? profile.coalition
-        : cell.reward.coalitionTo,
+      cell.reward.coalitionTo === "user" ? profile.coalition : cell.reward.coalitionTo,
     coalitionFrom:
-      cell.reward.coalitionTo === "user" || cell.reward.coalitionTo === profile.coalition
-        ? profile.login
-        : "",
+      cell.reward.coalitionTo === "user" ? profile.coalitionUserId : "",
     evaluationPoint: cell.reward.evaluationPoint,
     intraTag: cell.reward.intraTag,
     altarianDollar: cell.reward.altarianDollar,
