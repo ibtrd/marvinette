@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 const randGoal = require("../roulette/randGoal");
 const { rouletteCells } = require("../roulette/rouletteCells");
 const Rewards = require("./Rewards");
-const { findOne } = require("./Settings");
 const Settings = require("./Settings");
+const { piscineCoalitions } = require("../auth/config");
 
 const profileSchema = new mongoose.Schema({
   id: { type: Number, required: true },
@@ -16,10 +16,11 @@ const profileSchema = new mongoose.Schema({
   poolMonth: { type: String },
   poolYear: { type: Number },
   coalition: { type: String },
-  coalitionLogo: {type: String, default: "https://profile.intra.42.fr/images/default.png"},
+  coalitionId: { type: Number },
+  coalitionUserId: { type: Number },
+  coalitionImg: { type: String, default: "https://profile.intra.42.fr/images/default.png" },
   spins: { type: Number, default: 0 },
   lastSpin: { type: Number, default: 0 },
-  lastReward: { type: String, default: null },
   "next?": { type: Number },
   "admin?": { type: Boolean, default: false },
 });
@@ -37,18 +38,21 @@ profileSchema.statics.getTotalSpins = async function (year, month) {
   return total;
 };
 
-profileSchema.statics.getCoalitionSpins = async function (coalition, year, month) {
-  const query = await this.find({
-    coalition: coalition,
-    poolYear: year,
-    poolMonth: month,
-    "admin?": false,
-  });
-  let total = 0;
-  query.forEach((element) => {
-    total += element.spins;
-  });
-  return total;
+profileSchema.statics.getCoalitionSpins = async function (year, month) {
+  const leaderboard = piscineCoalitions.map(async (coa) => {
+    const query = await this.find({
+      coalition: coa.name,
+      poolYear: year,
+      poolMonth: month,
+      "admin?": false,
+    })
+    let spins = 0;
+    query.forEach((entry) => {
+      spins += entry.spins;
+    });
+    return ({ spins: spins, name: coa.name, img: coa.img, color: coa.color, background: coa.background })
+  })
+  return (await Promise.all(leaderboard)).sort((a, b) => b.spins - a.spins);
 };
 
 profileSchema.statics.getTopTen = async function(year, month) {
@@ -56,14 +60,14 @@ profileSchema.statics.getTopTen = async function(year, month) {
     poolYear: year,
     poolMonth: month,
     "admin?": false,
-  }).sort({ spins: -1, lastSpin: -1 }).limit(10);
+  }).sort({ spins: -1, lastSpin: 1 }).limit(10);
   const topTen = query.map((element) => {
     return {
       spins: element.spins,
       login: element.login,
       img: element.img,
       coaliton: element.coalition,
-      coalitionLogo: element.coalitionLogo,
+      coalitionImg: element.coalitionImg,
     };
   })
   return topTen;
