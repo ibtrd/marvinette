@@ -1,4 +1,4 @@
-import { Card, Flex, Heading, Stack } from "@chakra-ui/react";
+import { Card, Flex, Heading, Stack, Text } from "@chakra-ui/react";
 import ProfileCard from "./profileCard";
 
 
@@ -50,11 +50,12 @@ export default function LeaderBoard({stats, ...props}) {
 				}
 			</Stack>
 			<Stack
-				height='60%'
+				height='65%'
 				width='80%'
 				alignItems='center'
 				justifyContent='space-around'
 				paddingBottom='16px'
+				marginBottom='8px'
 			>
 				{stats && stats.topTen.length > 3 &&
 					stats.topTen.slice(3).map((user, index) => (
@@ -67,6 +68,12 @@ export default function LeaderBoard({stats, ...props}) {
 					))
 				}
 			</Stack>
+			<Text
+				bottom='8px'
+				position='absolute'
+			>
+				Total: {stats.totalSpins} spins
+			</Text>
 		</Card>
 	);
   }

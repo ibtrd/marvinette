@@ -1,4 +1,4 @@
-import { Flex, Grid, Link, Stack, Text } from '@chakra-ui/react';
+import { Flex, Stack } from '@chakra-ui/react';
 import '../App.css'
 import LeaderBoard from '../components/leaderBoard/leaderBoard';
 import LastRewards from '../components/lastRewards/LastRewards';

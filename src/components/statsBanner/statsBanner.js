@@ -2,7 +2,6 @@ import { Avatar, Card, CardBody, Flex, IconButton, Image, Text } from "@chakra-u
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext } from "react";
 import { ProfileContext } from "../../contexts/ProfileContext";
-import { useStats } from "../../hooks/useStats";
 import { Link } from "react-router-dom";
 
 export default function StatsBanner({isAdmin, ...props}) {
@@ -39,7 +38,7 @@ export default function StatsBanner({isAdmin, ...props}) {
 							marginRight='8px'
 						/>
 						<Text>
-							{me.total} spins
+							{me.totalSpins} spins
 						</Text>
 					</Flex>
 					<IconButton

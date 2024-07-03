@@ -1,4 +1,4 @@
-import { Avatar, Box, Flex, Heading, Image, Stack, Text } from "@chakra-ui/react";
+import { Avatar, Flex, Heading, Image, Stack, Text } from "@chakra-ui/react";
 
 
 export default function ProfileCard({user, rank, ...props}) {

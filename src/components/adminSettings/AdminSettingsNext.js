@@ -1,4 +1,4 @@
-import { Flex, Heading, IconButton, Input, Select } from '@chakra-ui/react';
+import { Flex, Heading, IconButton, Select } from '@chakra-ui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { useNextForce } from '../../hooks/useNextForce';

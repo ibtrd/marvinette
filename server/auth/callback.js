@@ -128,7 +128,7 @@ function getCoalitionData(coalitionUser)
       return {
         id: piscineCoalitions[i].id,
         name: piscineCoalitions[i].name,
-        logo: piscineCoalitions[i].img,
+        img: piscineCoalitions[i].img,
         coalitionUserId: coalitionUser.id
       }
     }

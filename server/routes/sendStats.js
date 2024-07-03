@@ -8,13 +8,13 @@ module.exports = async function sendStats(req, res) {
     if (!poolMonth || !poolYear) {
         res.status(500).send();
     } else {
-        const total = await Profile.getTotalSpins(poolYear, poolMonth);
+        const totalSpins = await Profile.getTotalSpins(poolYear, poolMonth);
         const coalitions = await Profile.getCoalitionSpins(poolYear, poolMonth);
         const champion = await Rewards.getCurrentChampion(poolYear, poolMonth);
         const topTen = await Profile.getTopTen(poolYear, poolMonth);
         const lastRewards = await Rewards.getLastRewards(poolYear, poolMonth);
         res.send({ 
-            total, 
+            totalSpins, 
             coalitions,
             champion: champion ? {
                 login: champion.login,
