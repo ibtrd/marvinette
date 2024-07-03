@@ -50,9 +50,9 @@ profileSchema.statics.getCoalitionSpins = async function (year, month) {
     query.forEach((entry) => {
       spins += entry.spins;
     });
-    return ({ spins: spins, name: coa.name, img: coa.img, color: coa.color })
+    return ({ spins: spins, name: coa.name, img: coa.img, color: coa.color, background: coa.background })
   })
-  return (await Promise.all(leaderboard)).sort((a, b) => a.spins - b.spins);
+  return (await Promise.all(leaderboard)).sort((a, b) => b.spins - a.spins);
 };
 
 profileSchema.statics.getTopTen = async function(year, month) {
