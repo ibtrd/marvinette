@@ -2,7 +2,6 @@ import '../App.css'
 import Profile from "../components/profile/Profile";
 import { ProfileProvider } from "../contexts/ProfileContext";
 import { Flex, Heading } from "@chakra-ui/react";
-import { WheelProvider } from '../contexts/WheelContext';
 import AdminSettingsUser from '../components/adminSettings/AdminSettingsUser';
 import AdminSettingsNext from '../components/adminSettings/AdminSettingsNext';
 import AdminSettings from '../components/adminSettings/AdminSettings';

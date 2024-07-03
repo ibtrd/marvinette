@@ -22,11 +22,11 @@ export const useSpin = () => {
 		from: { rotate: randomStart },
 	}));
 
-	const tick = new Howl({
-		src: ['/sounds/tick.mp3']
-	});
+	// const tick = new Howl({
+	// 	src: ['/sounds/tick.mp3']
+	// });
 	  
-	var lastCell = 0;
+	// var lastCell = 0;
 	const wheelSpin = () => {
 		annimationApi.start({
 			from: {

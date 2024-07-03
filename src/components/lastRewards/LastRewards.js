@@ -1,5 +1,4 @@
 import { Card, Heading, Stack } from "@chakra-ui/react";
-import { useStats } from "../../hooks/useStats";
 import LastRewardsItem from "./LastReawardItem";
 
 
