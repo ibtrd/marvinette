@@ -36,22 +36,25 @@ const administrators = [
   },
 ];
 
-const coalitions = [
+const piscineCoalitions = [
   {
     id: 15,
     name: "The Blobfishes",
     img: "/cellsIcons/blobfishes.png",
+    color: "#82cce0"
   },
   {
     id: 16,
     name: "The Skunks",
     img: "/cellsIcons/skunks.png",
+    color: "#6c8946"
   },
   {
     id: 17,
     name: "The Worms",
     img: "/cellsIcons/worms.png",
+    color: "#eab77f"
   },
 ];
 
-module.exports = { oauthConfig, userSettings, administrators, coalitions };
+module.exports = { oauthConfig, userSettings, administrators, piscineCoalitions };
