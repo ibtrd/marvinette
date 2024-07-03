@@ -3,21 +3,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext } from "react";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import { useStats } from "../../hooks/useStats";
+import { Link } from "react-router-dom";
 
 export default function StatsBanner({isAdmin, ...props}) {
 
-	const { stats } = useStats();
+	const { me } = useContext(ProfileContext);
 
-	if (stats)
+	if (me)
 		return (
 			<Card
 				{...props}
 				zIndex='3000'
 			>
 				<CardBody display='flex' alignItems='center' justifyContent='space-between' padding='8px'>
-					{stats.champion &&
+					{me.champion &&
 						<Flex alignItems='center' marginRight='8px'>
-							<Avatar name={stats.champion.login} src={stats.champion.img} size='sm'>
+							<Avatar name={me.champion.login} src={me.champion.img} size='sm'>
 								<Image
 									src='https://cdn-icons-png.flaticon.com/512/2385/2385856.png'
 									position='absolute'
@@ -26,7 +27,7 @@ export default function StatsBanner({isAdmin, ...props}) {
 									transform='rotate(20deg)'
 								/>
 							</Avatar>
-							<Text marginX='8px'>{stats.champion.login}</Text>
+							<Text marginX='8px'>{me.champion.login}</Text>
 						</Flex>
 					}
 					<Flex
@@ -38,14 +39,16 @@ export default function StatsBanner({isAdmin, ...props}) {
 							marginRight='8px'
 						/>
 						<Text>
-							{stats.total} spins
+							{me.total} spins
 						</Text>
 					</Flex>
 					<IconButton
 						marginLeft='16px'
-						colorScheme="purple"
+						colorScheme="yellow"
 						icon={<FontAwesomeIcon icon='trophy'/>}
 						size='sm'
+						as={Link}
+						to={'/leaderboard'}
 					/>
 				</CardBody>
 			</Card>

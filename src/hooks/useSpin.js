@@ -43,13 +43,13 @@ export const useSpin = () => {
 				setRandomStart(annimation.rotate.get() % 360);
 				setReward(goal);
 			},
-			onChange: (result) => {
-				const cell = Math.floor((result.value.rotate + ((360 / cells.length) / 2)) / (360 / cells.length));
-				if (cell !== lastCell) {
-					tick.play();
-					lastCell = cell;
-				}
-			}
+			// onChange: (result) => {
+			// 	const cell = Math.floor((result.value.rotate + ((360 / cells.length) / 2)) / (360 / cells.length));
+			// 	if (cell !== lastCell) {
+			// 		tick.play();
+			// 		lastCell = cell;
+			// 	}
+			// }
 		})
 	}
 

@@ -1,7 +1,4 @@
-import { easings, useSpring } from "react-spring";
-import { useContext, useEffect, useState } from "react";
-import { WheelContext } from "../contexts/WheelContext";
-import { Howl } from 'howler';
+import { useEffect, useState } from "react";
 import { useError } from "./useError";
 
 
