@@ -21,13 +21,20 @@ export default function LeaderBoard({stats, ...props}) {
 				width='100%'
 				height='30%'
 			>
-				<Heading
-					color='gray.600'
-					marginY='32px'
-					textAlign='center'
+				<Stack
+					alignItems='center'
+					marginY='24px'
 				>
-					Leaderboard
-				</Heading>
+					<Heading
+						color='gray.600'
+						textAlign='center'
+					>
+						Leaderboard
+					</Heading>
+					<Text size='sm'>
+						Total: {stats.totalSpins} spins
+					</Text>
+				</Stack>
 				{stats && stats.topTen.length >= 3 &&
 					<Flex
 						justifyContent='center'
@@ -50,7 +57,7 @@ export default function LeaderBoard({stats, ...props}) {
 				}
 			</Stack>
 			<Stack
-				height='65%'
+				height='60%'
 				width='80%'
 				alignItems='center'
 				justifyContent='space-around'
@@ -68,12 +75,6 @@ export default function LeaderBoard({stats, ...props}) {
 					))
 				}
 			</Stack>
-			<Text
-				bottom='8px'
-				position='absolute'
-			>
-				Total: {stats.totalSpins} spins
-			</Text>
 		</Card>
 	);
   }
