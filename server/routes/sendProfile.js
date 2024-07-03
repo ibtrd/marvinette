@@ -3,10 +3,12 @@ const Rewards = require("../mongo_models/Rewards");
 const Settings = require("../mongo_models/Settings");
 
 module.exports = async function sendProfile(req, res) {
-	const me = await Profile.findByLogin(req.session.user.login);
-	const cooldown = await Settings.findByKey('cooldown');
-	const poolYear = await Settings.getPoolYear();
-    const poolMonth = await Settings.getPoolMonth();
+	const [me, cooldown, poolYear, poolMonth] = await Promise.all([
+    	Profile.findByLogin(req.session.user.login),
+    	Settings.findByKey("cooldown"),
+    	Settings.getPoolYear(),
+    	Settings.getPoolMonth(),
+  ]);
 	if (me && cooldown && poolYear && poolMonth) {
 		const totalSpins = await Profile.getTotalSpins(poolYear, poolMonth);
 		const champion = await Rewards.getCurrentChampion(poolYear, poolMonth);

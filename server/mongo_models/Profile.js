@@ -60,7 +60,7 @@ profileSchema.statics.getTopTen = async function(year, month) {
     poolYear: year,
     poolMonth: month,
     "admin?": false,
-  }).sort({ spins: -1, lastSpin: -1 }).limit(10);
+  }).sort({ spins: -1, lastSpin: 1 }).limit(10);
   const topTen = query.map((element) => {
     return {
       spins: element.spins,
