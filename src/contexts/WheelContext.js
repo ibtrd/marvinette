@@ -13,12 +13,12 @@ export const WheelProvider = ({ children }) => {
 	const [reward, setReward] = useState(null);
 
 	const { me } = useContext(ProfileContext);
-	const { showError, showWarning } = useError();
+	const { showError } = useError();
 
 	useEffect(() => {
-		if (me && me.lastReward && me.lastReward.nextSpin > Date.now())
+		if (me && me.nextSpin && me.nextSpin > Date.now())
 		{
-			handleReward({nextSpin: me.lastReward.nextSpin});
+			handleReward({nextSpin: me.nextSpin});
 		}
 	}, [me]);
 

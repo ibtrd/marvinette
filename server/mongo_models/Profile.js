@@ -88,6 +88,7 @@ profileSchema.methods.spin = async function(cells, index) {
   }
   const cooldown = await Settings.findByKey('cooldown');
   this.lastSpin = Date.now();
+  this.spins++;
   const spinReward = {
     img: cells[goal].img,
     alt: cells[goal].alt,
@@ -96,10 +97,8 @@ profileSchema.methods.spin = async function(cells, index) {
     color: cells[goal].color,
     nextSpin: this.lastSpin + (parseInt(cooldown.value) * 1000),
   }
-  this.lastReward = JSON.stringify(spinReward);
-  this.spins++;
   await this.save();
-  Rewards.addOne(this, cells[goal], forced);
+  Rewards.addOne(this, cells[goal], forced, spinReward.img, spinReward.alt);
   return { goal, ...spinReward};
 };
 

@@ -44,7 +44,7 @@ export default function AdminSettings({...props}) {
 			<FormControl width='100%' marginY='8px' display='flex' alignItems='center'>
 				<FormLabel>Pool Status</FormLabel>
 				<Select value={poolStatus} onChange={setPoolStatus} marginInline='8px'>
-					<option value='active'>Acitive</option>
+					<option value='active'>Active</option>
 					<option value='inactive'>Inactive</option>
 				</Select>
 				<IconButton icon={<FontAwesomeIcon icon='check' />} onClick={() => updatePoolStatus()} />
@@ -53,7 +53,7 @@ export default function AdminSettings({...props}) {
 			<FormControl width='100%' marginY='8px' display='flex' alignItems='center'>
 				<FormLabel>Game Status</FormLabel>
 				<Select value={gameStatus} onChange={setGameStatus} marginInline='8px'>
-					<option value='active'>Acitive</option>
+					<option value='active'>Active</option>
 					<option value='inactive'>Inactive</option>
 				</Select>
 				<IconButton icon={<FontAwesomeIcon icon='check' />} onClick={() => updateGameStatus()} />
