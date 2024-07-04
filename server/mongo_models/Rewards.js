@@ -81,6 +81,7 @@ rewardsSchema.statics.extract = async function(action) {
     extraction.push([
       reward.timestamp,
       reward.profile.login,
+      reward.profile.id,
       reward.coalitionPoints,
       reward.coalitionTo,
       reward.coalitionFrom,
