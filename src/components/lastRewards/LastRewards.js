@@ -32,7 +32,7 @@ export default function LastRewards({stats, ...props}) {
 				>
 					{stats && stats.lastRewards && stats.lastRewards.filter((a, i) => i < 15).map((reward, index) => (
 						<LastRewardsItem
-							width='90%'
+							width='70%'
 							key={index}
 							reward={reward}
 						/>
