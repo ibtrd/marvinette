@@ -19,7 +19,7 @@ export default function LeaderBoard({stats, ...props}) {
 			<Stack
 				alignItems='center'
 				width='100%'
-				height='30%'
+				flex='2'
 			>
 				<Stack
 					alignItems='center'
@@ -57,7 +57,7 @@ export default function LeaderBoard({stats, ...props}) {
 				}
 			</Stack>
 			<Stack
-				height='60%'
+				flex='5'
 				width='80%'
 				alignItems='center'
 				justifyContent='space-around'
