@@ -8,8 +8,20 @@ const { sessionsStore } = require("../../auth/sessions");
 
 const queue = new LoginQueue(1000);
 
+authRouter.get('/status', (req, res) => {
+	if (req.session.user) {
+		res.send();
+	} else {
+		res.status(403).send();
+	}
+})
+
 authRouter.get('/login', (req, res) => {
-	res.redirect(getAuthUrl())
+	if (req.session.user) {
+		res.redirect('/');
+	} else {
+		res.redirect(getAuthUrl());
+	}
 });
 
 authRouter.get("/callback", (req, res) => {
@@ -28,7 +40,8 @@ authRouter.get('/logout', (req, res) => {
 
 authRouter.get('/destroy-all-sessions', isAdmin, async (req, res) => {
 	try {
-		await sessionsStore.clear();
+		sessionsStore.clear();
+		console.log(`All sessions destroyed by ${req.session.user.login}`)
 		res.send("All sessions destroyed");
 	} catch (err) {
 		console.error(err);
