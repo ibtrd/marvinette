@@ -12,17 +12,16 @@ export default function LastRewardsItem({reward, ...props}) {
 				size='sm'
 				src={reward.img}
 				name={reward.login}
-				marginRight='32px'
 			>
-				<Image
-					src={reward.reward}
-					height='100%'
-					width='auto'
-					position='absolute'
-					right='-65%'
-					alt={reward.alt}
-				/>
 			</Avatar>
+			<Image
+				src={reward.reward}
+				height='32px'
+				alt={reward.alt}
+				marginRight='32px'
+				marginLeft='-16px'
+				zIndex='5'
+			/>
 			<Text>{reward.login}</Text>
 		</Flex>
 	);
