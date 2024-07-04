@@ -1,74 +1,54 @@
 require('dotenv').config();
 
 const express = require('express');
-const session = require('express-session');
 const mongoose = require('mongoose');
-const MongoStore = require('connect-mongo');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+
+const { sessionMiddleware } = require('./auth/sessions');
 const router = require('./routes/router');
-const { rouletteInterval } = require('./roulette/rouletteCells'); 
 const initSettings = require('./settings/initSettings');
+const { rouletteInterval } = require('./roulette/rouletteCells'); 
 
 const app = express();
 
-// const limiter = rateLimit({
-//     windowMs: 1000,
-//     max: 20,
-//     message: "TU SPAM TROP CONNARD"
-// })
-// app.use(limiter);
+// Enable CORS
+app.use(cors({
+  origin: process.env.HOST,
+  credentials: true,
+  optionsSuccessStatus: 200,
+}));
 
-
-const corsOptions = {
-    origin: process.env.HOST,
-    credentials: true,
-    optionSucessStatus: 200,
-};
-app.use(cors(corsOptions));
-
+// Enable JSON bodies
 app.use(bodyParser.json()); 
+
+// Parse URL-encoded bodies
 app.use(bodyParser.urlencoded({extended:false}));
 
+// Parse cookies
 app.use(cookieParser());
 
+// Configure sessions
+app.use(sessionMiddleware);
 
 // Configure routes
+app.use("/", router);
 
-async function main() {
-    try {
-        // Connect to MongoDB
-        await mongoose.connect(process.env.MONGO_URI)
-        .then(() => {console.log('Connected to MongoDB');})
-        .catch((err) => {console.error('MongoDB connection error:', err);});
-        // Configure sessions
-        app.use(
-          session({
-            secret: process.env.SESSIONS_SECRET,
-            resave: false,
-            saveUninitialized: false,
-            store: MongoStore.create({
-              mongoUrl: process.env.MONGO_URI,
-              ttl: 7 * 24 * 60 * 60,
-              autoRemove: "native",
-            }),
-            cookie: {
-              secure: process.env.NODE_ENV === "production",
-              httpOnly: true,
-              sameSite: "lax",
-              maxAge: 7 * 24 * 60 * 60 * 1000, //7 Days
-            },
-          })
-        );
-        app.use('/', router);
-        await initSettings();
-    } catch (err) {
-        console.error(err);
-    }
-        await rouletteInterval().then( () => console.log('Wheel loaded form Google Sheets'));
-        const port = 3000;
-        const server = app.listen(port, () => console.log(`Server is running on port ${port}`));
-}
-
-main();
+// Connect to MongoDB
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(async () => {
+    console.log("Connected to MongoDB");
+    // Initialisation
+    await initSettings();
+    await rouletteInterval().then(() =>
+      console.log("Wheel loaded form Google Sheets"))
+    // Starts server
+    const port = 3000;
+    app.listen(port, () => console.log(`Server is running on port ${port}`));
+  })
+  .catch((err) => {
+    console.error("MongoDB connection error:", err);
+    process.exit(1);
+  });

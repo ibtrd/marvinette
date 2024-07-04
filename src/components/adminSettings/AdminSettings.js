@@ -1,6 +1,7 @@
-import { Flex, Heading, FormControl, FormLabel, IconButton, Input, Select } from '@chakra-ui/react';
+import { Flex, Heading, FormControl, FormLabel, IconButton, Input, Select, useDisclosure, Button } from '@chakra-ui/react';
 import { useSettings } from '../../hooks/useSettings';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import AdminClearModal from './AdminClearModal';
 
 export default function AdminSettings({...props}) {
 
@@ -9,6 +10,8 @@ export default function AdminSettings({...props}) {
 	const [poolMonth, setPoolMonth, updatePoolMonth] = useSettings('poolMonth');
 	const [poolStatus, setPoolStatus, updatePoolStatus] = useSettings('poolStatus');
 	const [gameStatus, setGameStatus, updateGameStatus] = useSettings('gameStatus');
+
+	const {isOpen , onOpen, onClose} = useDisclosure();
 
 	return (
 	 <Flex {...props} flexDir='column' alignItems='center'>
@@ -59,7 +62,16 @@ export default function AdminSettings({...props}) {
 				<IconButton icon={<FontAwesomeIcon icon='check' />} onClick={() => updateGameStatus()} />
 			</FormControl>
 
+
 		</Flex>
+		<Button 
+			leftIcon={<FontAwesomeIcon icon='triangle-exclamation' />}
+			colorScheme='red'
+			onClick={onOpen}
+		>
+			Logout all users
+		</Button>
+		<AdminClearModal isOpen={isOpen} onClose={onClose} />
 	 </Flex>
 	);
   }

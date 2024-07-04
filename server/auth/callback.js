@@ -57,7 +57,7 @@ module.exports.callback = async function callback(req, res) {
         id: intraUser.id,
         login: intraUser.login,
       };
-      res.redirect('/');
+      return res.redirect('/');
     } catch (err) {
       console.error(
         "Error retrieving access token:",

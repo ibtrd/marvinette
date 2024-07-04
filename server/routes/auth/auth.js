@@ -6,8 +6,20 @@ const LoginQueue = require("./LoginQueue");
 
 const queue = new LoginQueue(1000);
 
+authRouter.get('/status', (req, res) => {
+	if (req.session.user) {
+		res.send();
+	} else {
+		res.status(403).send();
+	}
+})
+
 authRouter.get('/login', (req, res) => {
-	res.redirect(getAuthUrl())
+	if (req.session.user) {
+		res.redirect('/');
+	} else {
+		res.redirect(getAuthUrl());
+	}
 });
 
 authRouter.get("/callback", (req, res) => {
