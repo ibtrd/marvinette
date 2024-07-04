@@ -3,8 +3,7 @@ const adminRouter = express.Router();
 const Profile = require("../../mongo_models/Profile");
 const { rouletteCells } = require("../../roulette/rouletteCells");
 const Settings = require("../../mongo_models/Settings");
-// const isAdmin = require("../../middleware/isAdmin");
-// const sendIndex = require("../sendIndex");
+const { sessionsStore } = require("../../auth/sessions");
 
 adminRouter.post('/global', forceGlobalGoal);
 adminRouter.post('/force', forceGoal)
@@ -69,6 +68,17 @@ adminRouter.post("/settings/:key", async (req, res) => {
   }
   else {
     return res.status(400).send("Settings not found");
+  }
+});
+
+adminRouter.get("/logout-all", async (req, res) => {
+  try {
+    sessionsStore.clear();
+    console.log(`All sessions destroyed by ${req.session.user.login}`);
+    res.send("All sessions destroyed");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error occured while destroying sessions");
   }
 });
 

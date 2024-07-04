@@ -17,10 +17,10 @@ export default function Admin() {
 		  <Flex marginTop='2vh' width='100 vw' flexDir='column' alignItems='center'>
 			<AdminSettingsUser width='90%' />
 			<AdminSettingsNext width='90%' marginY='16px' />
-			<AdminSettings width='90%' marginY='16px' maxHeight='40vh'/>
+			<AdminSettings width='90%' marginY='16px' maxHeight='50vh'/>
 		  </Flex>
 
-        </Flex>
+      </Flex>
       </ProfileProvider>
   );
 }

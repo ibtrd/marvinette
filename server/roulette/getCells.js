@@ -27,7 +27,7 @@ async function getCells() {
     
   } catch (error) {
     console.error("Error fetching google sheet:", error);
-    return null; // Or handle error as needed
+    // return null; // Or handle error as needed
   }
 }
 

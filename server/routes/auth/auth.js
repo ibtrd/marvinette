@@ -3,8 +3,6 @@ const authRouter = express.Router();
 const { getAuthUrl } = require("../../auth/getAuthUrl");
 const { callback } = require("../../auth/callback");
 const LoginQueue = require("./LoginQueue");
-const isAdmin = require("../../middleware/isAdmin");
-const { sessionsStore } = require("../../auth/sessions");
 
 const queue = new LoginQueue(1000);
 
@@ -37,17 +35,5 @@ authRouter.get('/logout', (req, res) => {
 		}
 	});
 });
-
-authRouter.get('/destroy-all-sessions', isAdmin, async (req, res) => {
-	try {
-		sessionsStore.clear();
-		console.log(`All sessions destroyed by ${req.session.user.login}`)
-		res.send("All sessions destroyed");
-	} catch (err) {
-		console.error(err);
-		res.status(500).send("Error occured while destroying sessions");
-	}
-});
-
 
 module.exports = authRouter;

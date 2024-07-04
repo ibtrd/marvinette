@@ -3,7 +3,7 @@ const router = express.Router();
 const path = require('path');
 const sendIndex = require('./sendIndex');
 
-const isLoggedIn = require('../middleware/isLoggedIn');
+const { isLoggedIn, isLoggedOut } = require('../middleware/isLoggedIn');
 const isAdmin = require("../middleware/isAdmin");
 
 const authRouter = require("./auth/auth");
@@ -18,9 +18,9 @@ router.use('/auth', authRouter);
 router.use('/wheel', isLoggedIn, isGameActive, wheelRouter);
 router.use('/admin', isAdmin, adminRouter);
 
-router.get('/login', sendIndex);
+router.get('/login', isLoggedOut, sendIndex);
 router.get('/nofun', sendIndex);
-router.get('/admin', isAdmin, sendIndex)
+router.get('/admin', isAdmin, sendIndex);
 router.get('/me', isLoggedIn, sendProfile);
 router.get('/rewards/:secret', sendRewards)
 router.get('/stats', isLoggedIn, sendStats);
