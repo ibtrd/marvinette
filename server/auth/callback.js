@@ -2,6 +2,7 @@ const axios = require('axios');
 const { oauthConfig, administrators, userSettings, piscineCoalitions } = require("../auth/config");
 const { getIntraUser } = require("../auth/getIntraUser");
 const Profile = require('../mongo_models/Profile');
+const ServerLogs = require('../mongo_models/ServerLogs');
 
 module.exports.callback = async function callback(req, res) {
     const { code } = req.query;
@@ -52,7 +53,7 @@ module.exports.callback = async function callback(req, res) {
       const filter = {id: account.id, login: account.login};
       const options = { new: true, upsert: true };
       const user = await Profile.findOneAndUpdate(filter, account, options);
-      console.log(`User ${user.login} logged in. (${user.coalition})`);
+      ServerLogs.authentification(user);
       req.session.user = {
         id: intraUser.id,
         login: intraUser.login,

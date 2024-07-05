@@ -4,6 +4,7 @@ const { rouletteCells } = require("../roulette/rouletteCells");
 const Rewards = require("./Rewards");
 const Settings = require("./Settings");
 const { piscineCoalitions } = require("../auth/config");
+const ServerLogs = require("./ServerLogs");
 
 const profileSchema = new mongoose.Schema({
   id: { type: Number, required: true },
@@ -102,7 +103,8 @@ profileSchema.methods.spin = async function(cells, index) {
     nextSpin: this.lastSpin + (parseInt(cooldown.value) * 1000),
   }
   await this.save();
-  Rewards.addOne(this, cells[goal], forced, spinReward.img, spinReward.alt);
+  const reward = await Rewards.addOne(this, cells[goal], forced, spinReward.img, spinReward.alt);
+  ServerLogs.reward(this, reward, goal, cells[goal].name, forced);
   return { goal, ...spinReward};
 };
 

@@ -4,6 +4,7 @@ const Profile = require("../../mongo_models/Profile");
 const { rouletteCells } = require("../../roulette/rouletteCells");
 const Settings = require("../../mongo_models/Settings");
 const { sessionsStore } = require("../../auth/sessions");
+const ServerLogs = require("../../mongo_models/ServerLogs");
 
 adminRouter.post('/global', forceGlobalGoal);
 adminRouter.post('/force', forceGoal)
@@ -26,11 +27,12 @@ async  function forceGoal(req, res) {
   if (index < -1 || index > rouletteCells.cells.length - 1)
     return res.status(400).send("Value out of range");
   profile.force(index);
-  if (index === -1) {
-    console.log(`ADMIN ${req.session.user.login} REMOVED FORCE ${profile.login}`);
-  } else {
-    console.log(`ADMIN ${req.session.user.login} FORCED ${profile.login}: ${index}`);
-  }
+  ServerLogs.force(
+    Profile.findByLogin(req.session.user.login),
+    profile.login,
+    index,
+    index !== -1 ? rouletteCells.cells[index].name : null
+  );
   res.send("User forced");
 }
 
@@ -44,11 +46,16 @@ async function forceGlobalGoal(req, res) {
     { key: "force", value: index.toString() },
     { upsert: true }
   );
-  console.log(`ADMIN ${req.session.user.login} FORCED GLOBAL: ${index}`);
+  ServerLogs.force(
+    Profile.findByLogin(req.session.user.login),
+    "GLOBAL",
+    index,
+    index !== -1 ? rouletteCells.cells[index].name : null
+  );
   res.send();
 }
 
-adminRouter.get("/settings/:key", async (req, res) => {
+adminRouter.get('/settings/:key', async (req, res) => {
   
   const settings = await Settings.findOne({ key: req.params.key });
   if(settings === null) {
@@ -58,7 +65,7 @@ adminRouter.get("/settings/:key", async (req, res) => {
   }
 });
 
-adminRouter.post("/settings/:key", async (req, res) => {
+adminRouter.post('/settings/:key', async (req, res) => {
   const settings = await Settings.findOne({ key: req.params.key });
   if(settings && req.body.value) {
     console.log(`ADMIN ${req.session.user.login} changed settings ${req.params.key} to ${req.body.value}`);
@@ -71,7 +78,7 @@ adminRouter.post("/settings/:key", async (req, res) => {
   }
 });
 
-adminRouter.get("/logout-all", async (req, res) => {
+adminRouter.get('/logout-all', async (req, res) => {
   try {
     sessionsStore.clear();
     console.log(`All sessions destroyed by ${req.session.user.login}`);
@@ -79,6 +86,27 @@ adminRouter.get("/logout-all", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).send("Error occured while destroying sessions");
+  }
+});
+
+adminRouter.get('/logs', async (req, res) => {
+  try {
+    const query = await ServerLogs.find({}).sort({ timestamp: -1 }).limit(50);
+    const logs = query.map(log => {
+      const formattedDate = log.timestamp.toLocaleString("fr-FR", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      });
+      return formattedDate + " " + log.message;
+    });
+    res.send(logs);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error occured while fetching logs");
   }
 });
 
