@@ -27,6 +27,8 @@ randomPrizesSchema.statics.loadDefaults = async function () {
 
 randomPrizesSchema.statics.getOne = async function () {
   const query = await this.find({ stock: { $ne: 0 }});
+  if (!query || query.length === 0)
+    return ("Sorry, try again next time"); 
   const selected = query[Math.floor(Math.random() * query.length)];
   console.log(selected);
   if (selected.stock === -1) {

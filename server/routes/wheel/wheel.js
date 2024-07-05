@@ -45,11 +45,6 @@ async function sendGoal(req, res) {
     } else {
       goal = await profile.spin(rouletteCells.cells);
     }
-    console.log(
-      `${req.session.user.login}[${profile.spins}] spin:`,
-      goal.goal,
-      rouletteCells.cells[goal.goal].name
-    );
     res.send(goal);
   }
 }

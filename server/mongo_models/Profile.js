@@ -4,6 +4,7 @@ const { rouletteCells } = require("../roulette/rouletteCells");
 const Rewards = require("./Rewards");
 const Settings = require("./Settings");
 const { piscineCoalitions } = require("../auth/config");
+const ServerLogs = require("./ServerLogs");
 const RandomPrizes = require("./RandomPrizes");
 
 const profileSchema = new mongoose.Schema({
@@ -105,7 +106,8 @@ profileSchema.methods.spin = async function(cells, index) {
   if (spinReward.description === "[RAMDOMPRIZE]")
     spinReward.description = await RandomPrizes.getOne();
   await this.save();
-  Rewards.addOne(this, cells[goal], forced, spinReward.img, spinReward.alt);
+  const reward = await Rewards.addOne(this, cells[goal], forced, spinReward.img, spinReward.alt);
+  ServerLogs.reward(this, reward, goal, cells[goal].name, forced);
   return { goal, ...spinReward};
 };
 
