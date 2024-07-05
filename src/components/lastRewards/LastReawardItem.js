@@ -7,6 +7,8 @@ export default function LastRewardsItem({reward, ...props}) {
 			{...props}
 			alignItems='center'
 			justifyContent='space-between'
+			as='a'
+			href={`https://profile.intra.42.fr/users/${reward.login}`}
 		>
 			<Flex
 				align='center'

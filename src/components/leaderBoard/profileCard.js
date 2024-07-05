@@ -10,6 +10,8 @@ export default function ProfileCard({user, rank, ...props}) {
 			alignItems='center'
 			gap='0'
 			marginInline='24px'
+			as='a'
+			href={`https://profile.intra.42.fr/users/${user.login}`}
 		>
 			<Heading
 				size='sm'
@@ -47,6 +49,8 @@ export default function ProfileCard({user, rank, ...props}) {
 			{...props}
 			alignItems='center'
 			justifyContent='space-between'
+			as='a'
+			href={`https://profile.intra.42.fr/users/${user.login}`}
 		>
 			<Flex
 				alignItems='center'
