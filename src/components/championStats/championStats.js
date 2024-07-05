@@ -13,6 +13,8 @@ export default function ChampionStats({champion, ...props}) {
 			bgImage='url(/background.jpg)'
 			bgSize='cover'
 			flexDir='row'
+			as='a'
+			href={`https://profile.intra.42.fr/users/${champion.login}`}
 		>
 			<Center
 				flex='1'
@@ -23,7 +25,7 @@ export default function ChampionStats({champion, ...props}) {
 				<Avatar
 					size='xl'
 					src={champion.img}
-					name={champion.name}
+					name={champion.login}
 				>
 					<Image
 						src='https://cdn-icons-png.flaticon.com/512/2385/2385856.png'
