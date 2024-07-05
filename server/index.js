@@ -10,6 +10,7 @@ const { sessionMiddleware } = require('./auth/sessions');
 const router = require('./routes/router');
 const initSettings = require('./settings/initSettings');
 const { rouletteInterval } = require('./roulette/rouletteCells'); 
+const RandomPrizes = require('./mongo_models/RandomPrizes');
 
 const app = express();
 
@@ -42,6 +43,7 @@ mongoose
     console.log("Connected to MongoDB");
     // Initialisation
     await initSettings();
+    await RandomPrizes.loadDefaults();
     await rouletteInterval().then(() =>
       console.log("Wheel loaded form Google Sheets"))
     // Starts server
