@@ -65,6 +65,7 @@ rewardsSchema.statics.addOne = async function (profile, cell, forced, img, alt) 
     peperotig: cell.reward.peperotig,
     achievement: cell.reward.achievement,
     forced: forced,
+    extracted: cell.reward.intraLog === 'FALSE'
   };
   await this.create(reward);
 };
