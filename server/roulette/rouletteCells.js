@@ -16,5 +16,5 @@ module.exports.rouletteInterval = async function rouletteInterval() {
 			rouletteCells.hash = hash;
 			console.log('WHEEL UPDATE');
 		}
-	}, 10000)
+	}, 30000)
 }
