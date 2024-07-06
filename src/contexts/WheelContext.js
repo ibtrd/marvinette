@@ -36,6 +36,7 @@ export const WheelProvider = ({ children }) => {
 			}
 		};
 		fetchData();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const getGoal = async () => {
