@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { piscineCoalitions } = require("../auth/config");
 
 const rewardsSchema = new mongoose.Schema({
   profile: { type: mongoose.Schema.Types.ObjectId, ref: "Profile" },
@@ -33,6 +34,75 @@ rewardsSchema.statics.getCurrentChampion = async function (year, month) {
       return document.profile;
   }
   return null
+}
+
+rewardsSchema.statics.getTotalTig = async function (year, month) {
+  const query = await this.find({peperotig: "1"}).populate('profile');
+  let total = 0;
+  query.forEach( entry => {
+    if (entry.profile.poolYear === year && entry.profile.poolMonth === month)
+      total += 1;
+  });
+  return total;
+}
+
+rewardsSchema.statics.getTotalAchievement = async function (year, month) {
+  const query = await this.find({ achievement: "1" }).populate("profile");
+  let total = 0;
+  query.forEach((entry) => {
+    if (entry.profile.poolYear === year && entry.profile.poolMonth === month)
+      total += 1;
+  });
+  return total;
+};
+
+rewardsSchema.statics.getTotalAltarian = async function (year,month) {
+  const query = await this.find({ altarianDollar: "1" }).populate("profile");
+  let total = 0;
+  query.forEach((entry) => {
+    if (entry.profile.poolYear === year && entry.profile.poolMonth === month)
+      total += 1;
+  });
+  return total;
+};
+
+rewardsSchema.statics.getTotalEvalPts = async function (year, month) {
+  const query = await this.find({
+    evaluationPoint: { $ne: "" },
+  }).populate("profile");
+  let gained = 0;
+  let lost = 0
+  query.forEach((entry) => {
+    if (entry.profile.poolYear === year && entry.profile.poolMonth === month) {
+      if (entry.evaluationPoint === "-1") {
+        gained += 1;
+      } else if (entry.evaluationPoint === "1") {
+        lost += 1;
+      }
+    }
+  });
+  return {gained, lost};
+};
+
+rewardsSchema.statics.getTotalCoaPts = async function (year, month) {
+  const query = await this.find({coalitionPoints: { $ne: "" }}).populate("profile");
+  const coalitions = piscineCoalitions.map((coa) => {
+    return { name: coa.name, id: coa.id, gained: 0, lost: 0 };
+  })
+  query.forEach((entry) => {
+    if (entry.profile.poolYear === year && entry.profile.poolMonth === month) {
+      const coa = coalitions.find( coa => coa.id === parseInt(entry.coalitionTo));
+      const value = parseInt(entry.coalitionPoints);
+      console.log(entry.coalitionPoints);
+      if (value > 0) {
+        coa.gained += value;
+      } else if (value < 0) {
+        coa.lost += value;
+      }
+    }
+  });
+  coalitions.forEach(coa => delete coa.id);
+  return coalitions;
 }
 
 rewardsSchema.statics.getLastRewards = async function (year, month) {

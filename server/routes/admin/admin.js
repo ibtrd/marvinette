@@ -5,6 +5,7 @@ const { rouletteCells } = require("../../roulette/rouletteCells");
 const Settings = require("../../mongo_models/Settings");
 const { sessionsStore } = require("../../auth/sessions");
 const ServerLogs = require("../../mongo_models/ServerLogs");
+const Rewards = require("../../mongo_models/Rewards");
 
 adminRouter.post('/global', forceGlobalGoal);
 adminRouter.post('/force', forceGoal)
@@ -107,6 +108,26 @@ adminRouter.get('/logs', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).send("Error occured while fetching logs");
+  }
+});
+
+adminRouter.get('/stats', async (req, res) => {
+  try {
+    const [poolYear, poolMonth] = await Promise.all([
+      Settings.getPoolYear(),
+      Settings.getPoolMonth(),
+    ])
+    const [tig, achievement, altarian, evalPts, coaPts] = await Promise.all([
+      Rewards.getTotalTig(poolYear, poolMonth),
+      Rewards.getTotalAchievement(poolYear, poolMonth),
+      Rewards.getTotalAltarian(poolYear, poolMonth),
+      Rewards.getTotalEvalPts(poolYear, poolMonth),
+      Rewards.getTotalCoaPts(poolYear, poolMonth),
+    ]);
+    res.send({ tig, achievement, altarian, evalPts, coaPts});
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error retrieving admin stats");
   }
 });
 
