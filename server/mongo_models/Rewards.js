@@ -74,9 +74,9 @@ rewardsSchema.statics.getTotalEvalPts = async function (year, month) {
   let lost = 0
   query.forEach((entry) => {
     if (entry.profile.poolYear === year && entry.profile.poolMonth === month) {
-      if (entry.evaluationPoint === "-1") {
+      if (entry.evaluationPoint === "1") {
         gained += 1;
-      } else if (entry.evaluationPoint === "1") {
+      } else if (entry.evaluationPoint === "-1") {
         lost += 1;
       }
     }
