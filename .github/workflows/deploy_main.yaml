@@ -12,22 +12,12 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
-
-    - name: Start SSH agent
-      uses: webfactory/ssh-agent@v0.9.0
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
     
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
         node-version: 22.2
       
-    - name: Connect to VPS using SSH
-      run: ssh $VPS_USER@$VPS_HOST
-      env:
-        VPS_USER: ${{ secrets.VPS_USER }}
-        VPS_HOST: ${{ secrets.VPS_HOST }}
       
     # - name: Install dependencies
     #   run: npm install
@@ -35,10 +25,13 @@ jobs:
     # - name: Build project
     #   run: npm run build
       
-    # - name: Transfer files via SCP
-    #   run: scp -P $VPS_PORT -r ./build/ $VPS_USER@$VPS_HOST:$VPS_SPC_DIR
-    #   env:
-    #     VPS_USER: ${{ secrets.VPS_USER }}
-    #     VPS_HOST: ${{ secrets.VPS_HOST }}
-    #     VPS_PORT: ${{ secrets.VPS_PORT }}
-    #     VPS_SCP_DIR: ${{ secrets.VPS_SCP_DIR }}
+    - name: Transfer files via SCP
+      env:
+        VPS_USER: ${{ secrets.VPS_USER }}
+        VPS_HOST: ${{ secrets.VPS_HOST }}
+        VPS_PORT: ${{ secrets.VPS_PORT }}
+        VPS_SCP_DIR: ${{ secrets.VPS_SCP_DIR }}
+      run: |
+        echo "test" > somefile
+        scp -o StrictHostKeyChecking=no -r ./somefile $VPS_USER@$VPS_HOST:$VPS_SPC_DIR
+
