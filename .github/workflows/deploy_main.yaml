@@ -29,6 +29,8 @@ jobs:
           /usr/local/nvm/versions/node/v22.3.0/bin/npm i
           rm -rf build/
           /usr/local/nvm/versions/node/v22.3.0/bin/npm run build
-          rm -rf /srv/marvinette/deploy/*
+          rm -rf /srv/marvinette/deploy/server/
+          rm -rf /srv/marvinette/deploy/build
+          rm -rf /srv/marvinette/deploy/node_modules/
           cp -r server/ build/ node_modules/ /srv/marvinette/deploy
           sudo /usr/bin/systemctl restart marvinette
