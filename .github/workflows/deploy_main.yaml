@@ -1,36 +1,25 @@
-name: deploy_main
+name: Deploy to VPS
 
 on:
-  workflow_dispatch:
-  # push:
-  #   branches: [ "main" ]
+    workflow_dispatch:
+    push:
+        branches: [ "main" ]
 
 jobs:
   build:
-    name: pull
     runs-on: ubuntu-22.04
-    steps:
-    - name: shh git pull and service restart
-      uses: appleboy/ssh-action@v1.0.3
-      env:
-        MARVINETTE_DIR: ${{ vars.MARVINETTE_DIR }}
-        MARVINETTE_BUILD_DIR : ${{ vars.MARVINETTE_BUILD_DIR }}
 
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
       with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
-        script_stop: true
-        envs : MARVINETTE_DIR MARVINETTE_BUILD_DIR
-        script: |
-          cd /srv/marvinette/repository
-          git fetch origin main
-          git merge origin/main
-          /usr/local/nvm/versions/node/v22.3.0/bin/npm i
-          rm -rf build/
-          /usr/local/nvm/versions/node/v22.3.0/bin/npm run build
-          rm -rf /srv/marvinette/deploy/server/
-          rm -rf /srv/marvinette/deploy/build
-          rm -rf /srv/marvinette/deploy/node_modules/
-          cp -r server/ build/ node_modules/ /srv/marvinette/deploy
-          sudo /usr/bin/systemctl restart marvinette
+        node-version: 22.2
+      
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build project
+      run: npm run build
