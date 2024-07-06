@@ -13,6 +13,7 @@ export default function RouletteWheel({size}) {
 	useEffect(() => {
 		if (goal)
 			wheelSpin()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [goal]);
 
 	return (

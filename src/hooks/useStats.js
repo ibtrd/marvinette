@@ -19,6 +19,7 @@ export const useStats = () => {
 
 	useEffect(() => {
 		getStats();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return { stats };

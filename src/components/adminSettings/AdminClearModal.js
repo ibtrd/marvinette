@@ -3,8 +3,6 @@ import {Modal,
 	ModalContent,
 	ModalHeader,
 	ModalFooter,
-	ModalBody,
-	Text,
 	Button,
 	ModalCloseButton } from '@chakra-ui/react';
 import { useError } from '../../hooks/useError';

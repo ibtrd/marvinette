@@ -34,6 +34,7 @@ export default function RewardModal() {
 		return () => {
 			clearInterval(timer);
 		}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [reward]);
 
 	const [spring, api] = useSpring(() => ({

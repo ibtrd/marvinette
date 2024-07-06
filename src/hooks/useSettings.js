@@ -13,6 +13,7 @@ export const useSettings = (key) => {
 			setValue(data);
 		};
 		fetchValue();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const updateValue = async () => {
