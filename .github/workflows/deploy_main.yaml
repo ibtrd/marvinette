@@ -37,4 +37,4 @@ jobs:
         mkdir -p ~/.ssh
         echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
-        scp -P $VPS_PORT -r ./build/ $VPS_USER@$VPS_HOST:VPS_SCP_DIR
+        scp -o StrictHostKeyChecking=no -P $VPS_PORT -r ./build/ $VPS_USER@$VPS_HOST:VPS_SCP_DIR
