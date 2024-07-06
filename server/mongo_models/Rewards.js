@@ -70,18 +70,18 @@ rewardsSchema.statics.getTotalEvalPts = async function (year, month) {
   const query = await this.find({
     evaluationPoint: { $ne: "" },
   }).populate("profile");
-  let gained = 0;
-  let lost = 0
+  let gain = 0;
+  let loss = 0
   query.forEach((entry) => {
     if (entry.profile.poolYear === year && entry.profile.poolMonth === month) {
       if (entry.evaluationPoint === "1") {
-        gained += 1;
+        gain += 1;
       } else if (entry.evaluationPoint === "-1") {
-        lost += 1;
+        loss += 1;
       }
     }
   });
-  return {gained, lost};
+  return {gain, loss};
 };
 
 rewardsSchema.statics.getTotalCoaPts = async function (year, month, date = 0) {
@@ -90,7 +90,7 @@ rewardsSchema.statics.getTotalCoaPts = async function (year, month, date = 0) {
     timestamp: { $gt: date },
   }).populate("profile");
   const coalitions = piscineCoalitions.map((coa) => {
-    return { name: coa.name, id: coa.id, special: 0, member: { gained: 0, lost: 0 } };
+    return { name: coa.name, id: coa.id, special: 0, member: { gain: 0, loss: 0 } };
   })
   query.forEach((entry) => {
     if (entry.profile.poolYear === year && entry.profile.poolMonth === month) {
@@ -99,9 +99,9 @@ rewardsSchema.statics.getTotalCoaPts = async function (year, month, date = 0) {
       if (value === 100) {
         coa.special += value;
       } else if (value > 0) {
-        coa.member.gained += value;
+        coa.member.gain += value;
       } else if (value < 0) {
-        coa.member.lost += value;
+        coa.member.loss += value;
       }
     }
   });
