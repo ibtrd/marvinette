@@ -84,20 +84,24 @@ rewardsSchema.statics.getTotalEvalPts = async function (year, month) {
   return {gained, lost};
 };
 
-rewardsSchema.statics.getTotalCoaPts = async function (year, month) {
-  const query = await this.find({coalitionPoints: { $ne: "" }}).populate("profile");
+rewardsSchema.statics.getTotalCoaPts = async function (year, month, date = 0) {
+  const query = await this.find({
+    coalitionPoints: { $ne: "" },
+    timestamp: { $gt: date },
+  }).populate("profile");
   const coalitions = piscineCoalitions.map((coa) => {
-    return { name: coa.name, id: coa.id, gained: 0, lost: 0 };
+    return { name: coa.name, id: coa.id, special: 0, member: { gained: 0, lost: 0 } };
   })
   query.forEach((entry) => {
     if (entry.profile.poolYear === year && entry.profile.poolMonth === month) {
       const coa = coalitions.find( coa => coa.id === parseInt(entry.coalitionTo));
       const value = parseInt(entry.coalitionPoints);
-      console.log(entry.coalitionPoints);
-      if (value > 0) {
-        coa.gained += value;
+      if (value === 100) {
+        coa.special += value;
+      } else if (value > 0) {
+        coa.member.gained += value;
       } else if (value < 0) {
-        coa.lost += value;
+        coa.member.lost += value;
       }
     }
   });
@@ -106,7 +110,7 @@ rewardsSchema.statics.getTotalCoaPts = async function (year, month) {
 }
 
 rewardsSchema.statics.getLastRewards = async function (year, month) {
-  const query = await this.find({ timestamp: { $lt: Date.now() - 20000 }})
+  const query = await this.find({ timestamp: { $lt: Date.now() - 20000 } })
   .populate('profile')
   .sort({ timestamp: -1 })
   .limit(20);
