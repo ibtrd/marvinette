@@ -44,16 +44,21 @@ export const WheelProvider = ({ children }) => {
 			return;
 		setReward(null);
 		const response = await fetch(`/wheel/goal/${hash}`);
-		const data = await response.json();
-		if (response.ok)
-		{
-			setGoal(data);
-			return data;
+		try {
+			const data = await response.json();
+			if (response.ok)
+			{
+				setGoal(data);
+				return data;
+			}
+			else {
+				showError(data.error);
+			}
+			return null;
 		}
-		else {
-			showError(data.error);
+		catch (e) {
+			window.location.reload();
 		}
-		return null;
 	}
 
 	const handleReward = async (reward) => {

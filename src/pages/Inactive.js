@@ -1,12 +1,15 @@
 import { Center, Heading, Image, Text, Link } from "@chakra-ui/react";
 import Profile from "../components/profile/Profile";
-import { ProfileProvider } from "../contexts/ProfileContext";
+import { ProfileContext, ProfileProvider } from "../contexts/ProfileContext";
 import StatsBanner from "../components/statsBanner/statsBanner";
+import CooldownButton from "../components/cooldownButton/cooldownButton";
+import { useContext } from "react";
 
 export default function Inactive() {
 
+  const {me} = useContext(ProfileContext);
+
   return (
-    <ProfileProvider>
       <Center width="100vw" height="100vh" flexDir="column">
         <Profile
           position="absolute"
@@ -36,6 +39,13 @@ export default function Inactive() {
           <br />
           Have fun on Rush00 :)
         </Text>
+        {me && me.statusTimeout &&
+        <CooldownButton
+          timeout={new Date(me.statusTimeout).getTime()}
+          onClick={() => window.location.reload()}
+        >
+          Play Marvinette
+        </CooldownButton>}
         <Text
           color={"gray.400"}
           position={"absolute"}
@@ -45,6 +55,5 @@ export default function Inactive() {
           Developed by <Link href="https://profile.intra.42.fr/users/ibertran">ibertran</Link> && <Link href="https://profile.intra.42.fr/users/bwisniew"> bwisniew </Link>
         </Text>
       </Center>
-    </ProfileProvider>
   );
 }

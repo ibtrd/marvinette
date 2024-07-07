@@ -4,5 +4,6 @@
     "poolMonth": "july",
     "poolStatus": "inactive",
     "force": "-1",
-    "gameStatus": "active"
+    "gameStatus": "active",
+    "statusTimeout": "-1"
 }
