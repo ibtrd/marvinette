@@ -46,3 +46,8 @@
 	left: 50%;
 	transform: translateY(-50%) translateX(-50%);
 }
+
+.RewardModal h1{
+	font-weight: 600;
+	margin: 8px 0;
+}

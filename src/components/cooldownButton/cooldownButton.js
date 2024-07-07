@@ -1,4 +1,4 @@
-import { Button, Card, Center, Flex, Heading, Image, Stack, Text } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 export default function CooldownButton({timeout, children, ...props}) {

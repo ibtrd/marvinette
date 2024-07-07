@@ -1,42 +1,38 @@
 const mongoose = require("mongoose");
-const defaultPrizes = require("../randomPrizes/defaultPrizes");
+const getDefaultPrizes = require("../randomPrizes/defaultPrizes");
 
 const randomPrizesSchema = new mongoose.Schema({
-  defaultId: { type: Number, unique: true },
-  type: { type: String, required: true },
+  id: { type: Number, unique: true },
+  category: { type: String, required: true },
+  title: { type: String },
   message: { type: String, required: true },
   stock: { type: Number, default: -1 },
 });
 
-// randomPrizesSchema.static.addOne = async function (type, message, stock) {
-//     this.create({
-//         type,
-//         message,
-//         stock
-//     });
-// }
-
 randomPrizesSchema.statics.loadDefaults = async function () {
-  for (const prize of defaultPrizes) {
-    await this.findOneAndUpdate({ defaultId: prize.id }, prize, {
+  for (const prize of await getDefaultPrizes()) {
+    await this.findOneAndUpdate({ id: prize.id }, prize, {
       upsert: true,
       setDefaultsOnInsert: true,
     });
   }
 };
 
-randomPrizesSchema.statics.getOne = async function () {
-  const query = await this.find({ stock: { $ne: 0 }});
+randomPrizesSchema.statics.getOne = async function (category) {
+  const query = await this.find({ category , stock: { $ne: 0 }});
   if (!query || query.length === 0)
-    return ("Sorry, try again next time"); 
+    return ({
+      description: "Sorry, try again next time",
+    }); 
   const selected = query[Math.floor(Math.random() * query.length)];
-  console.log(selected);
-  if (selected.stock === -1) {
-    return (selected.type + ': ' + selected.message);
+  if (selected.stock > 0) {
+    selected.stock--;
+    await selected.save();
   }
-  selected.stock--;
-  await selected.save();
-  return selected.type + ': ' + selected.message;
+  return ({
+    title: selected.title,
+    description: selected.message,
+  });
 };
 
 const RandomPrizes = mongoose.model("RandomPrizes", randomPrizesSchema);

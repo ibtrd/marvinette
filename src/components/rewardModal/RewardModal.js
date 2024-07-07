@@ -85,7 +85,8 @@ export default function RewardModal() {
           <animated.div div className='RewardModal' style={{...spring}}>
               <div className='RewardModalContainer'>
                 <img src={reward.img ? reward.img : 'https://cdn-icons-png.flaticon.com/512/10466/10466199.png'} alt={reward.alt ? reward.alt : 'hour glass'} />
-                <p>{reward.description ? reward.description : 'You are in cooldown...'}</p>
+                {reward.title && <h1>{reward.title}</h1>}
+                {reward.description ? <p dangerouslySetInnerHTML={{__html: reward.description}} /> : <p>You are in cooldown...</p>}
               </div>
             <Button
               colorScheme='blue' onClick={() => onClick()}
