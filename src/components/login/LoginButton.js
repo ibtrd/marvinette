@@ -19,6 +19,7 @@ export default function LoginButton({...props}) {
 			}, 20000);
 			return () => clearTimeout(timer);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isLoading]);
 
 	const handleLogin = () => {

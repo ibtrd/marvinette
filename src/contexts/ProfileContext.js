@@ -20,6 +20,7 @@ export const ProfileProvider = ({ children }) => {
 				showError("Couldn't fetch profile. Please try again later.");
 		};
 		fetchData();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
