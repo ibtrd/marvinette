@@ -51,7 +51,7 @@ export default function ChampionStats({champion, ...props}) {
 					{champion.login}
 				</Heading>
 				<Text>
-					The Marvinette Champion
+					Current Champion
 				</Text>
 			</Stack>
 		</Card>
