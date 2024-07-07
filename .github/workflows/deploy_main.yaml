@@ -18,24 +18,39 @@ jobs:
       with:
         node-version: 22.2
       
-      
-    # - name: Install dependencies
-    #   run: npm install
+    - name: Install dependencies
+      run: npm install
 
-    # - name: Build project
-    #   run: npm run build
-      
+    - name: Build project
+      run: npm run build
+
+    - name: copy SSH key
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      run: |
+        mkdir ~/.ssh
+        echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        
     - name: Transfer files via SCP
       env:
         VPS_USER: ${{ secrets.VPS_USER }}
         VPS_HOST: ${{ secrets.VPS_HOST }}
         VPS_PORT: ${{ secrets.VPS_PORT }}
         VPS_SCP_DIR: ${{ secrets.VPS_SCP_DIR }}
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      run: |
-        mkdir ~/.ssh
-        echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        echo "test" > somefile
-        scp -o StrictHostKeyChecking=no -r ./somefile $VPS_USER@$VPS_HOST:$VPS_SPC_DIR
+      run: scp -o StrictHostKeyChecking=no -r node_modules/ server/ build/ $VPS_USER@$VPS_HOST:$VPS_SPC_DIR
 
+    - name: Restart Marvinette service
+      env:
+        VPS_USER: ${{ secrets.VPS_USER }}
+        VPS_HOST: ${{ secrets.VPS_HOST }}
+        VPS_PORT: ${{ secrets.VPS_PORT }}
+        SRCS_DIR: ${{ vars.MARVINETTE_DIR }}
+        DEST_DIR : ${{ vars.MARVINETTE_BUILD_DIR }}
+      run: |
+        ssh -o StrictHostKeyChecking=no $VPS_USER@$VPS_HOST
+        cd /srv/marvinette/deploy
+        rm -rf node_modules/ server/ build
+        cp -r ~/.scp/marvinette/* .
+        sudo /usr/bin/systemctl restart marvinette
+        rm -rf ~/.scp/marvinette/*
