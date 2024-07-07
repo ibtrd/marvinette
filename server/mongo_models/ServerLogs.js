@@ -86,7 +86,26 @@ serverLogsSchema.statics.force = async function (query, target, index, descripti
       `: FORCED@${target}` +
       `: ${description} (${index})`;
     const entry = new ServerLogs({
-      category: "force",
+      category: "admin",
+      message,
+      profile,
+    });
+    await entry.save();
+    console.log(message);
+  } catch (err) {
+    console.error("Error saving log entry:", err);
+  }
+};
+
+serverLogsSchema.statics.setting = async function (query, key, value) {
+  try {
+    const profile = await query;
+    let message =
+      `${profile.login}#${profile.id}`.padStart(15, " ") +
+      `: SET@${key}` +
+      `: ${value}`;
+    const entry = new ServerLogs({
+      category: "admin",
       message,
       profile,
     });

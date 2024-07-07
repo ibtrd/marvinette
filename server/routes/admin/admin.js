@@ -57,10 +57,9 @@ async function forceGlobalGoal(req, res) {
 }
 
 adminRouter.get('/settings/:key', async (req, res) => {
-  
   const settings = await Settings.findOne({ key: req.params.key });
   if(settings === null) {
-    return res.status(404).send("Settings not found");
+    return res.status(404).send(`${req.params.key} setting not found`);
   } else {
     res.send(JSON.stringify(settings.value));
   }
@@ -69,13 +68,17 @@ adminRouter.get('/settings/:key', async (req, res) => {
 adminRouter.post('/settings/:key', async (req, res) => {
   const settings = await Settings.findOne({ key: req.params.key });
   if(settings && req.body.value) {
-    console.log(`ADMIN ${req.session.user.login} changed settings ${req.params.key} to ${req.body.value}`);
     settings.value = req.body.value;
     await settings.save();
+    ServerLogs.setting(
+      Profile.findByLogin(req.session.user.login),
+      req.params.key,
+      req.body.value,
+    );
     res.send();
   }
   else {
-    return res.status(400).send("Settings not found");
+    return res.status(400).send(`${req.params.key} setting not found`);
   }
 });
 
