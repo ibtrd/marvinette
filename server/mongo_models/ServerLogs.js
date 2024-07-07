@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const logsConfig = require("../settings/logsConfig.json");
 
 const serverLogsSchema = new mongoose.Schema({
   timestamp: {
@@ -9,14 +10,16 @@ const serverLogsSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    enum: ["authentification", "reward", "force"],
+    enum: logsConfig.categories,
     required: true,
   },
-  message: { type: String, require: true },
+  message: {
+    type: String,
+    require: true
+  },
   profile: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Profile",
-    require: true,
   },
   reward: {
     type: mongoose.Schema.Types.ObjectId,
@@ -36,6 +39,21 @@ serverLogsSchema.statics.authentification = async function (profile) {
     console.log(message);
   } catch (err) {
     console.error('Error saving log entry:', err)
+  }
+};
+
+serverLogsSchema.statics.authentificationFailure = async function (login, id) {
+  try {
+    const message =
+      `${login}#${id}`.padStart(15, " ") + ": tried to log in";
+    const entry = new ServerLogs({
+      category: "authentificationFailure",
+      message,
+    });
+    await entry.save();
+    console.log(message);
+  } catch (err) {
+    console.error("Error saving log entry:", err);
   }
 };
 
@@ -78,7 +96,6 @@ serverLogsSchema.statics.force = async function (query, target, index, descripti
     console.error("Error saving log entry:", err);
   }
 };
-
 
 const ServerLogs = mongoose.model("ServerLogs", serverLogsSchema);
 

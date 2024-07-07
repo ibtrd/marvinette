@@ -4,7 +4,7 @@ const { getAuthUrl } = require("../../auth/getAuthUrl");
 const { callback } = require("../../auth/callback");
 const LoginQueue = require("./LoginQueue");
 
-const queue = new LoginQueue(1000);
+const queue = new LoginQueue(1500);
 
 authRouter.get('/status', (req, res) => {
 	if (req.session.user) {
