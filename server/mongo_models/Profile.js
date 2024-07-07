@@ -92,7 +92,7 @@ profileSchema.methods.spin = async function(cells, index) {
   } else {
     goal = randGoal(rouletteCells.cells);
   }
-  const cooldown = await Settings.findByKey('cooldown');
+  const cooldown = await Settings.getCooldown();
   this.lastSpin = Date.now();
   this.spins++;
   const spinReward = {
@@ -101,7 +101,7 @@ profileSchema.methods.spin = async function(cells, index) {
     description: cells[goal].description,
     particles: cells[goal].particles,
     color: cells[goal].color,
-    nextSpin: this.lastSpin + (parseInt(cooldown.value) * 1000),
+    nextSpin: this.lastSpin + (cooldown * 1000),
   }
   if (spinReward.description === "[RAMDOMPRIZE]")
     spinReward.description = await RandomPrizes.getOne();

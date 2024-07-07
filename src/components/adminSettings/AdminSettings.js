@@ -10,6 +10,7 @@ export default function AdminSettings({...props}) {
 	const [poolMonth, setPoolMonth, updatePoolMonth] = useSettings('poolMonth');
 	const [poolStatus, setPoolStatus, updatePoolStatus] = useSettings('poolStatus');
 	const [gameStatus, setGameStatus, updateGameStatus] = useSettings('gameStatus');
+	const [statusTimeout, setStatusTimeout, updateStatusTimeout] = useSettings('statusTimeout');
 
 	const {isOpen , onOpen, onClose} = useDisclosure();
 
@@ -60,6 +61,17 @@ export default function AdminSettings({...props}) {
 					<option value='inactive'>Inactive</option>
 				</Select>
 				<IconButton icon={<FontAwesomeIcon icon='check' />} onClick={() => updateGameStatus()} />
+			</FormControl>
+
+			<FormControl width='100%' marginY='8px' display='flex' alignItems='center'>
+				<FormLabel>Game Status timeout</FormLabel>
+				<Input value={statusTimeout === "-1" ? "" : statusTimeout} onChange={(e) => {
+					if (e.target.value === '' || new Date(e.target.value).getTime() < Date.now())
+						setStatusTimeout({target: {value: '-1'}})
+					else
+						setStatusTimeout(e)
+				}} type='datetime-local' marginInline='8px'/>
+				<IconButton icon={<FontAwesomeIcon icon='check' />} onClick={() => updateStatusTimeout()} />
 			</FormControl>
 
 

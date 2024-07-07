@@ -1,6 +1,6 @@
 const Settings = require("../mongo_models/Settings");
 
-module.exports = async function isGameActive(req, res, next) {
+module.exports = async function isGameInactive(req, res, next) {
   const status = await Settings.findByKey("gameStatus");
   const timeout = await Settings.findByKey("statusTimeout");
   if (!status || !timeout) {
@@ -12,8 +12,8 @@ module.exports = async function isGameActive(req, res, next) {
     timeout.value = "-1";
     await timeout.save();
   }
-  if (status.value !== "active") {
-    return res.redirect("/nofun");
+  if (status.value === "active") {
+    return res.redirect("/");
   } else {
     next();
   }

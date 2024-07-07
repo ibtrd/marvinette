@@ -12,6 +12,7 @@ export default function RouletteCell({data, rotate, angle, size, index, ...props
 
 	useEffect(() => {
 		togglePrize(reward)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [reward]);
 
 	return (

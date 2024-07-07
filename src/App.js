@@ -8,6 +8,7 @@ import './fontAwesome';
 import Admin from "./pages/Admin";
 import Inactive from "./pages/Inactive";
 import Stats from "./pages/Stats";
+import { ProfileProvider } from "./contexts/ProfileContext";
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/admin" element={<Admin />} />
-          <Route path="/nofun" element={<Inactive />} />
+          <Route path="/nofun" element={<ProfileProvider><Inactive /></ProfileProvider>} />
           <Route path="/leaderboard" element={<Stats />} />
           <Route path="/" element={<Home />} />
         </Routes>

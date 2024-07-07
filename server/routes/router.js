@@ -13,13 +13,14 @@ const sendProfile = require("./sendProfile");
 const sendRewards = require("./sendRewards");
 const sendStats = require("./sendStats");
 const isGameActive = require("../middleware/isGameActive");
+const isGameInactive = require("../middleware/isGameInactive");
 
 router.use('/auth', authRouter);
 router.use('/wheel', isLoggedIn, isGameActive, wheelRouter);
 router.use('/admin', isAdmin, adminRouter);
 
 router.get('/login', isLoggedOut, sendIndex);
-router.get('/nofun', sendIndex);
+router.get("/nofun", isGameInactive, sendIndex);
 router.get('/admin', isAdmin, sendIndex);
 router.get('/me', isLoggedIn, sendProfile);
 router.get('/rewards/:secret', sendRewards)

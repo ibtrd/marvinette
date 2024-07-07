@@ -30,7 +30,6 @@ module.exports.callback = async function callback(req, res) {
         }
       );
       if (response.status !== 200) {
-        console.error("CALL API 1",response.status, response.body);
         return (res.status(502).send("Error retrieving access token"))
       }
       const accessToken = response.data.access_token;
@@ -82,6 +81,7 @@ function isActive(intraUser) {
   if (intraUser['active?'] === true) {
     return;
   }
+  ServerLogs.authentificationFailure(intraUser.login, intraUser.id);
   const err = new Error("You do not have an Active cursus");
   err.code = 403;
   throw err;
@@ -94,6 +94,7 @@ function isFromCampus(intraUser) {
       return;
     }
   }
+  ServerLogs.authentificationFailure(intraUser.login, intraUser.id);
   const err = new Error("You are not part of 42Lyon");
   err.code = 403;
   throw err; 
@@ -116,6 +117,7 @@ async function getCoalitionUser(intraUser, accessToken) {
   if (coalitionUser) {
     return getCoalitionData(coalitionUser);
   } else {
+    ServerLogs.authentificationFailure(intraUser.login, intraUser.id);
     const err = new Error("You are not part of a Piscine coalition");
     err.code = 403;
     throw err;

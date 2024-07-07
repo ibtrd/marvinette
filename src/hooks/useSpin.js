@@ -1,7 +1,6 @@
 import { easings, useSpring } from "react-spring";
 import { useContext, useState } from "react";
 import { WheelContext } from "../contexts/WheelContext";
-import { Howl } from 'howler';
 
 
 export const useSpin = () => {

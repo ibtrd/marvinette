@@ -3,7 +3,7 @@ import RoulettePointer from "./RoulettePointer";
 import RouletteWheel from "./RouletteWheel";
 import { useContext, useEffect} from 'react';
 import { WheelContext } from '../../contexts/WheelContext';
-import { Spinner, transform } from '@chakra-ui/react';
+import { Spinner } from '@chakra-ui/react';
 import { animated, useSpring } from 'react-spring';
 
 export default function Roulette({size, ...props}) {
@@ -25,6 +25,7 @@ export default function Roulette({size, ...props}) {
 			transform: window.innerWidth < 768 ? 'translate(-50%, -50%)' : 'translate(0, 0)',
 	  
   		})
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	  }, [size]);
 
 	if (cells.length > 0)
