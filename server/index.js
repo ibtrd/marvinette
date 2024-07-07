@@ -43,7 +43,6 @@ mongoose
     console.log("Connected to MongoDB");
     // Initialisation
     await initSettings();
-    await RandomPrizes.loadDefaults();
     await rouletteInterval().then(() =>
       console.log("Wheel loaded form Google Sheets"))
     // Starts server
