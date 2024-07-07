@@ -1,9 +1,11 @@
 {
+    "gameStatus": "active",
+    "statusTimeout": "-1",
+    "force": "-1",
+
     "cooldown": "2520",
     "poolYear": "2023",
     "poolMonth": "july",
-    "poolStatus": "inactive",
-    "force": "-1",
-    "gameStatus": "active",
-    "statusTimeout": "-1"
+    "poolStatus": "active",
+    "inactiveMsg": "Sorry, Marvinette is currently inactive."
 }

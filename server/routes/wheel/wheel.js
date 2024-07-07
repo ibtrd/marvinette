@@ -20,23 +20,23 @@ wheelRouter.get("/goal/:hash", sendGoal);
 
 async function sendGoal(req, res) {
 	const profile = await Profile.findByLogin(req.session.user.login);
-	const cooldown = await Settings.findByKey('cooldown');
-	const poolStatus = await Settings.findByKey("poolStatus");
-	if (!profile || !cooldown || !poolStatus) {
+	const cooldown = await Settings.getCooldown();
+	const poolStatus = await Settings.getPoolStatus();
+	if (!profile) {
+		console.error("Failed to fetch settings", cooldown);
 		return res.status(500).send();
 	}
-	const userPoolStatus = profile.cursusEnd < Date.now() ? "inactive" : "active";
-	if (userPoolStatus !== poolStatus.value) {
+	if ((profile.cursusEnd < Date.now() ? "inactive" : "active") !== poolStatus) {
 		res.status(406).send({ error: "Your piscine has ended" });
-	} else if (profile.canSpin(cooldown.value) === false) {
+	} else if (profile.canSpin(cooldown) === false) {
 		res.status(406).send({ error: "You are in cooldown" });
 	} else if (profile.coalition === null) {
-		res.status(406).send({ error: "You no not have a coalition" });
+		res.status(406).send({ error: "You do not have a Piscine coalition" });
 	} else if (req.params.hash !== rouletteCells.hash) {
 		res.status(409).send({ error: "Out of sync with the server, reload required" });
 	} else {
     let goal;
-    const globalGoal = await Settings.findOne({ key: "force" });
+    const globalGoal = await Settings.findByKey('force');
     if (globalGoal && globalGoal.value !== "-1") {
       const globalIndex = parseInt(globalGoal.value);
 	  globalGoal.value = "-1";
