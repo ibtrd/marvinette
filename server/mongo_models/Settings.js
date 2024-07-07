@@ -19,13 +19,9 @@ settingsSchema.statics.getPoolMonth = async function () {
   return query.value;
 };
 
-settingsSchema.statics.getChampion = async function () {
-  const query = await this.findOne({ key: "poolMonth" });
+settingsSchema.statics.getStatusTimeout = async function () {
+  const query = await this.findOne({ key: "statusTimeout" });
   return query.value;
-};
-
-settingsSchema.statics.getChampion = async function (key) {
-  return await this.findOne({ key });
 };
 
 const Settings = mongoose.model("Settings", settingsSchema);

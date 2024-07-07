@@ -51,6 +51,14 @@ module.exports = async function initSettings() {
     });
   }
 
+  const statusTimeout = await Settings.findOne({ key: "statusTimeout" });
+  if (!statusTimeout) {
+    await Settings.create({
+      key: "statusTimeout",
+      value: defaultSettings.statusTimeout,
+    });
+  }
+
   const settings = await Settings.find({});
   settings.forEach(element => {
     console.log(element.key, '=', element.value);
