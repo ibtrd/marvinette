@@ -36,21 +36,31 @@ jobs:
       env:
         VPS_USER: ${{ secrets.VPS_USER }}
         VPS_HOST: ${{ secrets.VPS_HOST }}
-        VPS_PORT: ${{ secrets.VPS_PORT }}
         VPS_SCP_DIR: ${{ secrets.VPS_SCP_DIR }}
-      run: scp -o StrictHostKeyChecking=no -r node_modules/ server/ build/ $VPS_USER@$VPS_HOST:$VPS_SPC_DIR
+      run: scp -o StrictHostKeyChecking=no -r build/ $VPS_USER@$VPS_HOST:$VPS_SPC_DIR
 
     - name: Restart Marvinette service
       env:
         VPS_USER: ${{ secrets.VPS_USER }}
         VPS_HOST: ${{ secrets.VPS_HOST }}
-        VPS_PORT: ${{ secrets.VPS_PORT }}
-        SRCS_DIR: ${{ vars.MARVINETTE_DIR }}
-        DEST_DIR : ${{ vars.MARVINETTE_BUILD_DIR }}
+        VPS_SCP_DIR: ${{ secrets.VPS_SCP_DIR }}
+        DEPLOY_DIR: ${{ vars.DEPLOY_DIR }}
+        REPOSITORY_DIR: ${{ vars.REPOSITORY_DIR }}
       run: |
         ssh -o StrictHostKeyChecking=no $VPS_USER@$VPS_HOST
-        cd /srv/marvinette/deploy
+        cd 
+        cd $DEPLOY_DIR
         rm -rf node_modules/ server/ build
-        cp -r ~/.scp/marvinette/* .
+        cp -r $VPS_SCP_DIR/* .
+        
         sudo /usr/bin/systemctl restart marvinette
-        rm -rf ~/.scp/marvinette/*
+        
+    - name: Clear scp remote folder
+      env:
+        VPS_USER: ${{ secrets.VPS_USER }}
+        VPS_HOST: ${{ secrets.VPS_HOST }}
+        VPS_SCP_DIR: ${{ secrets.VPS_SCP_DIR }}
+      run: |
+        ssh -o StrictHostKeyChecking=no $VPS_USER@$VPS_HOST
+        rm -rf $VPS_SCP_DIR
+        
