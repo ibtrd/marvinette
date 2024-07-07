@@ -1,6 +1,6 @@
 import { Center, Heading, Image, Text, Link } from "@chakra-ui/react";
 import Profile from "../components/profile/Profile";
-import { ProfileContext, ProfileProvider } from "../contexts/ProfileContext";
+import { ProfileContext } from "../contexts/ProfileContext";
 import StatsBanner from "../components/statsBanner/statsBanner";
 import CooldownButton from "../components/cooldownButton/cooldownButton";
 import { useContext } from "react";

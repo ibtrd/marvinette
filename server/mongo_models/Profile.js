@@ -5,6 +5,7 @@ const Rewards = require("./Rewards");
 const Settings = require("./Settings");
 const { piscineCoalitions } = require("../auth/config");
 const ServerLogs = require("./ServerLogs");
+const RandomPrizes = require("./RandomPrizes");
 
 const profileSchema = new mongoose.Schema({
   id: { type: Number, required: true },
@@ -101,6 +102,12 @@ profileSchema.methods.spin = async function(cells, index) {
     particles: cells[goal].particles,
     color: cells[goal].color,
     nextSpin: this.lastSpin + (cooldown * 1000),
+  }
+  const regex = /^\[.*\]$/;
+  if (regex.test(spinReward.description)) {
+    const prize = await RandomPrizes.getOne(spinReward.description);
+    spinReward.description = prize.description;
+    spinReward.title = prize.title;
   }
   await this.save();
   const reward = await Rewards.addOne(this, cells[goal], forced, spinReward.img, spinReward.alt);
