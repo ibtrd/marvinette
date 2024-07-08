@@ -26,7 +26,7 @@ export default function Inactive() {
           left={["16px", "auto", "auto"]}
         />
         <Image src="/yesfun.png" height="5vh" />
-        <Heading>Fun incomming...</Heading>
+        <Heading>Fun incoming...</Heading>
         <Text marginY="64px" textAlign="center" w={["60vw", "40vw", "30vw"]}>
           Are you ready?
         </Text>
