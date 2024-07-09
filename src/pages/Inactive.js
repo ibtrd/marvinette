@@ -25,10 +25,10 @@ export default function Inactive() {
           right="16px"
           left={["16px", "auto", "auto"]}
         />
-        <Image src="/yesfun.png" height="5vh" />
-        <Heading>Fun incoming...</Heading>
+        <Image src="/nofun.png" height="5vh" />
+        <Heading>No fun allowed</Heading>
         <Text marginY="64px" textAlign="center" w={["60vw", "40vw", "30vw"]}>
-          Are you ready?
+          See you soon...
         </Text>
         {me && me.statusTimeout &&
         <CooldownButton
