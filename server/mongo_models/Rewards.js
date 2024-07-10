@@ -36,18 +36,11 @@ rewardsSchema.statics.getCurrentChampion = async function (year, month) {
   return null
 }
 
-rewardsSchema.statics.getTotalTig = async function (year, month) {
-  const query = await this.find({peperotig: "1"}).populate('profile');
-  let total = 0;
-  query.forEach( entry => {
-    if (entry.profile.poolYear === year && entry.profile.poolMonth === month)
-      total += 1;
-  });
-  return total;
-}
-
-rewardsSchema.statics.getTotalAchievement = async function (year, month) {
-  const query = await this.find({ achievement: "1" }).populate("profile");
+rewardsSchema.statics.getTotalTig = async function (year, month, from = 0) {
+  const query = await this.find({
+    peperotig: "1",
+    timestamp: { $gt: from },
+  }).populate("profile");
   let total = 0;
   query.forEach((entry) => {
     if (entry.profile.poolYear === year && entry.profile.poolMonth === month)
@@ -56,8 +49,11 @@ rewardsSchema.statics.getTotalAchievement = async function (year, month) {
   return total;
 };
 
-rewardsSchema.statics.getTotalAltarian = async function (year,month) {
-  const query = await this.find({ altarianDollar: "1" }).populate("profile");
+rewardsSchema.statics.getTotalAchievement = async function (year, month, from = 0) {
+  const query = await this.find({
+    achievement: "1",
+    timestamp: { $gt: from },
+  }).populate("profile");
   let total = 0;
   query.forEach((entry) => {
     if (entry.profile.poolYear === year && entry.profile.poolMonth === month)
@@ -66,12 +62,26 @@ rewardsSchema.statics.getTotalAltarian = async function (year,month) {
   return total;
 };
 
-rewardsSchema.statics.getTotalEvalPts = async function (year, month) {
+rewardsSchema.statics.getTotalAltarian = async function (year,month, from = 0) {
+  const query = await this.find({
+    altarianDollar: "1",
+    timestamp: { $gt: from },
+  }).populate("profile");
+  let total = 0;
+  query.forEach((entry) => {
+    if (entry.profile.poolYear === year && entry.profile.poolMonth === month)
+      total += 1;
+  });
+  return total;
+};
+
+rewardsSchema.statics.getTotalEvalPts = async function (year, month, from = 0) {
   const query = await this.find({
     evaluationPoint: { $ne: "" },
+    timestamp: { $gt: from },
   }).populate("profile");
   let gain = 0;
-  let loss = 0
+  let loss = 0;
   query.forEach((entry) => {
     if (entry.profile.poolYear === year && entry.profile.poolMonth === month) {
       if (entry.evaluationPoint === "1") {
@@ -81,31 +91,44 @@ rewardsSchema.statics.getTotalEvalPts = async function (year, month) {
       }
     }
   });
-  return {gain, loss};
+  return { gain, loss };
 };
 
-rewardsSchema.statics.getTotalCoaPts = async function (year, month, date = 0) {
-  const query = await this.find({
+rewardsSchema.statics.getTotalCoaPts = async function (year, month, from = 0) {
+  let query = await this.find({
     coalitionPoints: { $ne: "" },
-    timestamp: { $gt: date },
+    timestamp: { $gt: from },
   }).populate("profile");
   const coalitions = piscineCoalitions.map((coa) => {
-    return { name: coa.name, id: coa.id, special: 0, member: { gain: 0, loss: 0 } };
+    return { name: coa.name, id: coa.id, special: 0,  tig: 0, members: { gain: 0, loss: 0 }, total: 0 };
   })
   query.forEach((entry) => {
     if (entry.profile.poolYear === year && entry.profile.poolMonth === month) {
-      const coa = coalitions.find( coa => coa.id === parseInt(entry.coalitionTo));
+      const coa = coalitions.find(coa => coa.id === parseInt(entry.coalitionTo));
       const value = parseInt(entry.coalitionPoints);
-      if (value === 100) {
+      if (entry.coalitionFrom === "") {
         coa.special += value;
       } else if (value > 0) {
-        coa.member.gain += value;
+        coa.members.gain += value;
       } else if (value < 0) {
-        coa.member.loss += value;
+        coa.members.loss += value;
       }
     }
   });
-  coalitions.forEach(coa => delete coa.id);
+  query = await this.find({
+    peperotig: "1",
+    timestamp: { $gt: from },
+  }).populate("profile");
+  query.forEach(entry => {
+    if (entry.profile.poolYear === year && entry.profile.poolMonth === month) {
+      const coa = coalitions.find(coa => coa.id === entry.profile.coalitionId);
+      coa.tig -= 42;
+    }
+  })
+  coalitions.forEach(coa => {
+    coa.total = coa.special + coa.tig + coa.members.gain + coa.members.loss
+  })
+  coalitions.forEach((coa) => delete coa.id);
   return coalitions;
 }
 
