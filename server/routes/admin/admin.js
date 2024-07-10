@@ -115,19 +115,20 @@ adminRouter.get('/logs', async (req, res) => {
 });
 
 adminRouter.get('/stats', async (req, res) => {
+  const timestamp = new Date("2024-07-09T08:42:00Z");
   try {
     const [poolYear, poolMonth] = await Promise.all([
       Settings.getPoolYear(),
       Settings.getPoolMonth(),
     ])
     const [tig, achievement, altarian, evalPts, coaPts] = await Promise.all([
-      Rewards.getTotalTig(poolYear, poolMonth),
-      Rewards.getTotalAchievement(poolYear, poolMonth),
-      Rewards.getTotalAltarian(poolYear, poolMonth),
-      Rewards.getTotalEvalPts(poolYear, poolMonth),
-      Rewards.getTotalCoaPts(poolYear, poolMonth),
+      Rewards.getTotalTig(poolYear, poolMonth, timestamp),
+      Rewards.getTotalAchievement(poolYear, poolMonth, timestamp),
+      Rewards.getTotalAltarian(poolYear, poolMonth, timestamp),
+      Rewards.getTotalEvalPts(poolYear, poolMonth, timestamp),
+      Rewards.getTotalCoaPts(poolYear, poolMonth, timestamp),
     ]);
-    res.send({ tig, achievement, altarian, evalPts, coaPts});
+    res.send({ tig, achievement, altarian, evalPts, coaPts });
   } catch (err) {
     console.error(err);
     res.status(500).send("Error retrieving admin stats");
