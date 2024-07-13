@@ -2,7 +2,8 @@
     "gameStatus": "active",
     "statusTimeout": "-1",
     "force": "-1",
-
+    "statsTimestampStart": "2024-07-01T09:42:00Z",
+    "statsTimestampEnd": "2042-07-01T09:42:00Z",
     "cooldown": "2520",
     "poolYear": "2023",
     "poolMonth": "july",

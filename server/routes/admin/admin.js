@@ -115,18 +115,19 @@ adminRouter.get('/logs', async (req, res) => {
 });
 
 adminRouter.get('/stats', async (req, res) => {
-  const timestamp = new Date("2024-07-09T08:42:00Z");
+  const start = await Settings.getStatsTimestampStart();
+  const end = await Settings.getStatsTimestampEnd();
   try {
     const [poolYear, poolMonth] = await Promise.all([
       Settings.getPoolYear(),
       Settings.getPoolMonth(),
     ])
     const [tig, achievement, altarian, evalPts, coaPts] = await Promise.all([
-      Rewards.getTotalTig(poolYear, poolMonth, timestamp),
-      Rewards.getTotalAchievement(poolYear, poolMonth, timestamp),
-      Rewards.getTotalAltarian(poolYear, poolMonth, timestamp),
-      Rewards.getTotalEvalPts(poolYear, poolMonth, timestamp),
-      Rewards.getTotalCoaPts(poolYear, poolMonth, timestamp),
+      Rewards.getTotalTig(poolYear, poolMonth, start, end),
+      Rewards.getTotalAchievement(poolYear, poolMonth, start, end),
+      Rewards.getTotalAltarian(poolYear, poolMonth, start, end),
+      Rewards.getTotalEvalPts(poolYear, poolMonth, start, end),
+      Rewards.getTotalCoaPts(poolYear, poolMonth, start, end),
     ]);
     res.send({ tig, achievement, altarian, evalPts, coaPts });
   } catch (err) {

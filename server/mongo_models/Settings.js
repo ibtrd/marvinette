@@ -94,6 +94,22 @@ settingsSchema.statics.getInactiveMsg = async function () {
   return query.value;
 };
 
+settingsSchema.statics.getStatsTimestampStart = async function () {
+  const query = await this.findOne({ key: "statsTimestampStart" });
+  if (!query) {
+    return new Date(defaultSettings.statsTimestampStart);
+  }
+  return new Date(query.value);
+};
+
+settingsSchema.statics.getStatsTimestampEnd = async function () {
+  const query = await this.findOne({ key: "statsTimestampEnd" });
+  if (!query) {
+    return new Date(defaultSettings.statsTimestampEnd);
+  }
+  return new Date(query.value);
+};
+
 const Settings = mongoose.model("Settings", settingsSchema);
 
 module.exports = Settings;

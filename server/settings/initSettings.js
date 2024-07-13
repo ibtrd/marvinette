@@ -24,4 +24,20 @@ module.exports = async function initSettings() {
       value: defaultSettings.force,
     });
   }
+
+  const statsTimestampStart = await Settings.findOne({ key: "statsTimestampStart" });
+  if (!statsTimestampStart) {
+    await Settings.create({
+      key: "statsTimestampStart",
+      value: defaultSettings.statsTimestampStart,
+    });
+  }
+
+  const statsTimestampEnd = await Settings.findOne({ key: "statsTimestampEnd" });
+  if (!statsTimestampEnd) {
+    await Settings.create({
+      key: "statsTimestampEnd",
+      value: defaultSettings.statsTimestampEnd,
+    });
+  }
 }
