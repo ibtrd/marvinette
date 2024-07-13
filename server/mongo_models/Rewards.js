@@ -36,10 +36,10 @@ rewardsSchema.statics.getCurrentChampion = async function (year, month) {
   return null
 }
 
-rewardsSchema.statics.getTotalTig = async function (year, month, from = 0) {
+rewardsSchema.statics.getTotalTig = async function (year, month, from, to) {
   const query = await this.find({
     peperotig: "1",
-    timestamp: { $gt: from },
+    timestamp: { $gt: from, $lt: to },
   }).populate("profile");
   let total = 0;
   query.forEach((entry) => {
@@ -49,10 +49,10 @@ rewardsSchema.statics.getTotalTig = async function (year, month, from = 0) {
   return total;
 };
 
-rewardsSchema.statics.getTotalAchievement = async function (year, month, from = 0) {
+rewardsSchema.statics.getTotalAchievement = async function (year, month, from, to) {
   const query = await this.find({
     achievement: "1",
-    timestamp: { $gt: from },
+    timestamp: { $gt: from, $lt: to },
   }).populate("profile");
   let total = 0;
   query.forEach((entry) => {
@@ -62,10 +62,10 @@ rewardsSchema.statics.getTotalAchievement = async function (year, month, from = 
   return total;
 };
 
-rewardsSchema.statics.getTotalAltarian = async function (year,month, from = 0) {
+rewardsSchema.statics.getTotalAltarian = async function (year,month, from, to) {
   const query = await this.find({
     altarianDollar: "1",
-    timestamp: { $gt: from },
+    timestamp: { $gt: from, $lt: to },
   }).populate("profile");
   let total = 0;
   query.forEach((entry) => {
@@ -75,10 +75,10 @@ rewardsSchema.statics.getTotalAltarian = async function (year,month, from = 0) {
   return total;
 };
 
-rewardsSchema.statics.getTotalEvalPts = async function (year, month, from = 0) {
+rewardsSchema.statics.getTotalEvalPts = async function (year, month, from, to) {
   const query = await this.find({
     evaluationPoint: { $ne: "" },
-    timestamp: { $gt: from },
+    timestamp: { $gt: from, $lt: to },
   }).populate("profile");
   let gain = 0;
   let loss = 0;
@@ -94,10 +94,10 @@ rewardsSchema.statics.getTotalEvalPts = async function (year, month, from = 0) {
   return { gain, loss };
 };
 
-rewardsSchema.statics.getTotalCoaPts = async function (year, month, from = 0) {
+rewardsSchema.statics.getTotalCoaPts = async function (year, month, from, to) {
   let query = await this.find({
     coalitionPoints: { $ne: "" },
-    timestamp: { $gt: from },
+    timestamp: { $gt: from, $lt: to },
   }).populate("profile");
   const coalitions = piscineCoalitions.map((coa) => {
     return { name: coa.name, id: coa.id, special: 0,  tig: 0, members: { gain: 0, loss: 0 }, total: 0 };
@@ -117,7 +117,7 @@ rewardsSchema.statics.getTotalCoaPts = async function (year, month, from = 0) {
   });
   query = await this.find({
     peperotig: "1",
-    timestamp: { $gt: from },
+    timestamp: { $gt: from, $lt: to },
   }).populate("profile");
   query.forEach(entry => {
     if (entry.profile.poolYear === year && entry.profile.poolMonth === month) {
