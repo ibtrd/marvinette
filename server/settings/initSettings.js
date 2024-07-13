@@ -2,6 +2,47 @@ const Settings = require("../mongo_models/Settings");
 const defaultSettings = require("./defaultSettings.json");
 
 module.exports = async function initSettings() {
+
+  const cooldown = await Settings.findOne({ key: "cooldown" });
+  if (!cooldown) {
+    await Settings.create({
+      key: "cooldown",
+      value: defaultSettings.cooldown,
+    });
+  }
+
+  const poolYear = await Settings.findOne({ key: "poolYear" });
+  if (!poolYear) {
+    await Settings.create({
+      key: "poolYear",
+      value: defaultSettings.poolYear,
+    });
+  }
+
+  const poolMonth = await Settings.findOne({ key: "poolMonth" });
+  if (!poolMonth) {
+    await Settings.create({
+      key: "poolMonth",
+      value: defaultSettings.poolMonth,
+    });
+  }
+
+  const poolStatus = await Settings.findOne({ key: "poolStatus" });
+  if (!poolStatus) {
+    await Settings.create({
+      key: "poolStatus",
+      value: defaultSettings.poolStatus,
+    });
+  }
+
+  const inactiveMsg = await Settings.findOne({ key: "inactiveMsg" });
+  if (!inactiveMsg) {
+    await Settings.create({
+      key: "inactiveMsg",
+      value: defaultSettings.inactiveMsg,
+    });
+  }
+
   const gameStatus = await Settings.findOne({ key: "gameStatus" });
   if (!gameStatus) {
     await Settings.create({
@@ -40,4 +81,6 @@ module.exports = async function initSettings() {
       value: defaultSettings.statsTimestampEnd,
     });
   }
+
+
 }
