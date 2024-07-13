@@ -122,14 +122,15 @@ adminRouter.get('/stats', async (req, res) => {
       Settings.getPoolYear(),
       Settings.getPoolMonth(),
     ])
-    const [tig, achievement, altarian, evalPts, coaPts] = await Promise.all([
+    const [spins, tig, achievement, altarian, evalPts, coaPts] = await Promise.all([
+      Rewards.getTotalSpins(poolYear, poolMonth, start, end),
       Rewards.getTotalTig(poolYear, poolMonth, start, end),
       Rewards.getTotalAchievement(poolYear, poolMonth, start, end),
       Rewards.getTotalAltarian(poolYear, poolMonth, start, end),
       Rewards.getTotalEvalPts(poolYear, poolMonth, start, end),
       Rewards.getTotalCoaPts(poolYear, poolMonth, start, end),
     ]);
-    res.send({ tig, achievement, altarian, evalPts, coaPts });
+    res.send({ spins, tig, achievement, altarian, evalPts, coaPts });
   } catch (err) {
     console.error(err);
     res.status(500).send("Error retrieving admin stats");
