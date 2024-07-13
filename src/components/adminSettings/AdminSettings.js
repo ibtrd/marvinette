@@ -11,6 +11,8 @@ export default function AdminSettings({...props}) {
 	const [poolStatus, setPoolStatus, updatePoolStatus] = useSettings('poolStatus');
 	const [gameStatus, setGameStatus, updateGameStatus] = useSettings('gameStatus');
 	const [statusTimeout, setStatusTimeout, updateStatusTimeout] = useSettings('statusTimeout');
+	const [statsTimestampStart, setStatsTimestampStart, updateStatsTimestampStart] = useSettings('statsTimestampStart');
+	const [statsTimestampEnd, setStatsTimestampEnd, updateStatsTimestampEnd] = useSettings('statsTimestampEnd');
 
 	const {isOpen , onOpen, onClose} = useDisclosure();
 
@@ -74,6 +76,18 @@ export default function AdminSettings({...props}) {
 				<IconButton icon={<FontAwesomeIcon icon='check' />} onClick={() => updateStatusTimeout()} />
 			</FormControl>
 
+
+			<FormControl width='100%' marginY='8px' display='flex' alignItems='center'>
+				<FormLabel>Stats timestamp start</FormLabel>
+				<Input value={statsTimestampStart} onChange={(e) => setStatsTimestampStart(e)} type='datetime-local' marginInline='8px'/>
+				<IconButton icon={<FontAwesomeIcon icon='check' />} onClick={() => updateStatsTimestampStart()} isDisabled={!statsTimestampStart ||  statsTimestampStart.length === 0} />
+			</FormControl>
+
+			<FormControl width='100%' marginY='8px' display='flex' alignItems='center'>
+				<FormLabel>Stats timestamp end</FormLabel>
+				<Input value={statsTimestampEnd} onChange={(e) => setStatsTimestampEnd(e)} type='datetime-local' marginInline='8px'/>
+				<IconButton icon={<FontAwesomeIcon icon='check' />} onClick={() => updateStatsTimestampEnd()} isDisabled={!statsTimestampEnd || statsTimestampEnd.length === 0} />
+			</FormControl>
 
 		</Flex>
 		<Button 
