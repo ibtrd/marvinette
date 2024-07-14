@@ -1,3 +1,4 @@
+const Profile = require("../mongo_models/Profile");
 const Settings = require("../mongo_models/Settings");
 
 module.exports = async function isGameInactive(req, res, next) {
@@ -12,9 +13,10 @@ module.exports = async function isGameInactive(req, res, next) {
     timeout.value = "-1";
     await timeout.save();
   }
-  if (status.value === "active") {
-    return res.redirect("/");
-  } else {
+  const profile = await Profile.findByLogin(req.session.user.login);
+  if (status.value !== "active" || (profile && profile['admin?'] === true)) {
     next();
+  } else {
+    return res.redirect("/");
   }
 };

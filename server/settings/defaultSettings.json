@@ -9,5 +9,7 @@
     "poolYear": "2023",
     "poolMonth": "july",
     "poolStatus": "active",
-    "inactiveMsg": "Sorry, Marvinette is currently inactive."
+    "inactiveMsg": "Sorry, Marvinette is currently inactive.",
+    "inactiveTitle": "No Fun Allowed.",
+    "inactiveImage": "/nofun.png"
 }
