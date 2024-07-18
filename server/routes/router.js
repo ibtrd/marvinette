@@ -14,10 +14,13 @@ const sendRewards = require("./sendRewards");
 const sendStats = require("./sendStats");
 const isGameActive = require("../middleware/isGameActive");
 const isGameInactive = require("../middleware/isGameInactive");
+const nofunRouter = require("./nofun/nofun");
 
 router.use('/auth', authRouter);
 router.use('/wheel', isLoggedIn, isGameActive, wheelRouter);
 router.use('/admin', isAdmin, adminRouter);
+router.use('/nofun', nofunRouter);
+
 
 router.get('/login', isLoggedOut, sendIndex);
 router.get("/nofun", isGameInactive, sendIndex);

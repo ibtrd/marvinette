@@ -43,6 +43,22 @@ module.exports = async function initSettings() {
     });
   }
 
+  const inactiveTitle = await Settings.findOne({ key: "inactiveTitle" });
+  if (!inactiveTitle) {
+    await Settings.create({
+      key: "inactiveTitle",
+      value: defaultSettings.inactiveTitle,
+    });
+  }
+
+  const inactiveImage = await Settings.findOne({ key: "inactiveImage" });
+  if (!inactiveImage) {
+    await Settings.create({
+      key: "inactiveImage",
+      value: defaultSettings.inactiveImage,
+    });
+  }
+
   const gameStatus = await Settings.findOne({ key: "gameStatus" });
   if (!gameStatus) {
     await Settings.create({
