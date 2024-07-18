@@ -49,13 +49,4 @@ async function sendGoal(req, res) {
   }
 }
 
-wheelRouter.get('/inactive', async (req, res) => {
-	const msg = await Settings.findOne({key: 'inactiveMsg'})
-	const title = await Settings.findOne({key: 'inactiveTitle'})
-	const img = await Settings.findOne({key: 'inactiveImage'})
-	return {
-		msg, title, img
-	}
-})
-
 module.exports = wheelRouter;
