@@ -66,6 +66,22 @@ settingsSchema.statics.getInactiveMsg = async function () {
   return query.value;
 };
 
+settingsSchema.statics.getInactiveTitle = async function () {
+  const query = await this.findOne({ key: "inactiveTitle" });
+  if (!query) {
+    return defaultSettings.inactiveTitle;
+  }
+  return query.value;
+};
+
+settingsSchema.statics.getInactiveImage = async function () {
+  const query = await this.findOne({ key: "inactiveImage" });
+  if (!query) {
+    return defaultSettings.inactiveImage;
+  }
+  return query.value;
+};
+
 settingsSchema.statics.getStatsTimestampStart = async function () {
   const query = await this.findOne({ key: "statsTimestampStart" });
   if (!query) {
