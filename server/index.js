@@ -10,7 +10,6 @@ const { sessionMiddleware } = require('./auth/sessions');
 const router = require('./routes/router');
 const initSettings = require('./settings/initSettings');
 const { rouletteInterval } = require('./roulette/rouletteCells'); 
-const RandomPrizes = require('./mongo_models/RandomPrizes');
 
 const app = express();
 

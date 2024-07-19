@@ -18,16 +18,16 @@ const nofunRouter = require("./nofun/nofun");
 
 router.use('/auth', authRouter);
 router.use('/wheel', isLoggedIn, isGameActive, wheelRouter);
-router.use('/admin', isAdmin, adminRouter);
-router.use('/nofun', nofunRouter);
+router.use('/admin', isLoggedIn, isAdmin, adminRouter);
+router.use('/nofun', isLoggedIn, nofunRouter);
 
 
 router.get('/login', isLoggedOut, sendIndex);
-router.get("/nofun", isGameInactive, sendIndex);
-router.get('/admin', isAdmin, sendIndex);
+router.get("/nofun", isLoggedIn, isGameInactive, sendIndex);
+router.get('/admin', isLoggedIn, isAdmin, sendIndex);
 router.get('/me', isLoggedIn, sendProfile);
-router.get('/rewards/:secret', sendRewards)
 router.get('/stats', isLoggedIn, sendStats);
+router.get('/rewards/:secret', sendRewards)
 
 router.get('/', isLoggedIn, isGameActive, sendIndex)
 router.use(express.static(path.resolve("./build")));
