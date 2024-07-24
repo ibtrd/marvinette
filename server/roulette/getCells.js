@@ -1,7 +1,11 @@
-const RANGE = "V2!A2:O";
-const url = `https://sheets.googleapis.com/v4/spreadsheets/${process.env.SPREADSHEET_ID}/values/${RANGE}?key=${process.env.APIGOOGLE_KEY}`;
+const Settings = require("../mongo_models/Settings");
+
 
 async function getCells() {
+  
+  const sheetName = await Settings.findOne({ key: "sheetName" });
+  const RANGE = sheetName.value + "!A2:O";
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${process.env.SPREADSHEET_ID}/values/${RANGE}?key=${process.env.APIGOOGLE_KEY}`;
   try {
     const response = await fetch(url);
     const data = await response.json();

@@ -98,5 +98,12 @@ module.exports = async function initSettings() {
     });
   }
 
+  const sheetName = await Settings.findOne({ key: "sheetName" });
+  if (!sheetName) {
+    await Settings.create({
+      key: "sheetName",
+      value: defaultSettings.sheetName,
+    });
+  }
 
 }
