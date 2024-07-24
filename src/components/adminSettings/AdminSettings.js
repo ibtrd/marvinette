@@ -13,6 +13,7 @@ export default function AdminSettings({...props}) {
 	const [statusTimeout, setStatusTimeout, updateStatusTimeout] = useSettings('statusTimeout');
 	const [statsTimestampStart, setStatsTimestampStart, updateStatsTimestampStart] = useSettings('statsTimestampStart');
 	const [statsTimestampEnd, setStatsTimestampEnd, updateStatsTimestampEnd] = useSettings('statsTimestampEnd');
+	const [sheetName, setSheetName, updateSheetName] = useSettings('sheetName');
 
 	const {isOpen , onOpen, onClose} = useDisclosure();
 
@@ -87,6 +88,12 @@ export default function AdminSettings({...props}) {
 				<FormLabel>Stats timestamp end</FormLabel>
 				<Input value={statsTimestampEnd} onChange={(e) => setStatsTimestampEnd(e)} type='datetime-local' marginInline='8px'/>
 				<IconButton icon={<FontAwesomeIcon icon='check' />} onClick={() => updateStatsTimestampEnd()} isDisabled={!statsTimestampEnd || statsTimestampEnd.length === 0} />
+			</FormControl>
+
+			<FormControl width='100%' marginY='8px' display='flex' alignItems='center'>
+				<FormLabel>Sheet Name</FormLabel>
+				<Input value={sheetName} onChange={setSheetName} type='text' marginInline='8px'/>
+				<IconButton icon={<FontAwesomeIcon icon='check' />} onClick={() => updateSheetName()} />
 			</FormControl>
 
 		</Flex>

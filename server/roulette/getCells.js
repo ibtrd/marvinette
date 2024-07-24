@@ -31,8 +31,8 @@ async function getCells() {
     return cells;
     
   } catch (error) {
-    console.error("Error fetching google sheet:", error);
-    // return null; // Or handle error as needed
+    console.error("No data found in the Google Sheet named " + sheetName.value);
+    return [];
   }
 }
 
