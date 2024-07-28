@@ -158,7 +158,7 @@ rewardsSchema.statics.getLastRewards = async function (year, month) {
   const query = await this.find({
     timestamp: {
       $lt: now - (20 * 1000),
-      $gt: now - (10 * 60 * 1000) 
+      $gt: now - (7 * 24 * 60 * 60 * 1000) 
     }
   })
   .populate('profile')
