@@ -1,49 +1,43 @@
 class LoginQueue {
-    constructor(limit) {
-        this.limit = limit;
-        this.queue = [];
-        this.lastCallTime = 0;
-        this.isProcessing = false;
-        }
+	constructor(limit) {
+		this.limit = limit;
+		this.queue = [];
+		this.lastCallTime = 0;
+		this.isProcessing = false;
+		}
 
-    add(loginAttempt, ...args) {
-        this.queue.push({loginAttempt, args});
-        this.processQueue();
-    }
+	add(loginAttempt, ...args) {
+		this.queue.push({loginAttempt, args});
+		this.processQueue();
+	}
 
-    processQueue() {
-        if (this.isProcessing) return;
+	processQueue() {
+		if (this.isProcessing) return;
 
-        const now = Date.now();
-        const timeSinceLastCall = now - this.lastCallTime;
+		const now = Date.now();
+		const timeSinceLastCall = now - this.lastCallTime;
 
-        if (this.queue.length && timeSinceLastCall >= this.limit) {
-            this.isProcessing = true;
-            this.lastCallTime = now;
-            const { loginAttempt, args } = this.queue.shift();
+		if (this.queue.length && timeSinceLastCall >= this.limit) {
+			this.isProcessing = true;
+			this.lastCallTime = now;
+			const { loginAttempt, args } = this.queue.shift();
 
-            console.log(
-              `Executing login attempt at ${new Date().toISOString()}`
-            );
-            loginAttempt(...args).then(() => {
-                console.log(
-                  `Login attempt completed at ${new Date().toISOString()}`
-                );
-                this.isProcessing = false;
-                this.processQueue();
-            })
-            .catch(() => {
-                console.error(
-                  `Login attempt failed at ${new Date().toISOString()}`
-                );
-                this.isProcessing = false;
-                this.processQueue();
-            });
-        } else {
-            const timeToWait = Math.max(this.limit - timeSinceLastCall, 0);
-            setTimeout(() => this.processQueue(), timeToWait);
-        }
-    }
+			loginAttempt(...args).then(() => {
+				this.isProcessing = false;
+				this.processQueue();
+			})
+			.catch(() => {
+				console.error(
+				  `Login attempt failed at ${new Date().toISOString()}`
+				);
+				this.isProcessing = false;
+				this.processQueue();
+			});
+		} else {
+			const timeToWait = Math.max(this.limit - timeSinceLastCall, 0);
+			setTimeout(() => this.processQueue(), timeToWait);
+		}
+	}
 }
 
 module.exports = LoginQueue;
