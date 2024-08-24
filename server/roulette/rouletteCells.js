@@ -19,7 +19,7 @@ module.exports.rouletteInterval = async function rouletteInterval() {
 			rouletteCells.witness = witness;
 			console.log('WHEEL UPDATE');
 		}
-	}, 3000)
+	}, 30000)
 }
 
 function getRouletteSoftHash(cells) {
