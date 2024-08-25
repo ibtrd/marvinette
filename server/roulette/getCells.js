@@ -1,6 +1,5 @@
 const Settings = require("../mongo_models/Settings");
 
-
 async function getCells() {
   
   const sheetName = await Settings.findOne({ key: "sheetName" });
