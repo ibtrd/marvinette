@@ -33,7 +33,7 @@
   "scripts": {
     "start": "node ./server/index.js",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "node .dev/tests/goalGenerator.js",
     "eject": "react-scripts eject"
   },
   "proxy": "http://localhost:3000",
