@@ -41,11 +41,7 @@ module.exports.callback = async function callback(req, res) {
       account.id = intraUser.id;
       account.login = intraUser.login;
       account.cursusEnd = getCursusEnd(intraUser, account["admin?"]);
-      const coalition = await getCoalitionUser(intraUser, accessToken);
-      account.coalition = coalition.name;
-      account.coalitionId = coalition.id;
-      account.coalitionImg = coalition.img;
-      account.coalitionUserId = coalition.coalitionUserId;
+      account.coalition = await getCoalitionUser(intraUser, accessToken);
       account.poolYear = intraUser.pool_year;
       account.poolMonth = intraUser.pool_month;
       account.img = intraUser.image.link;
@@ -118,7 +114,7 @@ async function getCoalitionUser(intraUser, accessToken) {
     return getCoalitionData(coalitionUser);
   } else {
     ServerLogs.authentificationFailure(intraUser.login, intraUser.id);
-    const err = new Error("You are not part of a Piscine coalition");
+    const err = new Error("You are not part of a coalition");
     err.code = 403;
     throw err;
   }
@@ -126,17 +122,16 @@ async function getCoalitionUser(intraUser, accessToken) {
 
 function getCoalitionData(coalitionUser)
 {
-  for (let i = 0; i < piscineCoalitions.length; i++) {
-    if (piscineCoalitions[i].id === coalitionUser.coalition_id) {
-      return {
-        id: piscineCoalitions[i].id,
-        name: piscineCoalitions[i].name,
-        img: piscineCoalitions[i].img,
-        coalitionUserId: coalitionUser.id
-      }
-    }
+  const coa = piscineCoalitions.find(element => element.id === coalitionUser.coalition_id);
+  if (coa) {
+    return ({
+      name: coa.name,
+      id: coa.id,
+      img: coa.img,
+      userId: coalitionUser.id
+    })
   }
-    const err = new Error("You are not part of a Piscine coalition");
+    const err = new Error("You are not part of a coalition");
     err.code = 403;
     throw err; 
 }

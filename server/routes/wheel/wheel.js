@@ -35,8 +35,6 @@ async function sendGoal(req, res) {
 		res.status(406).send({ error: "Your piscine has ended" });
 	} else if (profile.canSpin(cooldown) === false) {
 		res.status(406).send({ error: "You are in cooldown" });
-	} else if (profile.coalition === null) {
-		res.status(406).send({ error: "You do not have a Piscine coalition" });
 	} else if (req.params.hash !== rouletteCells.hash) {
 		res.status(409).send({ error: "Out of sync with the server, reload required" });
 	} else {

@@ -116,7 +116,7 @@ rewardsSchema.statics.getTotalCoaPts = async function (year, month, from, to) {
     return {
       name: coa.name,
       id: coa.id,
-      spins: query.filter((reward) => (reward.profile.coalitionId === coa.id)).length,
+      spins: query.filter((reward) => (reward.profile.coalition.id === coa.id)).length,
       special: 0, 
       tig: 0,
       members: { gain: 0, loss: 0 },
@@ -142,7 +142,7 @@ rewardsSchema.statics.getTotalCoaPts = async function (year, month, from, to) {
   }).populate("profile");
   query.forEach(entry => {
     if (entry.profile.poolYear === year && entry.profile.poolMonth === month) {
-      const coa = coalitions.find(coa => coa.id === entry.profile.coalitionId);
+      const coa = coalitions.find(coa => coa.id === entry.profile.coalition.id);
       coa.tig -= 42;
     }
   })
@@ -180,9 +180,9 @@ rewardsSchema.statics.addOne = async function (profile, cell, forced, img, alt) 
     alt,
     coalitionPoints: cell.reward.coalitionPoints,
     coalitionTo:
-      cell.reward.coalitionTo === "user" ? profile.coalitionId : cell.reward.coalitionTo,
+      cell.reward.coalitionTo === "user" ? profile.coalition.id : cell.reward.coalitionTo,
     coalitionFrom:
-      cell.reward.coalitionTo === "user" ? profile.coalitionUserId : "",
+      cell.reward.coalitionTo === "user" ? profile.coalition.userId : "",
     evaluationPoint: cell.reward.evaluationPoint,
     intraTag: cell.reward.intraTag,
     altarianDollar: cell.reward.altarianDollar,
