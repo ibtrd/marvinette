@@ -34,6 +34,14 @@ const administrators = [
     login: "kunfandi",
     id: 108244
   },
+  {
+    login: "cdomet-d",
+    id: 154430
+  },
+  {
+    login: 'anfichet',
+    id: 154843
+  }
 ];
 
 const piscineCoalitions = [

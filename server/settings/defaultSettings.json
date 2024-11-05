@@ -1,15 +1,15 @@
 {
-    "gameStatus": "active",
+    "gameStatus": "inactive",
     "statusTimeout": "-1",
     "force": "-1",
     "statsTimestampStart": "2024-07-01T09:42",
     "statsTimestampEnd": "2042-07-01T09:42",
-    "sheetName": "BASIC",
+    "sheetName": "COALITIONS",
     "cooldown": "2520",
     "poolYear": "2023",
     "poolMonth": "july",
-    "poolStatus": "active",
+    "poolStatus": "inactive",
     "inactiveMsg": "Sorry, Marvinette is currently inactive.",
     "inactiveTitle": "No Fun Allowed.",
-    "inactiveImage": "/nofun.png"
+    "inactiveImage": "/sorting_hat_marvin.png"
 }
