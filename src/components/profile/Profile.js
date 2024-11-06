@@ -7,7 +7,7 @@ export default function Profile({isAdmin, ...props}) {
 
 	const {me} = useContext(ProfileContext);
 
-	if (me)
+	if (me && me.isAdmin)
 		return (
 			<Card
 				{...props}
